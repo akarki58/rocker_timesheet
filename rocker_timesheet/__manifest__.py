@@ -7,6 +7,7 @@
     'summary': 'ht_timesheet supercharged',
     'description': 'Probably most fastes way to report work done',
     'author': 'Antti Kärki',
+    'license': 'AGPL-3',
     'version': '14.0.1.0',
     'category': 'Services/Timesheets',
     'sequence': 23,
