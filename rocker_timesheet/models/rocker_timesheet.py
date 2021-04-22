@@ -36,6 +36,7 @@ class RockerTimesheet(models.Model):
 
     def _domain_project_id(self):
         domain = [('allow_timesheets', '=', True)]
+        # odoo 13 no allowed_internal_user_ids
         # return expression.AND([domain,
         #                        ['|', ('privacy_visibility', '!=', 'followers'), ('allowed_internal_user_ids', 'in', self.env.user.ids)]
         #                        ])
@@ -118,8 +119,8 @@ class RockerTimesheet(models.Model):
         _search_panel_domain = [('company_id', '=', self.env.company.id)]  # ok
         if filt == 'all':
             _search_panel_domain = _search_panel_domain + []
-        elif filt == 'member':
-            _search_panel_domain = _search_panel_domain + [('project_id', 'in', self.env['project.project'].search([('allowed_internal_user_ids', 'in', self.env.user.ids)]).ids)]
+        # elif filt == 'member':    # odoo13 does not have allowed_internal_user_ids
+        #     _search_panel_domain = _search_panel_domain + [('project_id', 'in', self.env['project.project'].search([('allowed_internal_user_ids', 'in', self.env.user.ids)]).ids)]
         elif filt == 'internal':
             _search_panel_domain = _search_panel_domain + [('project_id', 'in', self.env['project.project'].search([('rocker_type', '=', 'internal')]).ids)]
         elif filt == 'billable':
@@ -495,8 +496,8 @@ class RockerTimesheet(models.Model):
         _logger.debug('Searchpanel_all...')
         if filt == 'all':
             self._domain_set_search_filter('all')
-        elif filt == 'member':
-            self._domain_set_search_filter('member')
+        # elif filt == 'member':
+        #     self._domain_set_search_filter('member')
         elif filt == 'billable':
             self._domain_set_search_filter('billable')
         elif filt == 'nonbillable':
