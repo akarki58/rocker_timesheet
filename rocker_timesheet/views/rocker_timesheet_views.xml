@@ -14,7 +14,10 @@
                     <field name="company_id"/>
                      <separator/>
                     <searchpanel view_types="tree,calendar">
-                        <field name="task_search" limit="0" expand="1" hierarchize="1" string="Projects/Tasks" icon="fa-folder-open"/>
+<!--                        odoo 13 -->
+                        <field name="task_search" select="one" string="Projects/Tasks" icon="fa-folder-open"/>
+<!--                        <field name="task_search" select="multi" string="Projects/Tasks" icon="fa-folder-open"/>-->
+<!--                       <field name="task_search" limit="0" expand="1" hierarchize="1" string="Projects/Tasks" icon="fa-folder-open"/>-->
                     </searchpanel>
                 </search>
             </field>
@@ -50,9 +53,9 @@
             <field name="model">project.project</field>
             <field name="arch" type="xml">
                 <tree editable="top" create="false" delete="false" import="false" string="Projects">
-                    <header>
-                        <button name="open_project" type="object" string="Open Project"/>
-                    </header>
+<!--                    <header>-->
+<!--                        <button name="open_project" type="object" string="Open Project"/>-->
+<!--                    </header>-->
                     <field name="name" readonly="1"/>
                     <field name="rocker_type" readonly="0"/>
                     <field name="allow_timesheets" readonly="0"/>
@@ -83,21 +86,20 @@
                         </div>
                     </div>
                 </xpath>
-
             </field>
         </record>
 
-        <record id="rocker_project_task_tree" model="ir.ui.view">
-            <field name="name">Tasks</field>
-            <field name="model">rocker.task</field>
-            <field name="arch" type="xml">
-                <tree string="Projects and Tasks" create="false" delete="false" edit="false">
-                    <field name="project_id" readonly="1"/>
-                    <field name="task_id" readonly="1"/>
-                    <field name="parent_id" readonly="1"/>
-                </tree>
-            </field>
-        </record>
+<!--        <record id="rocker_project_task_tree" model="ir.ui.view">-->
+<!--            <field name="name">Tasks</field>-->
+<!--            <field name="model">rocker.task</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <tree string="Projects and Tasks" create="false" delete="false" edit="false">-->
+<!--                    <field name="project_id" readonly="1"/>-->
+<!--                    <field name="task_id" readonly="1"/>-->
+<!--                    <field name="parent_id" readonly="1"/>-->
+<!--                </tree>-->
+<!--            </field>-->
+<!--        </record>-->
 
         <record id="rocker_timesheet_form" model="ir.ui.view">
             <field name="name">rocker_timesheet_form</field>
@@ -161,12 +163,13 @@
                 <calendar js_class="rocker_calendar" string="Timesheets"
                           form_view_id="%(rocker_timesheet.rocker_timesheet_form)d"
                           date_start="start" date_stop="stop" date_delay="duration"
-                          all_day="allday" color="rocker_type"
+                          all_day="allday"
+                              color="rocker_type"
                           mode="month"
                           quick_add="false"
-                          event_open_popup="true"
-                          show_unusual_days="true"
-                          hide_time="false">
+                          event_open_popup="true">
+<!--   odoo13                       show_unusual_days="true">-->
+<!--   odoo13                       hide_time="false">-->
                     <field name="display_name"/>
                     <field name="project_id" required="1"/>
                     <field name="task_id" required="1"/>
@@ -281,22 +284,22 @@
             </field>
         </record>
 
-        <record id="act_rocker_project_task" model="ir.actions.act_window">
-            <field name="name">Tasks</field>
-            <field name="res_model">rocker.task</field>
-            <field name="domain">[]</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="rocker_project_task_tree"/>
-            <field name="target">main</field>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    No projects found.
-                </p>
-                <p>
-                    Track your projects every day.
-                </p>
-            </field>
-        </record>
+<!--        <record id="act_rocker_project_task" model="ir.actions.act_window">-->
+<!--            <field name="name">Tasks</field>-->
+<!--            <field name="res_model">rocker.task</field>-->
+<!--            <field name="domain">[]</field>-->
+<!--            <field name="view_mode">tree,form</field>-->
+<!--            <field name="view_id" ref="rocker_project_task_tree"/>-->
+<!--            <field name="target">main</field>-->
+<!--            <field name="help" type="html">-->
+<!--                <p class="o_view_nocontent_smiling_face">-->
+<!--                    No projects found.-->
+<!--                </p>-->
+<!--                <p>-->
+<!--                    Track your projects every day.-->
+<!--                </p>-->
+<!--            </field>-->
+<!--        </record>-->
 
         <record id="act_rocker_timesheet_calendar" model="ir.actions.act_window">
             <field name="name">Timesheets</field>
@@ -445,15 +448,15 @@
                   sequence="80"
                   groups="hr_timesheet.group_hr_timesheet_user"/>
 
-        <menuitem id="rocker_timesheet_menu_project_task"
+        <menuitem id="rocker_timesheet_menu_project_settings"
                   name="Project settings"
                   parent="rocker_timesheet_menu_timesheet"
                   sequence="8"
                   groups="hr_timesheet.group_timesheet_manager"/>
 
-        <menuitem id="rocker_timesheet_menu_projects"
+        <menuitem id="rocker_timesheet_menu_project_types"
                   name="Set Project types"
-                  parent="rocker_timesheet_menu_project_task"
+                  parent="rocker_timesheet_menu_project_settings"
                   action="act_rocker_project"
                   sequence="1"
                   groups="hr_timesheet.group_timesheet_manager"/>

@@ -36,9 +36,10 @@ class RockerTimesheet(models.Model):
 
     def _domain_project_id(self):
         domain = [('allow_timesheets', '=', True)]
-        return expression.AND([domain,
-                               ['|', ('privacy_visibility', '!=', 'followers'), ('allowed_internal_user_ids', 'in', self.env.user.ids)]
-                               ])
+        # return expression.AND([domain,
+        #                        ['|', ('privacy_visibility', '!=', 'followers'), ('allowed_internal_user_ids', 'in', self.env.user.ids)]
+        #                        ])
+        # odoo 13
         return domain
 
     def _domain_project_id_search(self):
@@ -134,9 +135,10 @@ class RockerTimesheet(models.Model):
                          ]
         else:
             self._domain_get_search_domain('all')
-        _search_panel_domain = expression.AND([_search_panel_domain,
-                   ['|', ('privacy_visibility', '!=', 'followers'), ('project_id.allowed_internal_user_ids', 'in', self.env.user.ids)]
-                   ])
+        # _search_panel_domain = expression.AND([_search_panel_domain,
+        #                                        ['|', ('privacy_visibility', '!=', 'followers'), ('project_id.allowed_internal_user_ids', 'in', self.env.user.ids)]
+        #                                        ])
+        # odoo 13
         _logger.debug('Search Panel domain set to: ' + str(_search_panel_domain))
         return _search_panel_domain
 
@@ -443,6 +445,7 @@ class RockerTimesheet(models.Model):
                 clause[1] = '<>'
                 clause[2] = ' '
                 # del args[i] # don't know if there is & in front ??
+                break
             i += 1
         _logger.debug('Fixed search domain...' + str(args))
         _logger.debug('Selected id set: ' + str(self._get_search_id()))
@@ -459,7 +462,7 @@ class RockerTimesheet(models.Model):
         _logger.debug('new company: ' +  str(self.env.company.id) + ' prev company...' + str(prev_company))
         _company_changed = False
         if prev_company != self.env.company.id:
-        # we need to refresh searchpanel,someone changed company :-)
+            # we need to refresh searchpanel,someone changed company :-)
             prev_company = self.env.company.id
             _logger.debug('company changed')
             _company_changed = True
@@ -470,10 +473,23 @@ class RockerTimesheet(models.Model):
             _logger.debug('Setting new search values')
             search_domain = self._domain_get_search_domain(self._domain_get_search_filter())
             _logger.debug('New search domain:  ' + str(search_domain))
-            return super(RockerTimesheet, self).search_panel_select_range(
-                field_name, comodel_domain=search_domain, **kwargs
-            )
+            # return super(RockerTimesheet, self).search_panel_select_range(
+            #     field_name, comodel_domain=search_domain, **kwargs
+            # )
+            # odoo 13
+            field = self._fields[field_name]
+            Comodel = self.env[field.comodel_name]
+            fields = ['display_name']
+            parent_name = Comodel._parent_name if Comodel._parent_name in Comodel._fields else False
+            if parent_name:
+                fields.append(parent_name)
+            return {
+                'parent_field': parent_name,
+                'values': Comodel.with_context(hierarchical_naming=False).search_read(search_domain, fields),
+            }
+
         return super(RockerTimesheet, self).search_panel_select_range(field_name, **kwargs)
+
 
     def searchpanel_all(self, filt):
         _logger.debug('Searchpanel_all...')
