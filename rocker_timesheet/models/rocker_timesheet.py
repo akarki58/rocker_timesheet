@@ -470,9 +470,22 @@ class RockerTimesheet(models.Model):
             _logger.debug('Setting new search values')
             search_domain = self._domain_get_search_domain(self._domain_get_search_filter())
             _logger.debug('New search domain:  ' + str(search_domain))
+            # this works in Odoo 14
             return super(RockerTimesheet, self).search_panel_select_range(
                 field_name, comodel_domain=search_domain, **kwargs
             )
+            # odoo 13, does not work in odoo 14 (no hierarchy)
+            # field = self._fields[field_name]
+            # Comodel = self.env[field.comodel_name]
+            # fields = ['display_name']
+            # parent_name = Comodel._parent_name if Comodel._parent_name in Comodel._fields else False
+            # if parent_name:
+            #     fields.append(parent_name)
+            # return {
+            #     'parent_field': parent_name,
+            #     'values': Comodel.with_context(hierarchical_naming=False).search_read(search_domain, fields),
+            # }
+
         return super(RockerTimesheet, self).search_panel_select_range(field_name, **kwargs)
 
     def searchpanel_all(self, filt):
