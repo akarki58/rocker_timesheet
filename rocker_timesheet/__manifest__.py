@@ -9,7 +9,7 @@
     'author': 'Antti Kärki',
     'license': 'AGPL-3',
     'version': '14.0.1.0',
-    'category': 'Services/Timesheets',
+    'category': 'Generic Modules/Human Resources',
     'sequence': 23,
     'website': '',
     'depends': ['base', 'project', 'hr_timesheet'],
