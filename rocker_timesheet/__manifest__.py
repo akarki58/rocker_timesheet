@@ -4,7 +4,7 @@
 
 {
     'name': 'Rocker Timesheet',
-    'summary': 'ht_timesheet supercharged',
+    'summary': 'hr_timesheet supercharged',
     'description': 'Probably most fastes way to report work done',
     'author': 'Antti Kärki',
     'license': 'AGPL-3',
