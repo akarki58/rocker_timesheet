@@ -14,7 +14,7 @@
                     <field name="company_id"/>
                      <separator/>
                     <searchpanel view_types="tree,calendar">
-                        <field name="task_search" limit="0" expand="1" hierarchize="1" string="Projects/Tasks" icon="fa-folder-open"/>
+                        <field name="task_search" expand="1" hierarchize="1" string="Projects/Tasks" icon="fa-folder-open"/>
                     </searchpanel>
                 </search>
             </field>
