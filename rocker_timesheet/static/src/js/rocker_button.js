@@ -41,7 +41,7 @@ odoo.define('rocker_timesheet.button', function(require) {
                 nonbillable: _t('NonBillable'),
                 internal: _t('Internal'),
                 member: _t('Member'),
-                mine: _t('My'),
+                mine: _t('MyTasks'),
             })).appendTo(this.$buttons);
 
             this.$buttons.appendTo($node);
@@ -140,7 +140,7 @@ odoo.define('rocker_timesheet.button', function(require) {
                 nonbillable: _t('NonBillable'),
                 internal: _t('Internal'),
                 member: _t('Member'),
-                mine: _t('My'),
+                mine: _t('MyTasks'),
             })).appendTo(this.$buttons);
 
             this.$buttons.appendTo($node);

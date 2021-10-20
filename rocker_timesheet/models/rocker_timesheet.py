@@ -60,7 +60,7 @@ class RockerTimesheet(models.Model):
         #                        ])
         # odoo 15
         return expression.AND([domain,
-                               ['|', ('privacy_visibility', '!=', 'followers'), ('message_partner_ids', 'in', [self.env.user.partner_id.id])]
+                               ['|', ('privacy_visibility', '!=', 'followers'), ('favorite_user_ids', 'in', self.env.user.ids)]
                                ])
 
     def _domain_project_id_search(self):
@@ -143,8 +143,7 @@ class RockerTimesheet(models.Model):
             # odoo 14
             # _search_panel_domain = _search_panel_domain + [('project_id', 'in', self.env['project.project'].search([('allowed_internal_user_ids', 'in', self.env.user.ids)]).ids)]
             # odoo 15
-            _search_panel_domain = _search_panel_domain + [('project_id', 'in', self.env['project.project'].search([('message_partner_ids', 'in', self.env.user.partner_id.id)]).ids)]
-            _logger_debug('allowed')
+            _search_panel_domain = _search_panel_domain + [('project_id', 'in', self.env['project.project'].search([('favorite_user_ids', 'in', self.env.user.ids)]).ids)]
         elif filt == 'internal':
             _search_panel_domain = _search_panel_domain + [('project_id', 'in', self.env['project.project'].search([('rocker_type', '=', 'internal')]).ids)]
         elif filt == 'billable':
@@ -154,9 +153,9 @@ class RockerTimesheet(models.Model):
         elif filt == 'mine':
             _search_panel_domain = _search_panel_domain + \
                         ['|',
-                            ('task_id', 'in', self.env['project.task'].search([('user_id', '=', self.env.user.id)]).ids),
+                            ('task_id', 'in', self.env['rocker.task'].search([('user_id', '=', self.env.user.id)]).ids),
                           '&',  ('task_id', '=', False),
-                                ('project_id', 'in', self.env['project.task'].search([('user_id', '=', self.env.user.id)]).project_id.ids),
+                                ('project_id', 'in', self.env['rocker.task'].search([('user_id', '=', self.env.user.id)]).project_id.ids),
                          ]
         else:
             self._domain_get_search_domain('all')
@@ -166,7 +165,7 @@ class RockerTimesheet(models.Model):
                    # ])
         # odoo 15
         _search_panel_domain =  expression.AND([_search_panel_domain,
-                               ['|', ('privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [self.env.user.partner_id.id])]
+                               ['|', ('privacy_visibility', '!=', 'followers'), ('project_id.favorite_user_ids', 'in', self.env.user.ids)]
                                ])
         _logger.debug('Search Panel domain set to: ' + str(_search_panel_domain))
         return _search_panel_domain
@@ -316,7 +315,7 @@ class RockerTimesheet(models.Model):
         help="Stop datetime of a task")
     allday = fields.Boolean('All Day', default=False, required=False) # required in order calendar to work
     #
-    daystocreateshow = fields.Integer('Generate', required=False, readonly=True, store=False,help="Create number of timeheet rows")
+    daystocreateshow = fields.Integer('Generate', required=False, readonly=True, store=False,help="Create timeheet rows")
     duration = fields.Float('Duration', store=True, readonly=False, default=_default_duration, required=True, help="Work duration in hours")
 
     # existing fields

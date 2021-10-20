@@ -31,12 +31,13 @@ _logger = logging.getLogger(__name__)
 class RockerTask(models.Model):
     _name = 'rocker.task'
     _auto = False
-    _description = 'values from database'
+    _description = 'Search panel - list of Projects and Tasks'
 
     @api.model
     def _domain_project_id(self):
         domain = [('allow_timesheets', '=', True)]
         if not self.user_has_groups('hr_timesheet.group_timesheet_manager'):
+            # work with Odoo 15 because view has user_id field
             return expression.AND([domain,
                                    ['|', ('project_id.privacy_visibility', '!=', 'followers'), ('project_id.allowed_internal_user_ids', 'in', self.env.user.ids)]
                                    ])
