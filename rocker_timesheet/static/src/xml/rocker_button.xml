@@ -2,7 +2,7 @@
 
 <templates id="template" xml:space="preserve">
 
-    <t t-name="filter_buttons" owl="1">
+    <t t-name="rocker_timesheet.button">
         <p> </p><b>Filter tasks:</b>
         <button class="btn btn-secondary btn-all" type="button">
             <t t-esc="all"/>

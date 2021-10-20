@@ -35,7 +35,7 @@
     'data': [
         'security/rocker_timesheet_security.xml',
         'security/ir.model.access.csv',
-        'views/rocker_template.xml',
+        # 'views/rocker_template.xml',  # not needed in Odoo 15
         'views/rocker_timesheet_views.xml',
         'views/rocker_timesheet_about.xml',
         # 'data/rocker_timesheet_data.xml',
