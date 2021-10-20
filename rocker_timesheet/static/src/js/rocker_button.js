@@ -13,7 +13,6 @@ odoo.define('rocker_timesheet.button', function(require) {
     var _t = core._t;
     var QWeb = core.qweb;
 
-
     var RockerCalendarController = CalendarController.extend({
         events: _.extend({}, CalendarController.prototype.events, {
             'click .btn-all': '_onAll',
@@ -23,6 +22,7 @@ odoo.define('rocker_timesheet.button', function(require) {
             'click .btn-member': '_onMember',
             'click .btn-mine': '_onMine',
         }),
+
 
         start: function () {
             this.$el.addClass('o_rocker_calendar');

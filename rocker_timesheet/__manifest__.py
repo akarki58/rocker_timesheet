@@ -27,7 +27,7 @@
     'description': 'Probably most fastes way to report work done',
     'author': 'Antti Kärki',
     'license': 'AGPL-3',
-    'version': '14.0.1.0',
+    'version': '15.0.1.0',
     'category': 'Generic Modules/Human Resources',
     'sequence': 23,
     'website': '',
@@ -40,10 +40,18 @@
         'views/rocker_timesheet_about.xml',
         # 'data/rocker_timesheet_data.xml',
     ],
-    # 'demo': [
-    #     # 'data/rocker_timesheet_demo.xml',
-    # ],
-    'qweb': ['static/src/xml/rocker_button.xml'],
+    'assets': {
+        'web.assets_backend': [
+            'rocker_timesheet/static/src/scss/rocker_button.scss',
+            'rocker_timesheet/static/src/js/rocker_button.js',
+        ],
+        # 'web.assets_frontend': [
+        #     'account/static/src/js/account_portal_sidebar.js',
+        # ],
+        'web.assets_qweb': [
+            'rocker_timesheet/static/src/xml/**/*',
+        ],
+    },
     'installable': True,
     'application': True,
     'auto_install': False,
