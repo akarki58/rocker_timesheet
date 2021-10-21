@@ -114,6 +114,7 @@ odoo.define('rocker_timesheet.button', function(require) {
 
     viewRegistry.add('rocker_calendar', RockerCalendarView);
 
+/*
     var RockerListController = ListController.extend({
         events: _.extend({}, ListController.prototype.events, {
             'click .btn-all': '_onAll',
@@ -209,5 +210,5 @@ odoo.define('rocker_timesheet.button', function(require) {
 
     viewRegistry.add('rocker_tree', RockerListView);
 
-
+*/
 });

@@ -59,8 +59,11 @@ class RockerTimesheet(models.Model):
         #                        ['|', ('privacy_visibility', '!=', 'followers'), ('allowed_internal_user_ids', 'in', self.env.user.ids)]
         #                        ])
         # odoo 15
+        # return expression.AND([domain,
+        #                        ['|', ('privacy_visibility', '!=', 'followers'), ('favorite_user_ids', 'in', self.env.user.ids)]
+        #                        ])
         return expression.AND([domain,
-                               ['|', ('privacy_visibility', '!=', 'followers'), ('favorite_user_ids', 'in', self.env.user.ids)]
+                               ['|', ('privacy_visibility', '!=', 'followers'), ('message_partner_ids', 'in', [self.env.user.partner_id.id])]
                                ])
 
     def _domain_project_id_search(self):
@@ -143,7 +146,7 @@ class RockerTimesheet(models.Model):
             # odoo 14
             # _search_panel_domain = _search_panel_domain + [('project_id', 'in', self.env['project.project'].search([('allowed_internal_user_ids', 'in', self.env.user.ids)]).ids)]
             # odoo 15
-            _search_panel_domain = _search_panel_domain + [('project_id', 'in', self.env['project.project'].search([('favorite_user_ids', 'in', self.env.user.ids)]).ids)]
+            _search_panel_domain = _search_panel_domain + [('project_id', 'in', self.env['project.project'].search([('message_partner_ids', 'in', [self.env.user.partner_id.id])]).ids)]
         elif filt == 'internal':
             _search_panel_domain = _search_panel_domain + [('project_id', 'in', self.env['project.project'].search([('rocker_type', '=', 'internal')]).ids)]
         elif filt == 'billable':
@@ -164,9 +167,10 @@ class RockerTimesheet(models.Model):
                    # ['|', ('privacy_visibility', '!=', 'followers'), ('project_id.allowed_internal_user_ids', 'in', self.env.user.ids)]
                    # ])
         # odoo 15
-        _search_panel_domain =  expression.AND([_search_panel_domain,
-                               ['|', ('privacy_visibility', '!=', 'followers'), ('project_id.favorite_user_ids', 'in', self.env.user.ids)]
+        _search_panel_domain = expression.AND([_search_panel_domain,
+                               ['|', ('privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [self.env.user.partner_id.id])]
                                ])
+
         _logger.debug('Search Panel domain set to: ' + str(_search_panel_domain))
         return _search_panel_domain
 
