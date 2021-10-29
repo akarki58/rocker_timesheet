@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--
+            Views
+        -->
+        <record id="rocker_allocation_search" model="ir.ui.view">
+            <field name="name">rocker_allocation_search</field>
+            <field name="model">rocker.project.allocation.view</field>
+            <field name="arch" type="xml">
+                <search string="allocation">
+                    <field name="project_id"/>
+                    <!--                    <field name="task_search"/>-->
+                    <field name="company_id"/>
+                    <separator/>
+                    <!--                    <searchpanel view_types="tree,calendar">-->
+                    <!--                    <searchpanel view_types="calendar">-->
+                    <!--                        <field name="task_search" expand="1" hierarchize="1" string="Projects/Tasks" icon="fa-folder-open"/>-->
+                    <!--                    </searchpanel>-->
+                </search>
+            </field>
+        </record>
+
+        <record id="rocker_allocation_tree" model="ir.ui.view">
+            <field name="name">rocker_allocation_tree</field>
+            <field name="model">rocker.project.allocation.view</field>
+            <field name="arch" type="xml">
+                <tree js_class="rocker_tree" string="Project Allocations" editable="top" create="true" delete="true" edit="true">
+                    <field name="project_id" invisible="0" readonly="0" required="1" />
+<!--                    <field name="project_id" required="1" options="{'no_create_edit': True}"-->
+<!--                           domain="[('company_id', '=', company_id)]"/>-->
+                    <field name="resource_id" string="Resource" invisible="0" readonly="0" required="1" />
+                    <field name="start_date" string="From" invisible="0" readonly="0" required="1" />
+                    <field name="end_date" string="To" invisible="0" readonly="0" required="1" />
+                    <!--                    <field name="task_id" required="1" options="{'no_create_edit': True}"-->
+                    <!--                           domain="[('project_id', '=', project_id)]"/>-->
+<!--                    <field name="name" string="Name" />-->
+                    <!--                    <field name="display_name" readonly="1" invisible="1"/>-->
+                    <!--                    <field name="date" required="1" readonly="1" invisible="1" />-->
+                    <!--                    <field name="unit_amount" widget="float_time" type="measure"/>-->
+                    <!--                    <field name="start" required="1"/>-->
+                    <!--                    <field name="stop" required="1"/>-->
+                    <!--                    <field name="duration" required="1" widget="float_time" type="measure" />-->
+                    <!--                    <field name="employee_id" readonly="1" optional="show" />-->
+                    <!--                    <field name="department_id" readonly="1" optional="show" />-->
+<!--                    <field name="company_id" required="1" readonly="0" optional="show" groups="base.group_multi_company"/>-->
+                    <field name="company_id" string="Company" invisible="0" readonly="0" required="1"/>
+                    <!--                    <field name="user_id"  invisible="1" required="1" readonly="1"/>-->
+                    <!--                    <field name="allday" invisible="1" />-->
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="rocker_allocation_form" model="ir.ui.view">
+            <field name="name">rocker_allocation_form</field>
+            <field name="model">rocker.project.allocation.view</field>
+            <field name="priority" eval="3"/>
+            <field name="arch" type="xml">
+                <form string="allocation">
+                    <sheet>
+                        <div class="oe_title">
+                            <div class="oe_edit_only">
+                                <label for="project_id"/>
+                            </div>
+                            <h1>
+                                <field name="project_id" placeholder="Select Project from drop down list" class="font-weight-bold"/>
+                            </h1>
+                        </div>
+                        <field name="resource_id" string="Select Resource" invisible="0" readonly="0" required="1" />
+                        <field name="start_date" string="From" invisible="0" readonly="0" required="1" />
+                        <field name="end_date" string="To" invisible="0" readonly="0" required="1" />
+                        <field name="company_id" string="Company" invisible="0" readonly="0" required="1"/>
+
+                        <!--                        <notebook>-->
+                        <!--                            <page name="page_details" string="Details">-->
+                        <!--                                <group>-->
+                        <!--                                    <group>-->
+                        <!--                                        <field name="start" string="From" invisible="0" readonly="0" required="1" />-->
+                        <!--                                        <field name="stop" string="To" invisible="0" readonly="0" required="1" />-->
+                        <!--&lt;!&ndash;                                        <label for="daystocreateshow" string="Generate" attrs="{'invisible':[('daystocreateshow','=',0)]}"/>&ndash;&gt;-->
+                        <!--&lt;!&ndash;                                        <div attrs="{'invisible':[('daystocreateshow','=',0)]}">&ndash;&gt;-->
+                        <!--&lt;!&ndash;                                            <field name="daystocreateshow"  string="allocation rows" class="oe_inline"  readonly="1"/>&ndash;&gt;-->
+                        <!--&lt;!&ndash;                                            <span> allocation rows</span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;                                        </div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;                                        <label for="duration"  string="Duration" invisible="0"/>&ndash;&gt;-->
+                        <!--&lt;!&ndash;                                        <div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;                                            <field name="duration" widget="float_time" string="Duration" class="oe_inline" invisible="0" required="1" readonly="0"/>&ndash;&gt;-->
+                        <!--&lt;!&ndash;                                            <span attrs="{'invisible':[('daystocreateshow','!=',0)]}"> hours</span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;                                            <span attrs="{'invisible':[('daystocreateshow','=',0)]}"> hours per day</span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;                                        </div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;                                        <field name="allday" invisible="1"/>&ndash;&gt;-->
+                        <!--                                    </group>-->
+                        <!--                                    <group>-->
+                        <!--                                        <field name="company_id" required="1" readonly="1" optional="show"  groups="base.group_multi_company"/>-->
+                        <!--                                        <field name="project_id" required="1"/>-->
+                        <!--&lt;!&ndash;                                        <field name="task_id" required="1"&ndash;&gt;-->
+                        <!--&lt;!&ndash;                                               domain="[('project_id', '=', project_id)]"/>&ndash;&gt;-->
+                        <!--&lt;!&ndash;                                        <label for="unit_amount"  string="Actual Work" invisible="0"/>&ndash;&gt;-->
+                        <!--&lt;!&ndash;                                        <div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;                                            <field name="unit_amount" invisible="0" required="1" widget="float_time" class="oe_inline" readonly="0"/>&ndash;&gt;-->
+                        <!--&lt;!&ndash;                                            <span> hours</span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;                                        </div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;                                        <field name="date" invisible="1" required="1"/>&ndash;&gt;-->
+                        <!--                                    </group>-->
+                        <!--                                </group>-->
+                        <!--                            </page>-->
+                        <!--                        </notebook>-->
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="rocker_allocation" model="ir.ui.view">
+            <field name="name">rocker_allocation</field>
+            <field name="model">rocker.project.allocation.view</field>
+            <field name="priority" eval="1"/>
+            <field name="arch" type="xml">
+                <!--                <calendar js_class="rocker_calendar" string="allocations"-->
+                <!--                          form_view_id="%(rocker_timesheet.rocker_allocation_form)d"-->
+                <!--                          date_start="start" date_stop="stop" date_delay="duration"-->
+                <!--                          all_day="allday" color="rocker_type"-->
+                <!--                          mode="month"-->
+                <!--                          quick_add="false"-->
+                <!--                          event_open_popup="true"-->
+                <!--                          show_unusual_days="true"-->
+                <!--                          hide_time="false">-->
+                <!--                    <field name="display_name"/>-->
+                <!--                    <field name="project_id" required="1"/>-->
+                <!--                    <field name="task_id" required="1"/>-->
+                <!--                    <field name="unit_amount" required="1"/>-->
+                <!--                    <field name="rocker_type" filters="1" invisible="1"/>-->
+                <!--                    <field name="company_id" required="1" readonly="1" optional="show"  groups="base.group_multi_company"/>-->
+                <!--                </calendar>-->
+                <timeline js_class="timeline"
+                          date_start="start_date"
+                          date_stop="end_date"
+                          string="Tasks"
+                          default_group_by="project_id"
+                          event_open_popup="true"
+                          zoomKey="ctrlKey"
+                >
+                    <field name="resource_id"/>
+                    <templates>
+                        <div t-name="timeline-item">
+<!--                            <div t-esc="record.display_name"/>-->
+<!--                            Assigned to:-->
+                            <span t-esc="record.resource_id[1]"/>
+                        </div>
+                    </templates>
+                </timeline>
+            </field>
+        </record>
+    <!--                          colors="#ec7063: resource_id == false; #2ecb71: project_id == 'done';"-->
+        <!--                dependency_arrow="task_dependency_ids"-->
+
+
+
+        <!--        <record id="rocker_allocation_timeline" model="ir.ui.view">-->
+        <!--            <field name="model">project.task</field>-->
+        <!--            <field name="type">timeline</field>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <timeline-->
+        <!--                        date_start="date_assign"-->
+        <!--                        date_stop="date_end"-->
+        <!--                        default_group_by="project_id"-->
+        <!--                        event_open_popup="true"-->
+        <!--                        colors="#ec7063: partner_id == false; #2ecb71: kanban_state == 'done';"-->
+        <!--                >-->
+        <!--                    <field name="partner_id" />-->
+        <!--                    <field name="planned_hours" />-->
+        <!--                    <templates>-->
+        <!--                        <t t-name="timeline-item">-->
+        <!--                            <div class="o_project_timeline_item">-->
+        <!--                                <img-->
+        <!--                                        t-if="record.partner_id"-->
+        <!--                                        t-attf-src="/web/image/res.users/#{record.partner_id[0]}/image_128/16x16"-->
+        <!--                                        t-att-title="record.partner_id[1]"-->
+        <!--                                        width="16"-->
+        <!--                                        height="16"-->
+        <!--                                        class="mr8"-->
+        <!--                                />-->
+        <!--                                <span name="display_name">-->
+        <!--                                    <t t-esc="record.display_name" />-->
+        <!--                                </span>-->
+        <!--                                <small name="planned_hours" class="text-info ml4">-->
+        <!--                                    <t-->
+        <!--                                            t-esc="field_utils.format.float_time(record.planned_hours)"-->
+        <!--                                    />-->
+        <!--                                </small>-->
+        <!--                            </div>-->
+        <!--                        </t>-->
+        <!--                    </templates>-->
+        <!--                </timeline>-->
+        <!--            </field>-->
+        <!--        </record>-->
+
+        <!--        <record id="rocker_allocation_timeline" model="ir.ui.view">-->
+        <!--            <field name="model">project.project</field>-->
+        <!--            <field name="type">timeline</field>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <timeline date_start="date_start"-->
+        <!--                          date_stop="date"-->
+        <!--                          default_group_by="partner_id"-->
+        <!--                          event_open_popup="true"-->
+        <!--                          >-->
+        <!--                </timeline>-->
+        <!--            </field>-->
+        <!--        </record>-->
+        <!--        colors="#ec7063:user_id == false;#2ecb71:kanban_state=='done';"-->
+        <!--        dependency_arrow="task_dependency_ids"-->
+
+
+        <!--
+            Actions
+        -->
+
+        <record id="act_rocker_allocation" model="ir.actions.act_window">
+            <field name="name">Project Allocations</field>
+            <field name="res_model">rocker.project.allocation.view</field>
+            <field name="view_mode">calendar,tree,form</field>
+            <field name="view_id" ref="rocker_allocation"/>
+            <field name="search_view_id" ref="rocker_allocation_search"/>
+<!--            <field name="target">main</field>-->
+            <!--            <field name="domain">[('user_id', '=', uid)]</field>-->
+            <!--            <field name="context"></field>-->
+        </record>
+
+        <record id="action_view_rocker_allocation_calendar" model="ir.actions.act_window.view">
+            <field name="act_window_id" ref="act_rocker_allocation"/>
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">calendar</field>
+            <field name="view_id" ref="rocker_allocation"/>
+        </record>
+        <record id="action_view_rocker_allocation_tree" model="ir.actions.act_window.view">
+            <field name="act_window_id" ref="act_rocker_allocation"/>
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="rocker_allocation_tree"/>
+        </record>
+        <!--        <record id="action_view_rocker_allocation_tree" model="ir.actions.act_window.view">-->
+        <!--            <field name="act_window_id" ref="act_rocker_allocation"/>-->
+        <!--            <field name="sequence" eval="2"/>-->
+        <!--            <field name="view_mode">tree</field>-->
+        <!--            <field name="view_id" ref="rocker_allocation_timeline"/>-->
+        <!--        </record>-->
+        <record id="action_view_rocker_allocation_form" model="ir.actions.act_window.view">
+            <field name="act_window_id" ref="act_rocker_allocation"/>
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="rocker_allocation_form"/>
+        </record>
+
+
+        <!--           Menus-->
+
+
+        <menuitem id="allocation_menu"
+                  name="Allocation"
+                  parent="hr_timesheet.timesheet_menu_root"
+                  action="act_rocker_allocation"
+                  sequence="6"
+                  groups="hr_timesheet.group_hr_timesheet_user"/>
+
+
+    </data>
+</odoo>
