@@ -31,12 +31,13 @@ _logger = logging.getLogger(__name__)
 class RockerTask(models.Model):
     _name = 'rocker.task'
     _auto = False
-    _description = 'values from database'
+    _description = 'Search panel - list of Projects and Tasks'
 
     @api.model
     def _domain_project_id(self):
         domain = [('allow_timesheets', '=', True)]
         if not self.user_has_groups('hr_timesheet.group_timesheet_manager'):
+            # work with Odoo 15 because view has user_id field
             return expression.AND([domain,
                                    ['|', ('project_id.privacy_visibility', '!=', 'followers'), ('project_id.allowed_internal_user_ids', 'in', self.env.user.ids)]
                                    ])
@@ -66,16 +67,18 @@ class RockerTask(models.Model):
                     CREATE VIEW rocker_task AS
                     WITH RECURSIVE ctename AS (
                         SELECT t1.id as id, t1.name as name, t1.company_id as company_id, t1.project_id as project_id, 
-                                 t1.id as task_id, -1 * project_id as parent_id, t1.user_id as user_id,
+                                 t1.id as task_id, -1 * project_id as parent_id, tu2.user_id as user_id,
                                  1 as level
                         FROM project_task t1
-						WHERE parent_id is null and active = TRUE
+						 JOIN project_task_user_rel tu2 ON t1.id = tu2.task_id
+						WHERE parent_id is null and active = TRUE 
                     UNION ALL
                         SELECT t2.id, t2.name, t2.company_id as company_id, t2.project_id as project_id,
-                             t2.id as task_id, t2.parent_id as parent_id, t2.user_id as user_id,
+                             t2.id as task_id, t2.parent_id as parent_id, tu3.user_id as user_id,
                              ctename.level + 1
                         FROM project_task t2
                          JOIN ctename ON t2.parent_id = ctename.id
+						 JOIN project_task_user_rel tu3 ON t2.id = tu3.task_id
                          WHERE active = TRUE
                     )
                     SELECT ct.id, ct.name, ct.project_id, ct.task_id, ct.parent_id, ct.user_id,
