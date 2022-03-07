@@ -27,29 +27,54 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 class RockerCompany(models.Model):
     _name = 'rocker.company.defaults'
     _description = 'Rocker Company Defaults'
     _sql_constraints = [
-        ('unique_defaults', 'unique (company_id)', 'Only one defaults per company!')
+        ('unique_defaults', 'unique (company_id)', 'Only one defaults per company!'),
+        ('amount_positive', 'CHECK(rocker_default_work > 0)', 'Work must be positive'),
+        ('rolling_work_positive', 'CHECK(rocker_default_rolling_work > 0)', 'Rolling Work time must be positive'),
     ]
 
-    company_id = fields.Many2one('res.company', "Company", default=lambda self: self.env.company, store=True)
-    company_name = fields.Char('Company', store=False, required=False, related='company_id.name')
-    rocker_default_start = fields.Float('Default Start Time [UTC]', store=True, readonly=False, help="Office start time")
+    company_id = fields.Many2one('res.company', "Company_id", default=lambda self: self.env.company, store=True)
+    company_name = fields.Char('CompanyName', store=False, required=False, related='company_id.name')
+    rocker_default_start = fields.Float('Default Start Time [UTC]', store=True, readonly=False,
+                                        help="Office start time")
     rocker_default_stop = fields.Float('Default Stop Time [UTC]', store=True, readonly=False, help="Office end time")
-    rocker_default_work = fields.Float('Default Work amount', store=True, readonly=False, help="Work does not contain breaks like lunch hour")
-    rocker_default_startToShow = fields.Float('Default Start Time [Local]', compute='_compute_show_start', store=False, readonly=False, help="Office start time")
-    rocker_default_stopToShow = fields.Float('Default Stop Time [Local]', compute='_compute_show_stop', store=False, readonly=False, help="Office end time")
+    rocker_default_work = fields.Float('Default Work amount', store=True, readonly=False,
+                                       help="Work does not contain breaks like lunch hour")
+    rocker_default_startToShow = fields.Float('Default Start Time [Local]', compute='_compute_show_start', store=False,
+                                              readonly=False, help="Office start time")
+    rocker_default_stopToShow = fields.Float('Default Stop Time [Local]', compute='_compute_show_stop', store=False,
+                                             readonly=False, help="Office end time")
+    # 2022
+    rocker_round_up = fields.Selection([
+        ('0', 'not'),
+        ('5', '5 mins'),
+        ('10', '10 mins'),
+        ('15', '15 mins'),
+        ('30', '30 mins'),
+        ('60', '60 mins')], 'Round Amount To', required=False, default='0', store=True)
+    rocker_default_rolling_work = fields.Float('Default Work amount if Rolling', store=True, readonly=False,
+                                               help="Work does not contain breaks like lunch hour")
 
     @api.onchange('rocker_default_startToShow')
     def _onchange_rocker_default_startToShow(self):
         self.ensure_one()
+        if self.rocker_default_startToShow < 0:
+            self.rocker_default_startToShow = False
+            self.rocker_default_start = False
+            raise UserError(_('Start time negative'))
         self.rocker_default_start = self.to_UTC(self.rocker_default_startToShow)
 
     @api.onchange('rocker_default_stopToShow')
     def _onchange_rocker_default_stopToShow(self):
         self.ensure_one()
+        if self.rocker_default_stopToShow < 0:
+            self.rocker_default_stopToShow = False
+            self.rocker_default_stop = False
+            raise UserError(_('Stop time must be positive'))
         self.rocker_default_stop = self.to_UTC(self.rocker_default_stopToShow)
 
     @api.depends('rocker_default_startToShow')
@@ -92,28 +117,28 @@ class RockerCompany(models.Model):
 
     @api.model
     def edit_rocker_company_defaults(self):
-        _default_id = self.env['rocker.company.defaults'].search([('company_id','=',self.env.company.id)]).id
+        _default_id = self.env['rocker.company.defaults'].search([('company_id', '=', self.env.company.id)]).id
         if _default_id:
             return {
                 'name': 'Edit Company Defaults',
-                'res_model':'rocker.company.defaults',
-                'view_mode':'form',
-                'res_id':_default_id,
-                'type':'ir.actions.act_window',
-                'view_type':'form',
-                'view_id':self.env.ref('rocker_timesheet.rocker_company_view_form_simplified').id,
-                'target':'new',
+                'res_model': 'rocker.company.defaults',
+                'view_mode': 'form',
+                'res_id': _default_id,
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_id': self.env.ref('rocker_timesheet.rocker_company_view_form_simplified').id,
+                'target': 'new',
             }
         else:
             return {
                 'name': 'Create Company Defaults',
-                'res_model':'rocker.company.defaults',
-                'view_mode':'form',
+                'res_model': 'rocker.company.defaults',
+                'view_mode': 'form',
                 # 'res_id':_default_id,
-                'type':'ir.actions.act_window',
-                'view_type':'form',
-                'view_id':self.env.ref('rocker_timesheet.rocker_company_view_form_simplified').id,
-                'target':'new',
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_id': self.env.ref('rocker_timesheet.rocker_company_view_form_simplified').id,
+                'target': 'new',
             }
 
 
@@ -121,20 +146,43 @@ class RockerUser(models.Model):
     _name = 'rocker.user.defaults'
     _description = 'Rocker User Defaults to Rocker Timesheet'
     _sql_constraints = [
-        ('unique_defaults', 'unique (user_id,company_id)', 'Only one defaults per user per company!')
+        ('unique_defaults', 'unique (user_id,company_id)', 'Only one defaults per user per company!'),
+        ('amount_positive', 'CHECK(rocker_default_work > 0)', 'Work must be positive'),
+        ('rolling_work_positive', 'CHECK(rocker_default_rolling_work > 0)', 'Rolling Work time must be positive'),
     ]
-    user_id = fields.Many2one('res.users', string='User', index=True, default=lambda self: self.env.user, store=True)
-    user_name = fields.Char('User', store=False, required=False, related='user_id.name')
-    company_id = fields.Many2one('res.company', "Company", default=lambda self: self.env.company, store=True)
-    employee_id = fields.Many2one('hr.employee', "Employee",
-                                  default=lambda self: self.env['hr.employee'].search([('user_id', '=', self.env.user.id), ('company_id','=',self.env.company.id)]).id, store=True)
-    department_id = fields.Many2one('hr.department', "Department", compute='_compute_department_id', store=True, compute_sudo=True)
 
-    rocker_default_start = fields.Float('Default Start Time [UTC]', store=True, readonly=False, help="Office start time")
-    rocker_default_stop = fields.Float('Default Stop Time [UTC]', store=True, readonly=False, help="Office end time")
-    rocker_default_work = fields.Float('Default Work amount', store=True, readonly=False, help="Work does not contain breaks like lunch hour")
-    rocker_default_startToShow = fields.Float('Default Start Time [Local]', compute='_compute_show_start', store=False, readonly=False, help="Office start time")
-    rocker_default_stopToShow = fields.Float('Default Stop Time [Local]', compute='_compute_show_stop', store=False, readonly=False, help="Office end time")
+    user_id = fields.Many2one('res.users', required=True, string='User_id', index=True,
+                              default=lambda self: self.env.user, store=True)
+    user_name = fields.Char('User', store=False, required=False, related='user_id.name')
+    company_id = fields.Many2one('res.company', "Resource_Company", required=True,
+                                 default=lambda self: self.env.company, store=True)
+    employee_id = fields.Many2one('hr.employee', "Employee",
+                                  default=lambda self: self.env['hr.employee'].search(
+                                      [('user_id', '=', self.env.user.id),
+                                       ('company_id', '=', self.env.company.id)]).id, store=True)
+    department_id = fields.Many2one('hr.department', "Resource Department", compute='_compute_department_id',
+                                    store=True, compute_sudo=True)
+
+    rocker_default_start = fields.Float('Default Start Time [UTC]', default='9', required=True, store=True,
+                                        readonly=False, help="Office start time")
+    rocker_default_stop = fields.Float('Default Stop Time [UTC]', default='17', required=True, store=True,
+                                       readonly=False, help="Office end time")
+    rocker_default_work = fields.Float('Default Work amount', required=True, store=True, readonly=False,
+                                       help="Work does not contain breaks like lunch hour")
+    rocker_default_startToShow = fields.Float('Default Start Time [Local]', default='9', compute='_compute_show_start',
+                                              store=False, readonly=False, help="Office start time")
+    rocker_default_stopToShow = fields.Float('Default Stop Time [Local]', default='17', compute='_compute_show_stop',
+                                             store=False, readonly=False, help="Office end time")
+    rocker_round_up = fields.Selection([
+        ('0', 'not'),
+        ('5', '5 mins'),
+        ('10', '10 mins'),
+        ('15', '15 mins'),
+        ('30', '30 mins'),
+        ('60', '60 mins')], 'Round Amount To', required=True, default='0', store=True)
+    rocker_default_rolling_work = fields.Float('Default Work amount if Rolling', store=True, readonly=False,
+                                               help="Work does not contain breaks like lunch hour")
+
 
     @api.depends('employee_id')
     def _compute_department_id(self):
@@ -144,11 +192,19 @@ class RockerUser(models.Model):
     @api.onchange('rocker_default_startToShow')
     def _onchange_rocker_default_startToShow(self):
         self.ensure_one()
+        if self.rocker_default_startToShow < 0:
+            self.rocker_default_startToShow = False
+            self.rocker_default_start = False
+            raise UserError(_('Start time negative'))
         self.rocker_default_start = self.to_UTC(self.rocker_default_startToShow)
 
     @api.onchange('rocker_default_stopToShow')
     def _onchange_rocker_default_stopToShow(self):
         self.ensure_one()
+        if self.rocker_default_stopToShow < 0:
+            self.rocker_default_stopToShow = False
+            self.rocker_default_stop = False
+            raise UserError(_('Stop time must be positive'))
         self.rocker_default_stop = self.to_UTC(self.rocker_default_stopToShow)
 
     @api.depends('rocker_default_startToShow')
@@ -191,27 +247,27 @@ class RockerUser(models.Model):
 
     @api.model
     def edit_rocker_user_defaults(self):
-        _default_id = self.env['rocker.user.defaults'].search([('user_id', '=', self.env.user.id), ('company_id','=',self.env.company.id)]).id
+        _default_id = self.env['rocker.user.defaults'].search(
+            [('user_id', '=', self.env.user.id), ('company_id', '=', self.env.company.id)]).id
         if _default_id:
             return {
                 'name': 'Edit User defaults',
-                'res_model':'rocker.user.defaults',
-                'view_mode':'form',
-                'res_id':_default_id,
-                'type':'ir.actions.act_window',
-                'view_type':'form',
-                'view_id':self.env.ref('rocker_timesheet.rocker_user_view_form_simplified').id,
-                'target':'new',
+                'res_model': 'rocker.user.defaults',
+                'view_mode': 'form',
+                'res_id': _default_id,
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_id': self.env.ref('rocker_timesheet.rocker_user_view_form_simplified').id,
+                'target': 'new',
             }
         else:
             return {
                 'name': 'Create User defaults',
-                'res_model':'rocker.user.defaults',
-                'view_mode':'form',
+                'res_model': 'rocker.user.defaults',
+                'view_mode': 'form',
                 # 'res_id':self._default_id,
-                'type':'ir.actions.act_window',
-                'view_type':'form',
-                'view_id':self.env.ref('rocker_timesheet.rocker_user_view_form_simplified').id,
-                'target':'new',
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_id': self.env.ref('rocker_timesheet.rocker_user_view_form_simplified').id,
+                'target': 'new',
             }
-

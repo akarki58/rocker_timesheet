@@ -28,6 +28,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 class RockerTask(models.Model):
     _name = 'rocker.task'
     _auto = False
@@ -38,7 +39,8 @@ class RockerTask(models.Model):
         domain = [('allow_timesheets', '=', True)]
         if not self.user_has_groups('hr_timesheet.group_timesheet_manager'):
             return expression.AND([domain,
-                                   ['|', ('project_id.privacy_visibility', '!=', 'followers'), ('project_id.allowed_internal_user_ids', 'in', self.env.user.ids)]
+                                   ['|', ('project_id.privacy_visibility', '!=', 'followers'),
+                                    ('project_id.allowed_internal_user_ids', 'in', self.env.user.ids)]
                                    ])
         return domain
 
@@ -52,9 +54,9 @@ class RockerTask(models.Model):
     allow_timesheets = fields.Boolean("Allow Timesheets")
     privacy_visibility = fields.Char("Privacy Visibility")
     level = fields.Integer("Level")
-    allowed_internal_user_ids = fields.Many2many('res.users', 'project_allowed_internal_users_rel','project_project_id','res_users_id',
+    allowed_internal_user_ids = fields.Many2many('res.users', 'project_allowed_internal_users_rel',
+                                                 'project_project_id', 'res_users_id',
                                                  string="Allowed Internal Users")
-
 
     @api.model
     def init(self):
@@ -95,6 +97,7 @@ class RockerTask(models.Model):
 								  WHERE t3.active = TRUE)
                     """)
 
+
 class RockerProject(models.Model):
     _inherit = 'project.project'
     _name = 'project.project'
@@ -104,18 +107,19 @@ class RockerProject(models.Model):
     rocker_type = fields.Selection([
         ('internal', 'Internal'),
         ('billable', 'Billable'),
-        ('nonbillable', 'Non Billable')], 'Type', required=False, default='')
+        ('nonbillable', 'Non Billable'),
+        ('time_off', 'Time Off'),], 'Type', required=False, default='')
 
     def open_project(self, context=None):
         view_id = self.env.ref('rocker_timesheet.rocker_edit_project').id
         context = self._context.copy()
         return {
             'name': 'Project',
-            'res_model':'project.project',
-            'view_mode':'form',
-            'res_id':self.id,
-            'type':'ir.actions.act_window',
-            'view_type':'form',
-            'view_id':view_id,
-            'target':'new',
+            'res_model': 'project.project',
+            'view_mode': 'form',
+            'res_id': self.id,
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_id': view_id,
+            'target': 'new',
         }
