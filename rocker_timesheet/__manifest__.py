@@ -24,10 +24,10 @@
 {
     'name': 'Rocker Timesheet',
     'summary': 'hr_timesheet supercharged',
-    'description': 'Probably most fastes way to report work done',
+    'description': 'Probably most fastest way to report work done',
     'author': 'Antti Kärki',
     'license': 'AGPL-3',
-    'version': '14.0.1.0',
+    'version': '15.0.2.0',
     'category': 'Generic Modules/Human Resources',
     'sequence': 23,
     'website': '',
@@ -35,15 +35,36 @@
     'data': [
         'security/rocker_timesheet_security.xml',
         'security/ir.model.access.csv',
-        'views/rocker_template.xml',
+        # 'views/rocker_template.xml',   # not needed in Odoo 15
         'views/rocker_timesheet_views.xml',
         'views/rocker_timesheet_about.xml',
+        # 'views/rocker_hr_timesheet_my_timesheets.xml',
         # 'data/rocker_timesheet_data.xml',
     ],
     # 'demo': [
     #     # 'data/rocker_timesheet_demo.xml',
     # ],
-    'qweb': ['static/src/xml/rocker_button.xml'],
+    'assets': {
+        'web.assets_backend': [
+            'rocker_timesheet/static/src/scss/rocker_calendar_button.scss',
+            'rocker_timesheet/static/src/js/rocker_calendar_button.js',
+            'rocker_timesheet/static/src/scss/rocker_roller_button.scss',
+            'rocker_timesheet/static/src/js/rocker_roller_button.js',
+            'rocker_timesheet/static/src/scss/rocker_tree_button.scss',
+            'rocker_timesheet/static/src/js/rocker_tree_button.js',
+        ],
+        # 'web.assets_frontend': [
+        #     'account/static/src/js/account_portal_sidebar.js',
+        # ],
+        'web.assets_qweb': [
+            'rocker_timesheet/static/src/xml/**/*',
+        ],
+        #  odoo 14
+        # 'qweb': [
+        #     'static/src/xml/rocker_button.xml',
+        # ],
+
+    },
     'installable': True,
     'application': True,
     'auto_install': False,
