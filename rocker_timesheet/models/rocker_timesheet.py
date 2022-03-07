@@ -175,14 +175,23 @@ class RockerTimesheet(models.Model):
             _search_panel_domain = _search_panel_domain + [
                 ('project_id', 'in', self.env['project.project'].search([('rocker_type', '=', 'nonbillable')]).ids)]
         elif filt == 'mine':
+            # odoo 14
+            # _search_panel_domain = _search_panel_domain + \
+            #                        ['|',
+            #                         ('task_id', 'in',
+            #                          self.env['project.task'].search([('user_id', '=', self.env.user.id)]).ids),
+            #                         '&', ('task_id', '=', False),
+            #                         ('project_id', 'in', self.env['project.task'].search(
+            #                             [('user_id', '=', self.env.user.id)]).project_id.ids),
+            #                         ]
+            # odoo 15
             _search_panel_domain = _search_panel_domain + \
                                    ['|',
-                                    ('task_id', 'in',
-                                     self.env['project.task'].search([('user_id', '=', self.env.user.id)]).ids),
-                                    '&', ('task_id', '=', False),
-                                    ('project_id', 'in', self.env['project.task'].search(
-                                        [('user_id', '=', self.env.user.id)]).project_id.ids),
+                                    ('task_id', 'in', self.env['rocker.task'].search([('user_id', '=', self.env.user.id)]).ids),
+                                    '&',  ('task_id', '=', False),
+                                    ('project_id', 'in', self.env['rocker.task'].search([('user_id', '=', self.env.user.id)]).project_id.ids),
                                     ]
+
         else:
             self._domain_get_search_domain('all')
         # odoo 14
