@@ -14,10 +14,10 @@
                     <field name="company_id"/>
                      <separator/>
                     <searchpanel view_types="tree,calendar">
-<!--                        odoo 13 -->
+                        <!--  odoo 13 -->
                         <field name="task_search" select="one" string="Projects/Tasks" icon="fa-folder-open"/>
-<!--                        <field name="task_search" select="multi" string="Projects/Tasks" icon="fa-folder-open"/>-->
-<!--                       <field name="task_search" limit="0" expand="1" hierarchize="1" string="Projects/Tasks" icon="fa-folder-open"/>-->
+                        <!--odoo 14-->
+<!--                        <field name="task_search" expand="1" hierarchize="1" string="Projects/Tasks" icon="fa-folder-open"/>-->
                     </searchpanel>
                 </search>
             </field>
@@ -27,6 +27,7 @@
             <field name="name">rocker_timesheet_tree</field>
             <field name="model">account.analytic.line</field>
             <field name="arch" type="xml">
+<!--                <tree string="Timesheets" editable="top" create="true" delete="true" edit="true">-->
                 <tree js_class="rocker_tree" string="Timesheets" editable="top" create="true" delete="true" edit="true">
                     <field name="project_id" required="1" options="{'no_create_edit': True}"
                            domain="[('company_id', '=', company_id)]"/>
@@ -53,6 +54,7 @@
             <field name="model">project.project</field>
             <field name="arch" type="xml">
                 <tree editable="top" create="false" delete="false" import="false" string="Projects">
+<!--                    odoo 14 -->
 <!--                    <header>-->
 <!--                        <button name="open_project" type="object" string="Open Project"/>-->
 <!--                    </header>-->
@@ -86,20 +88,21 @@
                         </div>
                     </div>
                 </xpath>
+
             </field>
         </record>
 
-<!--        <record id="rocker_project_task_tree" model="ir.ui.view">-->
-<!--            <field name="name">Tasks</field>-->
-<!--            <field name="model">rocker.task</field>-->
-<!--            <field name="arch" type="xml">-->
-<!--                <tree string="Projects and Tasks" create="false" delete="false" edit="false">-->
-<!--                    <field name="project_id" readonly="1"/>-->
-<!--                    <field name="task_id" readonly="1"/>-->
-<!--                    <field name="parent_id" readonly="1"/>-->
-<!--                </tree>-->
-<!--            </field>-->
-<!--        </record>-->
+        <record id="rocker_project_task_tree" model="ir.ui.view">
+            <field name="name">Tasks</field>
+            <field name="model">rocker.task</field>
+            <field name="arch" type="xml">
+                <tree string="Projects and Tasks" create="false" delete="false" edit="false">
+                    <field name="project_id" readonly="1"/>
+                    <field name="task_id" readonly="1"/>
+                    <field name="parent_id" readonly="1"/>
+                </tree>
+            </field>
+        </record>
 
         <record id="rocker_timesheet_form" model="ir.ui.view">
             <field name="name">rocker_timesheet_form</field>
@@ -122,10 +125,10 @@
                                     <group>
                                         <field name="start" string="From" invisible="0" readonly="0" required="1" />
                                         <field name="stop" string="To" invisible="0" readonly="0" required="1" />
-                                        <label for="daystocreateshow" string="Generate" attrs="{'invisible':[('daystocreateshow','=',0)]}"/>
-                                        <div attrs="{'invisible':[('daystocreateshow','=',0)]}">
-                                            <field name="daystocreateshow"  string="Timesheet rows" class="oe_inline"  readonly="1"/>
-                                            <span> timesheet rows</span>
+                                        <label for="daystocreateshow" string="Generate" attrs="{'invisible':[('daystocreateshow','&lt;',2)]}"/>
+                                        <div attrs="{'invisible':[('daystocreateshow','&lt;',2)]}">
+                                            <field name="daystocreateshow"  string=" more Timesheet rows for next days" class="oe_inline"  readonly="1"/>
+                                            <span> more timesheet rows for next coming days</span>
                                         </div>
                                         <label for="duration"  string="Duration" invisible="0"/>
                                         <div>
@@ -163,13 +166,13 @@
                 <calendar js_class="rocker_calendar" string="Timesheets"
                           form_view_id="%(rocker_timesheet.rocker_timesheet_form)d"
                           date_start="start" date_stop="stop" date_delay="duration"
-                          all_day="allday"
-                              color="rocker_type"
+                          all_day="allday" color="rocker_type"
                           mode="month"
                           quick_add="false"
                           event_open_popup="true">
-<!--   odoo13                       show_unusual_days="true">-->
-<!--   odoo13                       hide_time="false">-->
+<!--                          odoo 14-->
+<!--                          show_unusual_days="true"-->
+<!--                          hide_time="false">-->
                     <field name="display_name"/>
                     <field name="project_id" required="1"/>
                     <field name="task_id" required="1"/>
@@ -194,11 +197,13 @@
                     <group>
                         <hr></hr><hr></hr>
                         <field name="company_id" invisible="1" readonly="1"/>
-                        <field name="rocker_default_start" widget="float_time" invisible="1"/>
-                        <field name="rocker_default_stop" widget="float_time" invisible="1"/>
-                        <field name="rocker_default_startToShow" widget="float_time" style="width: 10%%"/>
-                        <field name="rocker_default_stopToShow" widget="float_time" style="width: 10%%"/>
-                        <field name="rocker_default_work" widget="float_time" style="width: 10%%" />
+                        <field name="rocker_default_start" required="1" widget="float_time" invisible="1"/>
+                        <field name="rocker_default_stop" required="1" widget="float_time" invisible="1"/>
+                        <field name="rocker_default_startToShow" required="1" widget="float_time" style="width: 20%%"/>
+                        <field name="rocker_default_stopToShow" required="1" widget="float_time" style="width: 20%%"/>
+                        <field name="rocker_default_work" required="1" widget="float_time" style="width: 20%%" />
+                        <field name="rocker_default_rolling_work" required="1" widget="float_time" style="width: 20%%" />
+                        <field name="rocker_round_up" required="1"  style="width: 20%%"  />
                         <hr></hr><hr></hr>
                         <div class="row">
                             <div class="text-muted col-md-12">
@@ -222,16 +227,18 @@
                         </h1>
                     </div>
                     <group>
-                        <field name="user_id" invisible="1" readonly="1"/>
-                        <field name="company_id" invisible="0" readonly="1" optional="show"  groups="base.group_multi_company"/>
+                        <field name="user_id" required="1" invisible="1" readonly="1"/>
+                        <field name="company_id" required="1" invisible="0" readonly="1" optional="show"  groups="base.group_multi_company"/>
                         <field name="department_id" invisible="0" readonly="1"/>
                         <field name="employee_id" invisible="0" readonly="1"/>
                         <hr></hr><hr></hr>
-                        <field name="rocker_default_start" widget="float_time" invisible="1"/>
-                        <field name="rocker_default_stop" widget="float_time" invisible="1"/>
-                        <field name="rocker_default_startToShow" widget="float_time" style="width: 10%%"/>
-                        <field name="rocker_default_stopToShow" widget="float_time" style="width: 10%%"/>
-                        <field name="rocker_default_work" widget="float_time" style="width: 10%%" />
+                        <field name="rocker_default_start" required="1" widget="float_time" invisible="1"/>
+                        <field name="rocker_default_stop" required="1" widget="float_time" invisible="1"/>
+                        <field name="rocker_default_startToShow" required="1" widget="float_time" style="width: 20%%"/>
+                        <field name="rocker_default_stopToShow" required="1" widget="float_time" style="width: 20%%"/>
+                        <field name="rocker_default_work" required="1" widget="float_time" style="width: 20%%" />
+                        <field name="rocker_default_rolling_work" required="1" widget="float_time" style="width: 20%%" />
+                        <field name="rocker_round_up" required="1"  style="width: 20%%"  />
                         <hr></hr><hr></hr>
                         <div class="row">
                             <div class="text-muted col-md-12">
@@ -284,22 +291,22 @@
             </field>
         </record>
 
-<!--        <record id="act_rocker_project_task" model="ir.actions.act_window">-->
-<!--            <field name="name">Tasks</field>-->
-<!--            <field name="res_model">rocker.task</field>-->
-<!--            <field name="domain">[]</field>-->
-<!--            <field name="view_mode">tree,form</field>-->
-<!--            <field name="view_id" ref="rocker_project_task_tree"/>-->
-<!--            <field name="target">main</field>-->
-<!--            <field name="help" type="html">-->
-<!--                <p class="o_view_nocontent_smiling_face">-->
-<!--                    No projects found.-->
-<!--                </p>-->
-<!--                <p>-->
-<!--                    Track your projects every day.-->
-<!--                </p>-->
-<!--            </field>-->
-<!--        </record>-->
+        <record id="act_rocker_project_task" model="ir.actions.act_window">
+            <field name="name">Tasks</field>
+            <field name="res_model">rocker.task</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="rocker_project_task_tree"/>
+            <field name="target">main</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No projects found.
+                </p>
+                <p>
+                    Track your projects every day.
+                </p>
+            </field>
+        </record>
 
         <record id="act_rocker_timesheet_calendar" model="ir.actions.act_window">
             <field name="name">Timesheets</field>
@@ -375,7 +382,7 @@
             <field name="code">action = model.searchpanel_all('billable')</field>
         </record>
         <record id="action_searchpanel_nonbillable_tasks" model="ir.actions.server">
-            <field name="name">Search Non Panel Billable Tasks</field>
+            <field name="name">Search Panel Non Billable Tasks</field>
             <field name="model_id" ref="rocker_timesheet.model_account_analytic_line"/>
             <field name="type">ir.actions.server</field>
             <field name="state">code</field>
@@ -395,6 +402,13 @@
             <field name="state">code</field>
             <field name="code">action = model.searchpanel_all('mine')</field>
         </record>
+        <record id="action_create_rolling" model="ir.actions.server">
+            <field name="name">Create Rolling Timesheet row</field>
+            <field name="model_id" ref="rocker_timesheet.model_account_analytic_line"/>
+            <field name="type">ir.actions.server</field>
+            <field name="state">code</field>
+            <field name="code">action = model.create_rolling()</field>
+        </record>
 
 
         <!--
@@ -407,7 +421,7 @@
 <!--                  web_icon="rocker_timesheet,static/description/icon_timesheet.png"/>-->
         <!--                  parent="rocker_timesheet_menu_root"-->
 
-
+<!--using hr_timesheet menu-->
         <menuitem id="rocker_timesheet_menu_timesheet"
                   name="Rocker"
                   parent="hr_timesheet.timesheet_menu_root"
@@ -415,7 +429,7 @@
                   groups="hr_timesheet.group_hr_timesheet_user"/>
 
         <menuitem id="timesheet_menu_calendar"
-                  name="Calendar"
+                  name="Dashboard"
                   parent="rocker_timesheet_menu_timesheet"
                   action="act_rocker_timesheet_calendar"
                   sequence="6"
@@ -448,15 +462,15 @@
                   sequence="80"
                   groups="hr_timesheet.group_hr_timesheet_user"/>
 
-        <menuitem id="rocker_timesheet_menu_project_settings"
+        <menuitem id="rocker_timesheet_menu_project_task"
                   name="Project settings"
                   parent="rocker_timesheet_menu_timesheet"
                   sequence="8"
                   groups="hr_timesheet.group_timesheet_manager"/>
 
-        <menuitem id="rocker_timesheet_menu_project_types"
+        <menuitem id="rocker_timesheet_menu_projects"
                   name="Set Project types"
-                  parent="rocker_timesheet_menu_project_settings"
+                  parent="rocker_timesheet_menu_project_task"
                   action="act_rocker_project"
                   sequence="1"
                   groups="hr_timesheet.group_timesheet_manager"/>
