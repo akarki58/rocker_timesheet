@@ -32,7 +32,7 @@ _logger = logging.getLogger(__name__)
 class RockerTask(models.Model):
     _name = 'rocker.task'
     _auto = False
-    _description = 'values from database'
+    _description = 'Rocker tasks'
 
     @api.model
     def _domain_project_id(self):
