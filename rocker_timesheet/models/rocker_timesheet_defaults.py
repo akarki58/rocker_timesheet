@@ -51,11 +51,12 @@ class RockerCompany(models.Model):
     # 2022
     rocker_round_up = fields.Selection([
         ('0', 'not'),
-        ('5', '5 mins'),
-        ('10', '10 mins'),
-        ('15', '15 mins'),
-        ('30', '30 mins'),
-        ('60', '60 mins')], 'Round Amount To', required=False, default='0', store=True)
+        ('5', '5 min'),
+        ('10', '10 min'),
+        ('15', '15 min'),
+        ('30', '30 min'),
+        ('60', '60 min')
+        ], 'Round Amount To', required=False, default='0', store=True)
     rocker_default_rolling_work = fields.Float('Default Work amount if Rolling', store=True, readonly=False,
                                                help="Work does not contain breaks like lunch hour")
 
@@ -167,7 +168,7 @@ class RockerUser(models.Model):
                                         readonly=False, help="Office start time")
     rocker_default_stop = fields.Float('Default Stop Time [UTC]', default='17', required=True, store=True,
                                        readonly=False, help="Office end time")
-    rocker_default_work = fields.Float('Default Work amount', required=True, store=True, readonly=False,
+    rocker_default_work = fields.Float('Default Work amount', required=True, store=True, readonly=False, default='7.5',
                                        help="Work does not contain breaks like lunch hour")
     rocker_default_startToShow = fields.Float('Default Start Time [Local]', default='9', compute='_compute_show_start',
                                               store=False, readonly=False, help="Office start time")
@@ -175,13 +176,30 @@ class RockerUser(models.Model):
                                              store=False, readonly=False, help="Office end time")
     rocker_round_up = fields.Selection([
         ('0', 'not'),
-        ('5', '5 mins'),
-        ('10', '10 mins'),
-        ('15', '15 mins'),
-        ('30', '30 mins'),
-        ('60', '60 mins')], 'Round Amount To', required=True, default='0', store=True)
+        ('5', '5 min'),
+        ('10', '10 min'),
+        ('15', '15 min'),
+        ('30', '30 min'),
+        ('60', '60 min')
+        ], 'Round Amount To', required=True, default='0', store=True)
     rocker_default_rolling_work = fields.Float('Default Work amount if Rolling', store=True, readonly=False,
-                                               help="Work does not contain breaks like lunch hour")
+                                               default='1', help="Work does not contain breaks like lunch hour")
+    rocker_calendar_mintime = fields.Float('Calendar First Hour', store=True, readonly=False, default='0',
+                                           help="First hours to show")
+    rocker_calendar_maxtime = fields.Float('Calendar Last Hour', store=True, readonly=False, default='24',
+                                           help="Last hours to show")
+    rocker_calendar_slot = fields.Selection([
+        ('15', '15 min'),
+        ('30', '30 min'),
+        ('60', '60 min')], 'Calendar slot duration', required=True, default='30', store=True,
+        help="Calendar min duration, calendar accuracy")
+    rocker_calendar_default_view = fields.Selection([
+        ('day', 'Day'),
+        ('week', 'Week'),
+        ('month', 'Month'),
+        ('year', 'Year'),
+        ], 'Calendar default view', required=True, default='month', store=True,
+        help="Calendar default view to open")
 
 
     @api.depends('employee_id')
@@ -271,3 +289,22 @@ class RockerUser(models.Model):
                 'view_id': self.env.ref('rocker_timesheet.rocker_user_view_form_simplified').id,
                 'target': 'new',
             }
+    @api.model
+    def get_rocker_user_defaults(self, js_user_id, js_company_id):
+        # called from javascript
+        _user_defaults = self.env['rocker.user.defaults'].search(
+            [('user_id', '=', js_user_id), ('company_id', '=', js_company_id)])
+
+        _logger.debug('get_rocker_user_defaults')
+        _logger.debug(_user_defaults)
+        # _logger.debug(js_company_id)
+        # _logger.debug(self.env.user.id)
+        # _logger.debug(self.env.company.id)
+        return [
+            _user_defaults.user_id.id,
+            _user_defaults.company_id.id,
+            _user_defaults.rocker_calendar_mintime,
+            _user_defaults.rocker_calendar_maxtime,
+            _user_defaults.rocker_calendar_slot,
+            _user_defaults.rocker_calendar_default_view,
+                ]

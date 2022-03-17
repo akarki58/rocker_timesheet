@@ -6,43 +6,48 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0-20210204\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-10 08:08+0000\n"
-"PO-Revision-Date: 2022-03-10 08:08+0000\n"
+"POT-Creation-Date: 2022-03-17 07:43+0000\n"
+"PO-Revision-Date: 2022-03-17 09:54+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
+"X-Generator: Poedit 3.0.1\n"
 
 #. module: rocker_timesheet
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_company_defaults__rocker_round_up__10
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_round_up__10
-msgid "10 mins"
+msgid "10 min"
 msgstr "10 min"
 
 #. module: rocker_timesheet
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_company_defaults__rocker_round_up__15
+#: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_calendar_slot__15
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_round_up__15
-msgid "15 mins"
+msgid "15 min"
 msgstr "15 min"
 
 #. module: rocker_timesheet
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_company_defaults__rocker_round_up__30
+#: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_calendar_slot__30
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_round_up__30
-msgid "30 mins"
+msgid "30 min"
 msgstr "30 min"
 
 #. module: rocker_timesheet
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_company_defaults__rocker_round_up__5
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_round_up__5
-msgid "5 mins"
+msgid "5 min"
 msgstr "5 min"
 
 #. module: rocker_timesheet
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_company_defaults__rocker_round_up__60
+#: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_calendar_slot__60
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_round_up__60
-msgid "60 mins"
+msgid "60 min"
 msgstr "60 min"
 
 #. module: rocker_timesheet
@@ -83,12 +88,7 @@ msgstr "Todellinen työmäärä"
 #. module: rocker_timesheet
 #. openerp-web
 #: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
 #: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
 #: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__account_analytic_line__rocker_search_type__all
 #, python-format
@@ -118,18 +118,48 @@ msgstr "Analyyttinen rivi"
 #. module: rocker_timesheet
 #. openerp-web
 #: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
 #: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
 #: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__account_analytic_line__rocker_search_type__billable
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__project_project__rocker_type__billable
 #, python-format
 msgid "Billable"
 msgstr "Laskutettava"
+
+#. module: rocker_timesheet
+#: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_user_defaults__rocker_calendar_mintime
+msgid "Calendar First Hour"
+msgstr "Kalenterin ensimmäinen tunti"
+
+#. module: rocker_timesheet
+#: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_user_defaults__rocker_calendar_maxtime
+msgid "Calendar Last Hour"
+msgstr "Kalenterin viimeinen tunti"
+
+#. module: rocker_timesheet
+#: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_user_view_form_simplified
+msgid "Calendar Settings"
+msgstr "Kalenterin asetukset"
+
+#. module: rocker_timesheet
+#: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_user_defaults__rocker_calendar_default_view
+msgid "Calendar default view"
+msgstr "Kalenterin oletusnäkymä"
+
+#. module: rocker_timesheet
+#: model:ir.model.fields,help:rocker_timesheet.field_rocker_user_defaults__rocker_calendar_default_view
+msgid "Calendar default view to open"
+msgstr "Avaa kalenterin oletusnäkymä"
+
+#. module: rocker_timesheet
+#: model:ir.model.fields,help:rocker_timesheet.field_rocker_user_defaults__rocker_calendar_slot
+msgid "Calendar min duration, calendar accuracy"
+msgstr "Kalenterin pienin kesto, kalenterin tarkkuus"
+
+#. module: rocker_timesheet
+#: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_user_defaults__rocker_calendar_slot
+msgid "Calendar slot duration"
+msgstr "Kalenterin tapahtuman kesto"
 
 #. module: rocker_timesheet
 #: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_timesheet_tree
@@ -140,6 +170,7 @@ msgstr "Kommentit"
 #: model:ir.model.fields,field_description:rocker_timesheet.field_account_analytic_line__company_id
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_task__company_id
 #: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_company_view_form_simplified
+#: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_user_view_form_simplified
 msgid "Company"
 msgstr "Yritys"
 
@@ -193,6 +224,11 @@ msgid "Date"
 msgstr "Päivämäärä"
 
 #. module: rocker_timesheet
+#: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_calendar_default_view__day
+msgid "Day"
+msgstr "Päivä"
+
+#. module: rocker_timesheet
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_company_defaults__rocker_default_startToShow
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_user_defaults__rocker_default_startToShow
 msgid "Default Start Time [Local]"
@@ -230,6 +266,7 @@ msgstr "Oletus työmäärä/rullaava"
 
 #. module: rocker_timesheet
 #: model:ir.model.fields,field_description:rocker_timesheet.field_account_analytic_line__department_id
+#: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_user_view_form_simplified
 msgid "Department"
 msgstr "Osasto"
 
@@ -261,7 +298,6 @@ msgstr "Kesto"
 
 #. module: rocker_timesheet
 #: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
-#: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
 #, python-format
 msgid "Duration is less than Work Amount!"
 msgstr "Kesto on pienempi kuin työmäärä!"
@@ -283,11 +319,6 @@ msgstr "Muokkaa projektityyppejä"
 
 #. module: rocker_timesheet
 #: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
-#: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
-#: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
-#: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
-#: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
-#: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
 #, python-format
 msgid "Edit row in Time off module!"
 msgstr "Muokkaa riviä Vapaa-sovelluksessa!"
@@ -295,18 +326,21 @@ msgstr "Muokkaa riviä Vapaa-sovelluksessa!"
 #. module: rocker_timesheet
 #: model:ir.model.fields,field_description:rocker_timesheet.field_account_analytic_line__employee_id
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_user_defaults__employee_id
+#: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_user_view_form_simplified
 msgid "Employee"
 msgstr "Työntekijä"
 
 #. module: rocker_timesheet
 #. openerp-web
 #: code:addons/rocker_timesheet/static/src/xml/rocker_button.xml:0
-#: code:addons/rocker_timesheet/static/src/xml/rocker_button.xml:0
-#: code:addons/rocker_timesheet/static/src/xml/rocker_button.xml:0
-#: code:addons/rocker_timesheet/static/src/xml/rocker_button.xml:0
 #, python-format
 msgid "Filter tasks:"
 msgstr "Suodata:"
+
+#. module: rocker_timesheet
+#: model:ir.model.fields,help:rocker_timesheet.field_rocker_user_defaults__rocker_calendar_mintime
+msgid "First hours to show"
+msgstr "Ensimmäinen näytettävä tunti"
 
 #. module: rocker_timesheet
 #: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_timesheet_form
@@ -332,12 +366,7 @@ msgstr "Tunniste (ID)"
 #. module: rocker_timesheet
 #. openerp-web
 #: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
 #: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
 #: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__project_project__rocker_type__internal
 #, python-format
@@ -369,6 +398,11 @@ msgid "Last Updated on"
 msgstr "Viimeksi päivitetty"
 
 #. module: rocker_timesheet
+#: model:ir.model.fields,help:rocker_timesheet.field_rocker_user_defaults__rocker_calendar_maxtime
+msgid "Last hours to show"
+msgstr "Viimeinen näytettävä tunti"
+
+#. module: rocker_timesheet
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_timesheet_about__legal
 msgid "Legal"
 msgstr ""
@@ -381,26 +415,21 @@ msgstr "Taso"
 #. module: rocker_timesheet
 #. openerp-web
 #: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
 #: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
 #: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
 #, python-format
 msgid "Member"
 msgstr "Projekti"
 
 #. module: rocker_timesheet
+#: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_calendar_default_view__month
+msgid "Month"
+msgstr "Kuukausi"
+
+#. module: rocker_timesheet
 #. openerp-web
 #: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
 #: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
 #: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
 #, python-format
 msgid "My"
@@ -437,12 +466,7 @@ msgstr "Ei laskutettava"
 #. module: rocker_timesheet
 #. openerp-web
 #: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
 #: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
 #: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
 #, python-format
 msgid "NonBillable"
@@ -451,7 +475,7 @@ msgstr "Ei laskutettava"
 #. module: rocker_timesheet
 #: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_timesheet_about
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #. module: rocker_timesheet
 #: model:ir.model.fields,help:rocker_timesheet.field_rocker_company_defaults__rocker_default_stop
@@ -459,7 +483,7 @@ msgstr ""
 #: model:ir.model.fields,help:rocker_timesheet.field_rocker_user_defaults__rocker_default_stop
 #: model:ir.model.fields,help:rocker_timesheet.field_rocker_user_defaults__rocker_default_stopToShow
 msgid "Office end time"
-msgstr ""
+msgstr "Toimiston sulkuaika"
 
 #. module: rocker_timesheet
 #: model:ir.model.fields,help:rocker_timesheet.field_rocker_company_defaults__rocker_default_start
@@ -467,10 +491,9 @@ msgstr ""
 #: model:ir.model.fields,help:rocker_timesheet.field_rocker_user_defaults__rocker_default_start
 #: model:ir.model.fields,help:rocker_timesheet.field_rocker_user_defaults__rocker_default_startToShow
 msgid "Office start time"
-msgstr ""
+msgstr "Toimiston avausaika"
 
 #. module: rocker_timesheet
-#: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
 #: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
 #, python-format
 msgid "One timesheet row per day...duration can not exceed 24"
@@ -489,7 +512,7 @@ msgstr "Vain yksi oletusarvorivi per käyttäjä per yritys!"
 #. module: rocker_timesheet
 #: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_project_tree
 msgid "Open Project"
-msgstr ""
+msgstr "Avaa projekti"
 
 #. module: rocker_timesheet
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_task__parent_id
@@ -499,7 +522,7 @@ msgstr "Ylätaso"
 #. module: rocker_timesheet
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_timesheet_about__paypal
 msgid "PayPal"
-msgstr ""
+msgstr "PayPal"
 
 #. module: rocker_timesheet
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_task__privacy_visibility
@@ -556,7 +579,7 @@ msgstr "Resurssin yritys"
 #. module: rocker_timesheet
 #: model:ir.ui.menu,name:rocker_timesheet.rocker_timesheet_menu_timesheet
 msgid "Rocker"
-msgstr ""
+msgstr "Rocker"
 
 #. module: rocker_timesheet
 #: model:ir.model,name:rocker_timesheet.model_rocker_company_defaults
@@ -586,8 +609,6 @@ msgstr "Rocker tehtävä"
 #. module: rocker_timesheet
 #. openerp-web
 #: code:addons/rocker_timesheet/static/src/js/rocker_roller_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_roller_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
 #: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
 #, python-format
 msgid "Rolling"
@@ -642,7 +663,6 @@ msgstr ""
 
 #. module: rocker_timesheet
 #: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
-#: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
 #, python-format
 msgid "Select Project & Task from drop-down fields"
 msgstr "Valitse projekti ja tehtävä alasvetovalikoista"
@@ -680,11 +700,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_user_view_form_simplified
 msgid ""
 "Start and Stop are stored in UTC timezone into database.<br/>\n"
-"                                Work can be different than Duration (Stop - Start) (- lunch hours etc.)<br/>\n"
-"                                If Start and Stop values not found, Company defaults are used."
+"                            Work can be different than Duration (Stop - Start) (- lunch hours etc.)<br/>\n"
+"                            If Start and Stop values not found, Company defaults are used."
 msgstr ""
 "Alku ja loppu talletetaan UTC aikana tietokantaan.<br/>\n"
-"                                Työmäärä voi olla eri kuin kesto (Loppu - Alku) (esim. lounastunti)"
+"                                Työmäärä voi olla eri kuin kesto (Loppu - Alku) (esim. lounastunti)<br/\n"
+"                                Jos alkua ja loppua ei löydy, yrityksen oletusarvoja käytetään."
 
 #. module: rocker_timesheet
 #: model:ir.model.fields,help:rocker_timesheet.field_account_analytic_line__start
@@ -692,9 +713,6 @@ msgid "Start datetime of a task"
 msgstr "Alku kellonaika tehtävälle"
 
 #. module: rocker_timesheet
-#: code:addons/rocker_timesheet/models/rocker_timesheet_defaults.py:0
-#: code:addons/rocker_timesheet/models/rocker_timesheet_defaults.py:0
-#: code:addons/rocker_timesheet/models/rocker_timesheet_defaults.py:0
 #: code:addons/rocker_timesheet/models/rocker_timesheet_defaults.py:0
 #, python-format
 msgid "Start time negative"
@@ -707,7 +725,6 @@ msgstr "Mihin"
 
 #. module: rocker_timesheet
 #: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
-#: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
 #, python-format
 msgid "Stop before start!"
 msgstr "Loppuaika ennen alkuaikaa!"
@@ -718,9 +735,6 @@ msgid "Stop datetime of a task"
 msgstr "Loppu kellonaika tehtävälle"
 
 #. module: rocker_timesheet
-#: code:addons/rocker_timesheet/models/rocker_timesheet_defaults.py:0
-#: code:addons/rocker_timesheet/models/rocker_timesheet_defaults.py:0
-#: code:addons/rocker_timesheet/models/rocker_timesheet_defaults.py:0
 #: code:addons/rocker_timesheet/models/rocker_timesheet_defaults.py:0
 #, python-format
 msgid "Stop time must be positive"
@@ -747,6 +761,12 @@ msgstr "Vapaa"
 #: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_timesheet_search
 msgid "Timesheet"
 msgstr "Tuntikortti"
+
+#. module: rocker_timesheet
+#: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_company_view_form_simplified
+#: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_user_view_form_simplified
+msgid "Timesheet Settings"
+msgstr "Tuntikortin asetukset"
 
 #. module: rocker_timesheet
 #: model:ir.actions.act_window,name:rocker_timesheet.act_rocker_timesheet_calendar
@@ -779,11 +799,8 @@ msgstr "Tyyppi"
 
 #. module: rocker_timesheet
 #: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_edit_project
-msgid ""
-"Type of a project, Used in Rocker Timesheets (filter Projects and Tasks)"
-msgstr ""
-"Projektin tyyppi, Käytetään Rocker timesheet modulissa (suodata projekteja "
-"ja tehtäviä)"
+msgid "Type of a project, Used in Rocker Timesheets (filter Projects and Tasks)"
+msgstr "Projektin tyyppi, Käytetään Rocker timesheet modulissa (suodata projekteja ja tehtäviä)"
 
 #. module: rocker_timesheet
 #: model:ir.model.fields,field_description:rocker_timesheet.field_account_analytic_line__user_id
@@ -802,6 +819,11 @@ msgstr "Käyttäjän oletusarvot"
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_user_defaults__user_id
 msgid "User_id"
 msgstr "Käyttäjä(id)"
+
+#. module: rocker_timesheet
+#: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_calendar_default_view__week
+msgid "Week"
+msgstr "Viikko"
 
 #. module: rocker_timesheet
 #: model:ir.model.fields,help:rocker_timesheet.field_account_analytic_line__unit_amount
@@ -828,9 +850,19 @@ msgid "Work must be positive"
 msgstr "Työmäärän pitää olla positiivinen"
 
 #. module: rocker_timesheet
+#: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_calendar_default_view__year
+msgid "Year"
+msgstr "Vuosi"
+
+#. module: rocker_timesheet
 #: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_timesheet_form
 msgid "e.g. Odoo programming"
 msgstr "esim. Odoo ohjelmointi"
+
+#. module: rocker_timesheet
+#: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_timesheet_form
+msgid "for Company:"
+msgstr "yritykselle:"
 
 #. module: rocker_timesheet
 #: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_timesheet_form
@@ -842,11 +874,6 @@ msgstr "tuntiriviä lisää tuleville päiville"
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_round_up__0
 msgid "not"
 msgstr "ei pyöristystä"
-
-#. module: project
-#: model:ir.model.fields,field_description:project.field_project_project__privacy_visibility
-msgid "Visibility"
-msgstr "Näkyvyys"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_project__user_id
@@ -864,6 +891,4 @@ msgstr "Projektipäällikkö"
 #: model:ir.model.fields,field_description:project.field_report_project_task_user__company_id
 msgid "Company"
 msgstr "Yritys"
-
-
 
