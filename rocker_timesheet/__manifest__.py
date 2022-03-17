@@ -27,7 +27,7 @@
     'description': 'Probably most fastest way to report work done',
     'author': 'Antti Kärki',
     'license': 'AGPL-3',
-    'version': '14.0.2.0',
+    'version': '14.0.3.0',
     'category': 'Generic Modules/Human Resources',
     'sequence': 23,
     'website': '',

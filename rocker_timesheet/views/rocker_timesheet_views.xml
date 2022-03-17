@@ -24,7 +24,6 @@
             <field name="name">rocker_timesheet_tree</field>
             <field name="model">account.analytic.line</field>
             <field name="arch" type="xml">
-<!--                <tree string="Timesheets" editable="top" create="true" delete="true" edit="true">-->
                 <tree js_class="rocker_tree" string="Timesheets" editable="top" create="true" delete="true" edit="true">
                     <field name="project_id" required="1" options="{'no_create_edit': True}"
                            domain="[('company_id', '=', company_id)]"/>
@@ -115,6 +114,8 @@
                                 <field name="name" placeholder="e.g. Odoo programming" class="font-weight-bold"/>
                             </h1>
                         </div>
+                        <label for="company_id" string="for Company: " />
+                        <field name="company_id" required="1" readonly="1" invisible="0"/>
                         <notebook>
                             <page name="page_details" string="Details">
                                 <group>
@@ -135,8 +136,7 @@
                                         <field name="allday" invisible="1"/>
                                     </group>
                                     <group>
-                                        <field name="company_id" required="1" readonly="1" optional="show"  groups="base.group_multi_company"/>
-                                        <field name="project_id" required="1"/>
+                                        <field name="project_id" required="1" domain="[('company_id', '=', company_id)]"/>
                                         <field name="task_id" required="1"
                                                domain="[('project_id', '=', project_id)]"/>
                                         <label for="unit_amount"  string="Actual Work" invisible="0"/>
@@ -154,7 +154,7 @@
             </field>
         </record>
 
-        <record id="rocker_timesheet_calendar" model="ir.ui.view">
+          <record id="rocker_timesheet_calendar" model="ir.ui.view">
             <field name="name">rocker_timesheet_calendar</field>
             <field name="model">account.analytic.line</field>
             <field name="priority" eval="1"/>
@@ -173,7 +173,8 @@
                     <field name="task_id" required="1"/>
                     <field name="unit_amount" required="1"/>
                     <field name="rocker_type" filters="1" invisible="1"/>
-                    <field name="company_id" required="1" readonly="1" optional="show"  groups="base.group_multi_company"/>
+<!--                    <field name="company_id" required="1" readonly="1" optional="show" groups="base.group_multi_company"/>-->
+                    <field name="company_id" required="1" readonly="1"/>
                 </calendar>
 
              </field>
@@ -189,24 +190,27 @@
                             <field name="company_name" readonly="1" class="font-weight-bold"/>
                         </h1>
                     </div>
-                    <group>
-                        <hr></hr><hr></hr>
+                    <hr></hr>
+                    <div>
+                        <h3>Timesheet Settings</h3>
+                    </div>
+                    <group col="2">
+                        <div/>
                         <field name="company_id" invisible="1" readonly="1"/>
                         <field name="rocker_default_start" required="1" widget="float_time" invisible="1"/>
                         <field name="rocker_default_stop" required="1" widget="float_time" invisible="1"/>
-                        <field name="rocker_default_startToShow" required="1" widget="float_time" style="width: 20%%"/>
-                        <field name="rocker_default_stopToShow" required="1" widget="float_time" style="width: 20%%"/>
-                        <field name="rocker_default_work" required="1" widget="float_time" style="width: 20%%" />
-                        <field name="rocker_default_rolling_work" required="1" widget="float_time" style="width: 20%%" />
-                        <field name="rocker_round_up" required="1"  style="width: 20%%"  />
-                        <hr></hr><hr></hr>
+                        <field name="rocker_default_startToShow" required="1" widget="float_time" style="width: 30%%"/>
+                        <field name="rocker_default_stopToShow" required="1" widget="float_time" style="width: 30%%"/>
+                        <field name="rocker_default_work" required="1" widget="float_time" style="width: 30%%" />
+                        <field name="rocker_default_rolling_work" required="1" widget="float_time" style="width: 30%%" />
+                        <field name="rocker_round_up" required="1"  style="width: 30%%"  />
+                    </group>
                         <div class="row">
                             <div class="text-muted col-md-12">
                                 Start and Stop are stored in UTC timezone into database.<br></br>
                                 Work can be different than Duration (Stop - Start) (- lunch hours etc.)
                             </div>
                         </div>
-                    </group>
                 </form>
             </field>
         </record>
@@ -221,27 +225,43 @@
                             <field name="user_name" readonly="1" class="font-weight-bold"/>
                         </h1>
                     </div>
-                    <group>
+                    <group col="2">
                         <field name="user_id" required="1" invisible="1" readonly="1"/>
-                        <field name="company_id" required="1" invisible="0" readonly="1" optional="show"  groups="base.group_multi_company"/>
-                        <field name="department_id" invisible="0" readonly="1"/>
-                        <field name="employee_id" invisible="0" readonly="1"/>
-                        <hr></hr><hr></hr>
+                        <field name="company_id" string="Company" required="1" invisible="0" readonly="1" />
+                        <field name="department_id" string="Department" invisible="0" readonly="1"/>
+                        <field name="employee_id" string="Employee" invisible="0" readonly="1"/>
+                    </group>
+                    <hr></hr>
+                    <div>
+                            <h3>Timesheet Settings</h3>
+                    </div>
+                    <div/>
+                    <group col="4" >
                         <field name="rocker_default_start" required="1" widget="float_time" invisible="1"/>
                         <field name="rocker_default_stop" required="1" widget="float_time" invisible="1"/>
-                        <field name="rocker_default_startToShow" required="1" widget="float_time" style="width: 20%%"/>
-                        <field name="rocker_default_stopToShow" required="1" widget="float_time" style="width: 20%%"/>
-                        <field name="rocker_default_work" required="1" widget="float_time" style="width: 20%%" />
-                        <field name="rocker_default_rolling_work" required="1" widget="float_time" style="width: 20%%" />
-                        <field name="rocker_round_up" required="1"  style="width: 20%%"  />
-                        <hr></hr><hr></hr>
-                        <div class="row">
-                            <div class="text-muted col-md-12">
-                                Start and Stop are stored in UTC timezone into database.<br></br>
-                                Work can be different than Duration (Stop - Start) (- lunch hours etc.)<br></br>
-                                If Start and Stop values not found, Company defaults are used.
-                            </div>
+                        <field name="rocker_default_startToShow" required="1" widget="float_time" style="width: 30%%" />
+                        <field name="rocker_default_stopToShow" required="1" widget="float_time" style="width: 30%%"/>
+                        <field name="rocker_default_work" required="1" widget="float_time" style="width: 30%%"/>
+                        <field name="rocker_default_rolling_work" required="1" widget="float_time" style="width: 30%%"/>
+                        <field name="rocker_round_up" required="1" style="width: 30%%"/>
+                    </group>
+                    <div class="row">
+                        <div class="text-muted col-md-12">
+                            Start and Stop are stored in UTC timezone into database.<br></br>
+                            Work can be different than Duration (Stop - Start) (- lunch hours etc.)<br></br>
+                            If Start and Stop values not found, Company defaults are used.
                         </div>
+                    </div>
+                    <hr></hr>
+                    <div>
+                        <h3>Calendar Settings</h3>
+                    </div>
+                    <div/>
+                    <group col="4" >
+                        <field name="rocker_calendar_mintime" required="1"  style="width: 30%%"  />
+                        <field name="rocker_calendar_maxtime" required="1"  style="width: 30%%"  />
+                        <field name="rocker_calendar_slot" required="1"  style="width: 30%%"  />
+                        <field name="rocker_calendar_default_view" required="1"  style="width: 30%%"  />
                     </group>
                 </form>
             </field>
