@@ -47,6 +47,7 @@
     # 'demo': [
     #     # 'data/rocker_timesheet_demo.xml',
     # ],
+    # Odoo 15
     'assets': {
         'web.assets_backend': [
             'rocker_timesheet/static/src/scss/rocker_calendar_button.scss',
@@ -62,12 +63,12 @@
         'web.assets_qweb': [
             'rocker_timesheet/static/src/xml/**/*',
         ],
-        #  odoo 14
-        # 'qweb': [
-        #     'static/src/xml/rocker_button.xml',
-        # ],
 
     },
+    #  odoo 14
+    # 'qweb': [
+    #     'static/src/xml/rocker_button.xml',
+    # ],
     'installable': True,
     'application': True,
     'auto_install': False,
