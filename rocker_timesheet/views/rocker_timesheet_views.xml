@@ -45,14 +45,24 @@
             </field>
         </record>
 
+        <record id="action_open_project_edit_form" model="ir.actions.server">
+            <field name="name">Edit Project</field>
+            <field name="model_id" ref="rocker_timesheet.model_project_project"/>
+            <!--            <field name="type">ir.actions.server</field>-->
+            <field name="state">code</field>
+            <field name="code">action = model.open_project_edit_form()</field>
+        </record>
+
         <record id="rocker_project_tree" model="ir.ui.view">
             <field name="name">Edit Project types</field>
             <field name="model">project.project</field>
             <field name="arch" type="xml">
                 <tree editable="top" create="false" delete="false" import="false" string="Projects">
-                    <header>
-                        <button name="open_project" type="object" string="Open Project"/>
-                    </header>
+<!--                    <header>-->
+<!--                        <button name="open_project" type="object" string="Open Project"/>-->
+<!--                    </header>-->
+                    <button type="action" name="rocker_timesheet.action_open_project_edit_form" icon="fa-folder-open-o" class="oe_highlight"/>
+<!--                    <field name="id" readonly="1"/>-->
                     <field name="name" readonly="1"/>
                     <field name="rocker_type" readonly="0"/>
                     <field name="allow_timesheets" readonly="0"/>
@@ -271,6 +281,7 @@
         <!--
             Actions
         -->
+
         <record id="act_rocker_timesheet_tree" model="ir.actions.act_window">
             <field name="name">Timesheets</field>
             <field name="res_model">account.analytic.line</field>
@@ -471,10 +482,16 @@
                  groups="hr_timesheet.group_hr_timesheet_user"/>
 
         <menuitem id="menu_rocker_timesheet_about"
-                  name="About Rocker Timesheet..."
-                  action="action_rocker_about_timesheet"
+                  name="About"
                   parent="rocker_timesheet_menu_timesheet"
-                  sequence="80"
+                  sequence="90"
+                  groups="hr_timesheet.group_hr_timesheet_user"/>
+
+        <menuitem id="menu_rocker_timesheet_about_show"
+                  name="Rocker Timesheet..."
+                  action="action_rocker_about_timesheet"
+                  parent="menu_rocker_timesheet_about"
+                  sequence="1"
                   groups="hr_timesheet.group_hr_timesheet_user"/>
 
         <menuitem id="rocker_timesheet_menu_project_task"
@@ -484,7 +501,7 @@
                   groups="hr_timesheet.group_timesheet_manager"/>
 
         <menuitem id="rocker_timesheet_menu_projects"
-                  name="Set Project types"
+                  name="Edit Project types"
                   parent="rocker_timesheet_menu_project_task"
                   action="act_rocker_project"
                   sequence="1"

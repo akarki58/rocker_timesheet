@@ -57,11 +57,14 @@ class RockerTimesheet(models.Model):
 
     def _domain_project_id(self):
         domain = [('allow_timesheets', '=', True)]
+        # odoo 14
         return expression.AND([domain,
-                               ['|', ('privacy_visibility', '!=', 'followers'),
-                                ('allowed_internal_user_ids', 'in', self.env.user.ids)]
+                               ['|', ('privacy_visibility', '!=', 'followers'), ('allowed_internal_user_ids', 'in', self.env.user.ids)]
                                ])
-        return domain
+        # odoo 15
+        # return expression.AND([domain,
+        #                        ['|', ('privacy_visibility', '!=', 'followers'), ('message_partner_ids', 'in', [self.env.user.partner_id.id])]
+        #                        ])
 
     def _domain_project_id_search(self):
         domain = [('company_id', '=', self.env.company.id)]
@@ -158,8 +161,10 @@ class RockerTimesheet(models.Model):
         if filt == 'all':
             _search_panel_domain = _search_panel_domain + []
         elif filt == 'member':
-            _search_panel_domain = _search_panel_domain + [('project_id', 'in', self.env['project.project'].search(
-                [('allowed_internal_user_ids', 'in', self.env.user.ids)]).ids)]
+            # odoo 14
+            _search_panel_domain = _search_panel_domain + [('project_id', 'in', self.env['project.project'].search([('allowed_internal_user_ids', 'in', self.env.user.ids)]).ids)]
+            # odoo 15
+            # _search_panel_domain = _search_panel_domain + [('project_id', 'in', self.env['project.project'].search([('message_partner_ids', 'in', [self.env.user.partner_id.id])]).ids)]
         elif filt == 'internal':
             _search_panel_domain = _search_panel_domain + [
                 ('project_id', 'in', self.env['project.project'].search([('rocker_type', '=', 'internal')]).ids)]
@@ -170,6 +175,7 @@ class RockerTimesheet(models.Model):
             _search_panel_domain = _search_panel_domain + [
                 ('project_id', 'in', self.env['project.project'].search([('rocker_type', '=', 'nonbillable')]).ids)]
         elif filt == 'mine':
+            # odoo 14
             _search_panel_domain = _search_panel_domain + \
                                    ['|',
                                     ('task_id', 'in',
@@ -178,12 +184,24 @@ class RockerTimesheet(models.Model):
                                     ('project_id', 'in', self.env['project.task'].search(
                                         [('user_id', '=', self.env.user.id)]).project_id.ids),
                                     ]
+            # odoo 15
+            # _search_panel_domain = _search_panel_domain + \
+            #                        ['|',
+            #                         ('task_id', 'in', self.env['rocker.task'].search([('user_id', '=', self.env.user.id)]).ids),
+            #                         '&',  ('task_id', '=', False),
+            #                         ('project_id', 'in', self.env['rocker.task'].search([('user_id', '=', self.env.user.id)]).project_id.ids),
+            #                         ]
+
         else:
             self._domain_get_search_domain('all')
+        # odoo 14
         _search_panel_domain = expression.AND([_search_panel_domain,
-                                               ['|', ('privacy_visibility', '!=', 'followers'),
-                                                ('project_id.allowed_internal_user_ids', 'in', self.env.user.ids)]
-                                               ])
+        ['|', ('privacy_visibility', '!=', 'followers'), ('project_id.allowed_internal_user_ids', 'in', self.env.user.ids)]
+        ])
+        # odoo 15
+        # _search_panel_domain = expression.AND([_search_panel_domain,
+        #                                        ['|', ('privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [self.env.user.partner_id.id])]
+        #                                        ])
         return _search_panel_domain
 
     def _get_defaults(self):
@@ -342,6 +360,7 @@ class RockerTimesheet(models.Model):
     department_id = fields.Many2one('hr.department', "Department", compute='_compute_department_id', store=True,
                                     compute_sudo=True)
     unit_amount = fields.Float('Actual Work', default=_default_work, required=True, help="Work amount in hours")
+    # 2022
 
     # def init(self):
     #     # when module is installed or upgraded
@@ -392,6 +411,7 @@ class RockerTimesheet(models.Model):
         # _logger.debug('api depends company_id')
         for line in self:
             line.company_id = line.employee_id.company_id
+
 
     #############################
     # read search create unlink
