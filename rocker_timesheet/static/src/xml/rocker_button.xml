@@ -25,7 +25,7 @@
     </t>
 
     <t t-name="rocker_timesheet.tree-button">
-       <button class="btn btn-primary btn-roller2" type="button">
+        <button class="btn btn-primary btn-roller2" type="button">
             <t t-esc="roller2"/>
         </button>
         <p> </p><b>Filter tasks:</b>

@@ -360,6 +360,7 @@ class RockerTimesheet(models.Model):
     department_id = fields.Many2one('hr.department', "Department", compute='_compute_department_id', store=True,
                                     compute_sudo=True)
     unit_amount = fields.Float('Actual Work', default=_default_work, required=True, help="Work amount in hours")
+    # 2022
 
     # def init(self):
     #     # when module is installed or upgraded
@@ -410,6 +411,7 @@ class RockerTimesheet(models.Model):
         # _logger.debug('api depends company_id')
         for line in self:
             line.company_id = line.employee_id.company_id
+
 
     #############################
     # read search create unlink

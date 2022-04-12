@@ -27,23 +27,25 @@
     'description': 'Probably most fastest way to report work done',
     'author': 'Antti Kärki',
     'license': 'AGPL-3',
-    'version': '15.0.2.0',
-    'category': 'Generic Modules/Human Resources',
+    'version': '15.0.4.0',
+    'category': 'Rocker/Timesheet',
     'sequence': 23,
     'website': '',
-    'depends': ['base', 'project', 'hr_timesheet'],
+    'depends': ['base', 'project', 'hr_timesheet', 'hr_holidays'],
     'data': [
         'security/rocker_timesheet_security.xml',
         'security/ir.model.access.csv',
         # 'views/rocker_template.xml',   # not needed in Odoo 15
         'views/rocker_timesheet_views.xml',
         'views/rocker_timesheet_about.xml',
-        # 'views/rocker_hr_timesheet_my_timesheets.xml',
-        # 'data/rocker_timesheet_data.xml',
+        'views/rocker_holidays.xml',
+        'views/rocker_leave_type.xml',
+        'report/rocker_timesheet_report_view.xml',
     ],
     # 'demo': [
     #     # 'data/rocker_timesheet_demo.xml',
     # ],
+    # Odoo 15
     'assets': {
         'web.assets_backend': [
             'rocker_timesheet/static/src/scss/rocker_calendar_button.scss',
@@ -59,12 +61,12 @@
         'web.assets_qweb': [
             'rocker_timesheet/static/src/xml/**/*',
         ],
-        #  odoo 14
-        # 'qweb': [
-        #     'static/src/xml/rocker_button.xml',
-        # ],
 
     },
+    #  odoo 14
+    # 'qweb': [
+    #     'static/src/xml/rocker_button.xml',
+    # ],
     'installable': True,
     'application': True,
     'auto_install': False,
