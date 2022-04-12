@@ -146,20 +146,6 @@ class RockerProject(models.Model):
         ('nonbillable', 'Non Billable'),
         ('time_off', 'Time Off')], 'Type', required=False, default='')
 
-    # def open_project(self, context=None):
-    #     view_id = self.env.ref('rocker_timesheet.rocker_edit_project').id
-    #     context = self._context.copy()
-    #     return {
-    #         'name': 'Project',
-    #         'res_model': 'project.project',
-    #         'view_mode': 'form',
-    #         'res_id': self.id,
-    #         'type': 'ir.actions.act_window',
-    #         'view_type': 'form',
-    #         'view_id': view_id,
-    #         'target': 'new',
-    #     }
-
     def open_project_edit_form(self):
         rec_id = self.env.context.get('active_id')
         form_id = self.env.ref('project.edit_project')

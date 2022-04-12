@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 <data>	
-	
-	
+
 	<record id="rocker_timesheet_about" model="ir.ui.view">
 		<field name="name">rocker.timesheet.about.form</field>
 		<field name="model">rocker.timesheet.about</field>

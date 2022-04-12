@@ -58,11 +58,7 @@
             <field name="model">project.project</field>
             <field name="arch" type="xml">
                 <tree editable="top" create="false" delete="false" import="false" string="Projects">
-<!--                    <header>-->
-<!--                        <button name="open_project" type="object" string="Open Project"/>-->
-<!--                    </header>-->
                     <button type="action" name="rocker_timesheet.action_open_project_edit_form" icon="fa-folder-open-o" class="oe_highlight"/>
-<!--                    <field name="id" readonly="1"/>-->
                     <field name="name" readonly="1"/>
                     <field name="rocker_type" readonly="0"/>
                     <field name="allow_timesheets" readonly="0"/>

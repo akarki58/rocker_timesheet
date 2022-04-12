@@ -43,16 +43,6 @@
                         </tree>
                         </field>
                         </page>
-<!--                        <page name="Odoo Holidays" string="Odoo Holidays">-->
-<!--                            <field name="notebook_ids">-->
-<!--                                <tree string="Import Public Holidays"  create="true" delete="true" >-->
-<!--                                    <field name="holiday_date" readonly="1"/>-->
-<!--                                    <field name="name_local" readonly="1"/>-->
-<!--                                    <field name="name_english" readonly="0"/>-->
-<!--                                    <field name="holiday_type" readonly="0"/>-->
-<!--                                </tree>-->
-<!--                            </field>-->
-<!--                        </page>-->
                     </notebook>
                     </sheet>
                 </form>
@@ -85,13 +75,6 @@
             <!--            <field name="search_view_id" ref="rocker_timesheet_search"/>-->
             <field name="target">inline</field>
         </record>
-
-<!--        <record id="action_rocker_holidays" model="ir.actions.server">-->
-<!--            <field name="name">Show Import Holidays Form</field>-->
-<!--            <field name="model_id" ref="model_rocker_holidays"/>-->
-<!--            <field name="state">code</field>-->
-<!--            <field name="code">action = model._open_import_holidays()</field>-->
-<!--        </record>-->
 
         <menuitem id="rocker_holidays"
                   name="Public Holidays"
