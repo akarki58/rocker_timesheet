@@ -24,7 +24,6 @@ from odoo.exceptions import UserError, AccessError, Warning
 from datetime import timedelta, datetime, date, time, timezone
 import pytz
 import urllib.request
-import ast
 import json
 
 
@@ -131,13 +130,6 @@ class RockerHolidays(models.Model):
             else:
                 country_list.append((c_code, c_fullname))
 
-
-        # for i in range(len(countries_array)):
-        #         d = countries_array[i]
-        #         c_code = d["countryCode"]
-        #         c_fullname = d["fullName"]
-        #         country_list.append((c_code, c_fullname))
-
         return country_list
 
     def import_holidays(self):
@@ -166,7 +158,6 @@ class RockerHolidays(models.Model):
         _logger.debug(_country_code)
         _logger.debug(_region_code)
         # create header
-        # 'date_executed': fields.Datetime.now(),
         # remove old rows: country & year
         _delete = "DELETE FROM rocker_holidays_staging WHERE holiday_year = '" + _year + "' and country_code = '" \
                   + _country_code + "' and main_class_id != " + str(_id)
@@ -176,16 +167,6 @@ class RockerHolidays(models.Model):
                   + _country_code + "' and id != " + str(_id)
         _logger.debug(_delete)
         ret = self.env.cr.execute(_delete)
-        # self.env.cr.commit()
-        # vals = {}
-        # vals = {
-        #     'holiday_year': _year,
-        #     'holiday_country': _country_code,
-        # }
-        # record = None
-        # record = self.sudo().env['rocker.holidays'].create(vals)
-        # record = self.sudo().create(vals)
-        # _logger.debug(record)
         holidays = ''
         if _region_code:
             url = 'https://kayaposoft.com/enrico/json/v2.0/?action=getHolidaysForYear&year=' + _year + \
@@ -250,8 +231,6 @@ class RockerHolidays(models.Model):
 
         self.env.cr.commit()
 
-        # rec_id = self.env['rocker.holidays'].search([('id', '=', 1)]).id
-        # rec_id = record.id
         rec_id = _id
         form_id = self.env.ref('rocker_timesheet.rocker_holidays_view_form')
         return {
@@ -340,20 +319,6 @@ class RockerHolidays(models.Model):
             'res_model': 'resource.calendar.leaves',
             'context': {'no_breadcrumbs': True},
         }
-        # 'views': [[False, "tree"], [False, "form"]],
-        # 'context': {'no_breadcrumbs': True},
-        # 'view_id': form_id.id,
-        # return {
-        #     'name': 'Import Public Holidays',
-        #     'type': 'ir.actions.act_window',
-        #     'res_model': 'resource.calendar.leaves',
-        #     'view_type': 'form',
-        #     'view_mode': 'tree',
-        #     'view_id': form_id.id,
-        #     'target': 'main',
-        # }
-        # 'context': context,
-        # 'res_id': rec_id,
 
     def clear_form(self):
         _logger.debug('Export holidays...')

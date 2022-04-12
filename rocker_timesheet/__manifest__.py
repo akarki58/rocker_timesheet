@@ -39,6 +39,7 @@
         'views/rocker_timesheet_views.xml',
         'views/rocker_timesheet_about.xml',
         'views/rocker_holidays.xml',
+        'views/rocker_leave_type.xml',
         'report/rocker_timesheet_report_view.xml',
     ],
     'qweb': [
