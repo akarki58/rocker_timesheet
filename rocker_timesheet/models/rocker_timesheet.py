@@ -678,7 +678,8 @@ class RockerTimesheet(models.Model):
             if self._calculate_duration(self.start,self.stop) < self.unit_amount:
                 self.stop = (fields.Datetime.from_string(self.start) + timedelta(hours=self.unit_amount)).strftime('%Y-%m-%d %H:%M')
                 self.duration = self.rocker_round_up(self.unit_amount)
-                raise Warning(_('Duration is less than Work Amount!'))
+                raise UserError(_('Duration is less than Work Amount!'))
+                return False
         if self.duration > 0 and not self.unit_amount:
             global default_unit_amount
             self._get_defaults()
