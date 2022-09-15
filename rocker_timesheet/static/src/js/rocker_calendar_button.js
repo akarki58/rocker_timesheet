@@ -17,7 +17,7 @@ odoo.define('rocker_timesheet.calendar-button', function(require) {
 
     var minTime = '00:00:00';
     var maxTime = '24:00:00';
-    var slot = "30";
+    var slot = "00:30:00";
     var defaultMode = 'month';
     var defaultModeSet = false;
 
