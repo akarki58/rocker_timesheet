@@ -18,11 +18,12 @@
 #
 #############################################################################
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models
 from odoo.exceptions import UserError, AccessError, Warning
 from odoo import tools
 from datetime import timedelta, datetime, date, time, timezone
 import pytz
+import json
 
 import logging
 
@@ -46,6 +47,7 @@ class RockerTask(models.Model):
 
     id = fields.Integer('id')
     name = fields.Char('Name')
+    display_name = fields.Char('Description', required=False, store=False, compute='_compute_display_name_language')
     company_id = fields.Many2one('res.company', string='Company', domain="[('company_id', '=', self.env.company.id)]")
     project_id = fields.Many2one('project.project', domain=_domain_project_id)
     task_id = fields.Many2one('project.task', string='Task')
@@ -105,7 +107,7 @@ class RockerTask(models.Model):
                                  t1.id as task_id, -1 * project_id as parent_id, tu2.user_id as user_id,
                                  1 as level
                         FROM project_task t1
-						 JOIN project_task_user_rel tu2 ON t1.id = tu2.task_id
+						FULL OUTER JOIN project_task_user_rel tu2 ON t1.id = tu2.task_id
 						WHERE parent_id is null and active = TRUE 
                     UNION ALL
                         SELECT t2.id, t2.name, t2.company_id as company_id, t2.project_id as project_id,
@@ -123,7 +125,7 @@ class RockerTask(models.Model):
                     WHERE p.allow_timesheets = TRUE
                     AND p.active = TRUE
 					UNION ALL
-					SELECT -1 * p1.id as id, p1.name as name, p1.id as project_id, null as task_id, null as parent_id, p1.user_id, 
+					SELECT -1 * p1.id as id, p1.name::VARCHAR as name, p1.id as project_id, null as task_id, null as parent_id, p1.user_id, 
 					    p1.company_id, p1.privacy_visibility, p1.allow_timesheets,
                                  0 AS level
                     FROM project_project p1
@@ -132,6 +134,17 @@ class RockerTask(models.Model):
                     AND p1.id IN (SELECT project_id FROM project_task t3 
 								  WHERE t3.active = TRUE)
                     """)
+
+    @api.depends('name')
+    def _compute_display_name_language(self):
+        _logger.debug('compute display name language')
+        for line in self:
+            _logger.debug(str(line))
+            if line.task_id:
+                line.display_name = "%s" % line.task_id.name
+            else:
+                line.display_name = "%s" % line.project_id.name
+            _logger.debug(line.display_name)
 
 
 class RockerProject(models.Model):

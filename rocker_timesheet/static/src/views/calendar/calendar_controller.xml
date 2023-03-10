@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+<!--    <t t-name="rocker_timesheet.CalendarController" t-inherit="web.CalendarController" t-inherit-mode="primary" owl="1">-->
+<!--        <xpath expr="//DatePicker" position="replace"/>-->
+<!--    </t>-->
+
+    <t t-name="rocker_timesheet.CalendarController.controlButtons" t-inherit="web.CalendarController.controlButtons" t-inherit-mode="primary" owl="1">
+        <xpath expr="//span[hasclass('o_calendar_scale_buttons')]" position="after">
+            <span class="o_rocker_buttons">
+                <div class="border" name="button_box" position="inside">
+                <b>Filter tasks:</b>
+                <button class="btn btn-primary btn-all mx-1" t-on-click="all" type="button">All</button>
+                <button class="btn btn-primary btn-billable mx-1" t-on-click="billable" type="button">Billable</button>
+                <button class="btn btn-primary btn-nonbillable mx-1" t-on-click="nonbillable" type="button">Non Billable</button>
+                <button class="btn btn-primary btn-internal mx-1" t-on-click="internal" type="button">Internal</button>
+                <button class="btn btn-primary btn-member mx-1" t-on-click="member" type="button">Member</button>
+                <button class="btn btn-primary btn-mine mx-1" t-on-click="mine" type="button">Mine</button>
+                </div>
+            </span>
+        </xpath>
+    </t>
+
+</templates>

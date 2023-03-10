@@ -31,6 +31,7 @@
                     <field name="unit_amount_per_day"/>
                     <field name="hour_saldo" decoration-danger="hour_saldo &lt; 0"/>
                     <field name="company_id" invisible="1"/>
+<!--                    <field name="company_id" groups="base.group_multi_company"/>-->
                     <field name="user_id" invisible="1"/>
                 </tree>
             </field>
@@ -49,6 +50,7 @@
                     <field name="unit_amount_per_day"  type="measure" widget="timesheet_uom"/>
                     <field name="hour_saldo" type="measure" widget="timesheet_uom"/>
                     <field name="company_id" invisible="1"/>
+<!--                    <field name="company_id" groups="base.group_multi_company"/>-->
                     <field name="user_id" invisible="1"/>
 
                 </pivot>
@@ -61,7 +63,7 @@
             <field name="res_model">rocker.hour.bank.report</field>
             <field name="view_mode">tree,pivot</field>
             <field name="domain">[('user_id', '=', uid), ('company_id', '=', allowed_company_ids[0])]</field>
-            <field name="context">{'group_by':['employee_id','calendar_date:year', 'calendar_date:month', 'calendar_date:week'],
+            <field name="context">{'group_by':['company_id','employee_id','calendar_date:year', 'calendar_date:month', 'calendar_date:week'],
                         'order_by': ['employee_id asc','calendar_date:year desc', 'calendar_date:month desc', 'calendar_date:week desc']}</field>
             <field name="search_view_id" ref="rocker_hour_bank_search"/>
             <field name="help" type="html">

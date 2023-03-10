@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates>
+   <t t-extend="ListView.buttons" t-name="rocker_timesheet.tree-button">
+       <t t-jquery="button.o_list_button_add" t-operation="after">
+           <div class="border" name="button_box" position="inside">
+                 <button type="button" class="btn btn-primary roller2 mx-1">Rolling item</button>
+           </div>
+       </t>
+       <t t-jquery="button.o_list_export_xlsx" t-operation="after" >
+           <span class="o_rocker_buttons">
+             <div class="border" name="button_box" position="inside">
+                <b>Filter tasks:</b>
+                <button type="button" class="btn btn-primary all2 mx-1">All</button>
+                <button type="button" class="btn btn-primary billable2 mx-1">Billable</button>
+                <button type="button" class="btn btn-primary nonbillable2 mx-1">NonBillable</button>
+                <button type="button" class="btn btn-primary internal2 mx-1">Internal</button>
+                <button type="button" class="btn btn-primary member2 mx-1">Member</button>
+                <button type="button" class="btn btn-primary mine2 mx-1">Mine</button>
+           </div>
+           </span>
+        </t>
+   </t>
+</templates>

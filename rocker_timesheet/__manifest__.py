@@ -19,15 +19,15 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 #############################################################################
-
+#ToDo kalenterin start end slot
 
 {
     'name': 'Rocker Timesheet',
     'summary': 'hr_timesheet supercharged',
     'description': 'Probably most fastest way to report work done',
     'author': 'Antti Kärki',
-    'license': 'AGPL-3',
-    'version': '15.0.4.0',
+    'license': 'LGPL-3',
+    'version': '16.0.5.0',
     'category': 'Rocker/Timesheet',
     'sequence': 23,
     'website': '',
@@ -35,38 +35,19 @@
     'data': [
         'security/rocker_timesheet_security.xml',
         'security/ir.model.access.csv',
-        # 'views/rocker_template.xml',   # not needed in Odoo 15
         'views/rocker_timesheet_views.xml',
         'views/rocker_timesheet_about.xml',
         'views/rocker_holidays.xml',
         'views/rocker_leave_type.xml',
         'report/rocker_timesheet_report_view.xml',
     ],
-    # 'demo': [
-    #     # 'data/rocker_timesheet_demo.xml',
-    # ],
-    # Odoo 15
-    'assets': {
+   'assets': {
         'web.assets_backend': [
-            'rocker_timesheet/static/src/scss/rocker_calendar_button.scss',
-            'rocker_timesheet/static/src/js/rocker_calendar_button.js',
-            'rocker_timesheet/static/src/scss/rocker_roller_button.scss',
-            'rocker_timesheet/static/src/js/rocker_roller_button.js',
-            'rocker_timesheet/static/src/scss/rocker_tree_button.scss',
-            'rocker_timesheet/static/src/js/rocker_tree_button.js',
-        ],
-        # 'web.assets_frontend': [
-        #     'account/static/src/js/account_portal_sidebar.js',
-        # ],
-        'web.assets_qweb': [
-            'rocker_timesheet/static/src/xml/**/*',
-        ],
-
-    },
-    #  odoo 14
-    # 'qweb': [
-    #     'static/src/xml/rocker_button.xml',
-    # ],
+            'rocker_timesheet/static/src/views/**/*.js',
+            'rocker_timesheet/static/src/views/**/*.scss',
+            'rocker_timesheet/static/src/views/**/*.xml',
+       ]
+   },
     'installable': True,
     'application': True,
     'auto_install': False,

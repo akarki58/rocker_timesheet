@@ -184,22 +184,22 @@ class RockerUser(models.Model):
         ], 'Round Amount To', required=True, default='0', store=True)
     rocker_default_rolling_work = fields.Float('Default Work amount if Rolling', store=True, readonly=False,
                                                default='1', help="Work does not contain breaks like lunch hour")
-    rocker_calendar_mintime = fields.Float('Calendar First Hour', store=True, readonly=False, default='0',
-                                           help="First hours to show")
-    rocker_calendar_maxtime = fields.Float('Calendar Last Hour', store=True, readonly=False, default='24',
-                                           help="Last hours to show")
-    rocker_calendar_slot = fields.Selection([
-        ('15', '15 min'),
-        ('30', '30 min'),
-        ('60', '60 min')], 'Calendar slot duration', required=True, default='30', store=True,
-        help="Calendar min duration, calendar accuracy")
-    rocker_calendar_default_view = fields.Selection([
-        ('day', 'Day'),
-        ('week', 'Week'),
-        ('month', 'Month'),
-        ('year', 'Year'),
-        ], 'Calendar default view', required=True, default='month', store=True,
-        help="Calendar default view to open")
+    # rocker_calendar_mintime = fields.Float('Calendar First Hour', store=True, readonly=False, default='0',
+    #                                        help="First hours to show")
+    # rocker_calendar_maxtime = fields.Float('Calendar Last Hour', store=True, readonly=False, default='24',
+    #                                        help="Last hours to show")
+    # rocker_calendar_slot = fields.Selection([
+    #     ('15', '15 min'),
+    #     ('30', '30 min'),
+    #     ('60', '60 min')], 'Calendar slot duration', required=True, default='30', store=True,
+    #     help="Calendar min duration, calendar accuracy")
+    # rocker_calendar_default_view = fields.Selection([
+    #     ('day', 'Day'),
+    #     ('week', 'Week'),
+    #     ('month', 'Month'),
+    #     ('year', 'Year'),
+    #     ], 'Calendar default view', required=True, default='month', store=True,
+    #     help="Calendar default view to open")
 
 
     @api.depends('employee_id')
@@ -303,8 +303,9 @@ class RockerUser(models.Model):
         return [
             _user_defaults.user_id.id,
             _user_defaults.company_id.id,
-            _user_defaults.rocker_calendar_mintime,
-            _user_defaults.rocker_calendar_maxtime,
-            _user_defaults.rocker_calendar_slot,
+            # ToDo odoo 16 mintime maxtime slot
+            # _user_defaults.rocker_calendar_mintime,
+            # _user_defaults.rocker_calendar_maxtime,
+            # _user_defaults.rocker_calendar_slot,
             _user_defaults.rocker_calendar_default_view,
                 ]
