@@ -202,7 +202,7 @@
                         <h3>Timesheet Settings</h3>
                     </div>
                     <group col="2">
-                        <div/>
+<!--                        <div/>-->
                         <field name="company_id" invisible="1" readonly="1"/>
                         <field name="rocker_default_start" required="1" widget="float_time" invisible="1"/>
                         <field name="rocker_default_stop" required="1" widget="float_time" invisible="1"/>
