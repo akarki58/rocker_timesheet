@@ -2,15 +2,12 @@
 # This file contains the translation of the following modules:
 # 	* rocker_timesheet
 #
-#  Italian translation: Fulvio Crivellaro
-#
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0-20220323\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-11 06:59+0000\n"
-"PO-Revision-Date: 2022-04-11 06:59+0000\n"
+"POT-Creation-Date: 2023-03-30 10:04+0000\n"
+"PO-Revision-Date: 2023-03-30 10:04+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,14 +23,12 @@ msgstr ""
 
 #. module: rocker_timesheet
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_company_defaults__rocker_round_up__15
-#: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_calendar_slot__15
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_round_up__15
 msgid "15 min"
 msgstr ""
 
 #. module: rocker_timesheet
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_company_defaults__rocker_round_up__30
-#: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_calendar_slot__30
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_round_up__30
 msgid "30 min"
 msgstr ""
@@ -46,7 +41,6 @@ msgstr ""
 
 #. module: rocker_timesheet
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_company_defaults__rocker_round_up__60
-#: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_calendar_slot__60
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_round_up__60
 msgid "60 min"
 msgstr ""
@@ -87,15 +81,9 @@ msgid "Actual Work"
 msgstr "Lavoro effettivo"
 
 #. module: rocker_timesheet
-#. openerp-web
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
+#. odoo-javascript
+#: code:addons/rocker_timesheet/static/src/views/calendar/calendar_controller.xml:0
+#: code:addons/rocker_timesheet/static/src/views/list/rocker_tree_button.xml:0
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__account_analytic_line__rocker_search_type__all
 #, python-format
 msgid "All"
@@ -122,55 +110,14 @@ msgid "Analytic Line"
 msgstr "Riga analitica"
 
 #. module: rocker_timesheet
-#. openerp-web
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
+#. odoo-javascript
+#: code:addons/rocker_timesheet/static/src/views/calendar/calendar_controller.xml:0
+#: code:addons/rocker_timesheet/static/src/views/list/rocker_tree_button.xml:0
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__account_analytic_line__rocker_search_type__billable
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__project_project__rocker_type__billable
 #, python-format
 msgid "Billable"
 msgstr "Fatturabile"
-
-#. module: rocker_timesheet
-#: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_user_defaults__rocker_calendar_mintime
-msgid "Calendar First Hour"
-msgstr ""
-
-#. module: rocker_timesheet
-#: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_user_defaults__rocker_calendar_maxtime
-msgid "Calendar Last Hour"
-msgstr ""
-
-#. module: rocker_timesheet
-#: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_user_view_form_simplified
-msgid "Calendar Settings"
-msgstr ""
-
-#. module: rocker_timesheet
-#: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_user_defaults__rocker_calendar_default_view
-msgid "Calendar default view"
-msgstr "Calendario default file"
-
-#. module: rocker_timesheet
-#: model:ir.model.fields,help:rocker_timesheet.field_rocker_user_defaults__rocker_calendar_default_view
-msgid "Calendar default view to open"
-msgstr ""
-
-#. module: rocker_timesheet
-#: model:ir.model.fields,help:rocker_timesheet.field_rocker_user_defaults__rocker_calendar_slot
-msgid "Calendar min duration, calendar accuracy"
-msgstr ""
-
-#. module: rocker_timesheet
-#: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_user_defaults__rocker_calendar_slot
-msgid "Calendar slot duration"
-msgstr ""
 
 #. module: rocker_timesheet
 #: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_holidays_view_form
@@ -268,11 +215,6 @@ msgid "Date Executed"
 msgstr ""
 
 #. module: rocker_timesheet
-#: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_calendar_default_view__day
-msgid "Day"
-msgstr "Giorno"
-
-#. module: rocker_timesheet
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_company_defaults__rocker_default_startToShow
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_user_defaults__rocker_default_startToShow
 msgid "Default Start Time [Local]"
@@ -309,6 +251,12 @@ msgid "Default Work amount if Rolling"
 msgstr "Durata di lavoro Rolling di default"
 
 #. module: rocker_timesheet
+#: model:ir.model.fields,help:rocker_timesheet.field_account_analytic_line__employee_id
+msgid ""
+"Define an 'hourly cost' on the employee to track the cost of their time."
+msgstr ""
+
+#. module: rocker_timesheet
 #: model:ir.model.fields,field_description:rocker_timesheet.field_account_analytic_line__department_id
 #: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_user_view_form_simplified
 msgid "Department"
@@ -318,6 +266,7 @@ msgstr "Ufficio"
 #: model:ir.model.fields,field_description:rocker_timesheet.field_account_analytic_line__display_name
 #: model:ir.model.fields,field_description:rocker_timesheet.field_account_analytic_line__name
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_hour_bank_report__name
+#: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_task__display_name
 msgid "Description"
 msgstr "Descrizione"
 
@@ -331,7 +280,6 @@ msgstr "Dettagli"
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_holidays__display_name
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_holidays_staging__display_name
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_hour_bank_report__display_name
-#: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_task__display_name
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_timesheet_about__display_name
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_user_defaults__display_name
 msgid "Display Name"
@@ -344,7 +292,7 @@ msgid "Duration"
 msgstr "Durata"
 
 #. module: rocker_timesheet
-#: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
+#. odoo-python
 #: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
 #, python-format
 msgid "Duration is less than Work Amount!"
@@ -356,7 +304,6 @@ msgid "Edit Company defaults"
 msgstr "Modifica i valori di default per azienda"
 
 #. module: rocker_timesheet
-#: model:ir.actions.act_window,name:rocker_timesheet.act_rocker_leave_type
 #: model:ir.ui.menu,name:rocker_timesheet.rocker_timesheet_menu_leave_types
 msgid "Edit Leave types"
 msgstr ""
@@ -382,20 +329,13 @@ msgid "Edit project types"
 msgstr "Modifica tipi di progetto"
 
 #. module: rocker_timesheet
-#: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
-#: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
-#: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
+#. odoo-python
 #: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
 #: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
 #: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
 #, python-format
 msgid "Edit row in Time off module!"
 msgstr "Modifica l'elemento nel modulo Ferie!"
-
-#. module: rocker_timesheet
-#: model:ir.actions.server,name:rocker_timesheet.action_open_leave_type_form
-msgid "Edit type"
-msgstr ""
 
 #. module: rocker_timesheet
 #: model:ir.model.fields,field_description:rocker_timesheet.field_account_analytic_line__employee_id
@@ -407,19 +347,12 @@ msgid "Employee"
 msgstr "Dipendente"
 
 #. module: rocker_timesheet
-#. openerp-web
-#: code:addons/rocker_timesheet/static/src/xml/rocker_button.xml:0
-#: code:addons/rocker_timesheet/static/src/xml/rocker_button.xml:0
-#: code:addons/rocker_timesheet/static/src/xml/rocker_button.xml:0
-#: code:addons/rocker_timesheet/static/src/xml/rocker_button.xml:0
+#. odoo-javascript
+#: code:addons/rocker_timesheet/static/src/views/calendar/calendar_controller.xml:0
+#: code:addons/rocker_timesheet/static/src/views/list/rocker_tree_button.xml:0
 #, python-format
 msgid "Filter tasks:"
 msgstr "Filtra per lavoro:"
-
-#. module: rocker_timesheet
-#: model:ir.model.fields,help:rocker_timesheet.field_rocker_user_defaults__rocker_calendar_mintime
-msgid "First hours to show"
-msgstr ""
 
 #. module: rocker_timesheet
 #: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_timesheet_form
@@ -495,15 +428,9 @@ msgid "Imported Public Holidays"
 msgstr ""
 
 #. module: rocker_timesheet
-#. openerp-web
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
+#. odoo-javascript
+#: code:addons/rocker_timesheet/static/src/views/calendar/calendar_controller.xml:0
+#: code:addons/rocker_timesheet/static/src/views/list/rocker_tree_button.xml:0
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__project_project__rocker_type__internal
 #, python-format
 msgid "Internal"
@@ -539,16 +466,6 @@ msgid "Last Updated on"
 msgstr "Ultimo aggiornamento il"
 
 #. module: rocker_timesheet
-#: model:ir.model.fields,help:rocker_timesheet.field_rocker_user_defaults__rocker_calendar_maxtime
-msgid "Last hours to show"
-msgstr ""
-
-#. module: rocker_timesheet
-#: model_terms:ir.ui.view,arch_db:rocker_timesheet.rocker_hour_bank_unpaid_tree
-msgid "Leave types"
-msgstr ""
-
-#. module: rocker_timesheet
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_timesheet_about__legal
 msgid "Legal"
 msgstr ""
@@ -569,37 +486,20 @@ msgid "Main Class"
 msgstr ""
 
 #. module: rocker_timesheet
-#. openerp-web
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
+#. odoo-javascript
+#: code:addons/rocker_timesheet/static/src/views/calendar/calendar_controller.xml:0
+#: code:addons/rocker_timesheet/static/src/views/list/rocker_tree_button.xml:0
 #, python-format
 msgid "Member"
 msgstr "Membro"
 
 #. module: rocker_timesheet
-#: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_calendar_default_view__month
-msgid "Month"
-msgstr "Mese"
-
-#. module: rocker_timesheet
-#. openerp-web
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
+#. odoo-javascript
+#: code:addons/rocker_timesheet/static/src/views/calendar/calendar_controller.xml:0
+#: code:addons/rocker_timesheet/static/src/views/list/rocker_tree_button.xml:0
 #, python-format
-msgid "My"
-msgstr "Miei"
+msgid "Mine"
+msgstr "Mio"
 
 #. module: rocker_timesheet
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__account_analytic_line__rocker_search_type__mine
@@ -616,11 +516,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_timesheet_about__name
 msgid "Name"
 msgstr "Nome"
-
-#. module: rocker_timesheet
-#: model_terms:ir.actions.act_window,help:rocker_timesheet.act_rocker_leave_type
-msgid "No Leave types found."
-msgstr ""
 
 #. module: rocker_timesheet
 #: model_terms:ir.actions.act_window,help:rocker_timesheet.act_rocker_hour_bank_report
@@ -645,15 +540,9 @@ msgid "Non Billable"
 msgstr "Non fatturabile"
 
 #. module: rocker_timesheet
-#. openerp-web
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_calendar_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
+#. odoo-javascript
+#: code:addons/rocker_timesheet/static/src/views/calendar/calendar_controller.xml:0
+#: code:addons/rocker_timesheet/static/src/views/list/rocker_tree_button.xml:0
 #, python-format
 msgid "NonBillable"
 msgstr "Non fatturabile"
@@ -680,7 +569,7 @@ msgid "Office start time"
 msgstr "Ora di inizio lavoro di ufficio"
 
 #. module: rocker_timesheet
-#: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
+#. odoo-python
 #: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
 #, python-format
 msgid "One timesheet row per day...duration can not exceed 24"
@@ -827,7 +716,7 @@ msgstr ""
 #. module: rocker_timesheet
 #: model:ir.model,name:rocker_timesheet.model_project_project
 msgid "Rocker Project"
-msgstr ""
+msgstr "Progetto"
 
 #. module: rocker_timesheet
 #: model:ir.model,name:rocker_timesheet.model_rocker_timesheet_about
@@ -855,20 +744,17 @@ msgid "Rocker task"
 msgstr ""
 
 #. module: rocker_timesheet
-#. openerp-web
-#: code:addons/rocker_timesheet/static/src/js/rocker_roller_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_roller_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
-#: code:addons/rocker_timesheet/static/src/js/rocker_tree_button.js:0
-#, python-format
-msgid "Rolling"
-msgstr ""
-
-#. module: rocker_timesheet
 #: model:ir.model.constraint,message:rocker_timesheet.constraint_rocker_company_defaults_rolling_work_positive
 #: model:ir.model.constraint,message:rocker_timesheet.constraint_rocker_user_defaults_rolling_work_positive
 msgid "Rolling Work time must be positive"
 msgstr "Il tempo di lavoro Rolling deve essere positivo"
+
+#. module: rocker_timesheet
+#. odoo-javascript
+#: code:addons/rocker_timesheet/static/src/views/list/rocker_tree_button.xml:0
+#, python-format
+msgid "Rolling item"
+msgstr "Rotolamento"
 
 #. module: rocker_timesheet
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_company_defaults__rocker_round_up
@@ -912,7 +798,7 @@ msgid "Search Type"
 msgstr "Tipo di ricerca"
 
 #. module: rocker_timesheet
-#: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
+#. odoo-python
 #: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
 #, python-format
 msgid "Select Project & Task from drop-down fields"
@@ -959,8 +845,7 @@ msgid "Start datetime of a task"
 msgstr "Ora di inizio di un lavoro"
 
 #. module: rocker_timesheet
-#: code:addons/rocker_timesheet/models/rocker_timesheet_defaults.py:0
-#: code:addons/rocker_timesheet/models/rocker_timesheet_defaults.py:0
+#. odoo-python
 #: code:addons/rocker_timesheet/models/rocker_timesheet_defaults.py:0
 #: code:addons/rocker_timesheet/models/rocker_timesheet_defaults.py:0
 #, python-format
@@ -973,7 +858,7 @@ msgid "Stop"
 msgstr "Fine"
 
 #. module: rocker_timesheet
-#: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
+#. odoo-python
 #: code:addons/rocker_timesheet/models/rocker_timesheet.py:0
 #, python-format
 msgid "Stop before start!"
@@ -985,8 +870,7 @@ msgid "Stop datetime of a task"
 msgstr "Ora di fine di un lavoro"
 
 #. module: rocker_timesheet
-#: code:addons/rocker_timesheet/models/rocker_timesheet_defaults.py:0
-#: code:addons/rocker_timesheet/models/rocker_timesheet_defaults.py:0
+#. odoo-python
 #: code:addons/rocker_timesheet/models/rocker_timesheet_defaults.py:0
 #: code:addons/rocker_timesheet/models/rocker_timesheet_defaults.py:0
 #, python-format
@@ -1013,6 +897,11 @@ msgstr "Lavori"
 #: model:ir.model.fields.selection,name:rocker_timesheet.selection__project_project__rocker_type__time_off
 msgid "Time Off"
 msgstr "Ferie"
+
+#. module: rocker_timesheet
+#: model:ir.actions.act_window,name:rocker_timesheet.rocker_open_view_holiday_status
+msgid "Time Off Types"
+msgstr ""
 
 #. module: rocker_timesheet
 #: model:ir.ui.menu,name:rocker_timesheet.rocker_timesheet_menu_time_off
@@ -1070,11 +959,6 @@ msgid "Track your working hours by projects every day."
 msgstr "Traccia le tue ore di lavoro ogni giorno."
 
 #. module: rocker_timesheet
-#: model_terms:ir.actions.act_window,help:rocker_timesheet.act_rocker_leave_type
-msgid "Track your working hours every day."
-msgstr ""
-
-#. module: rocker_timesheet
 #: model:ir.model.fields,field_description:rocker_timesheet.field_project_project__rocker_type
 msgid "Type"
 msgstr "Tipologia"
@@ -1104,11 +988,6 @@ msgstr "Valori di default dell'utente"
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_user_defaults__user_id
 msgid "User_id"
 msgstr ""
-
-#. module: rocker_timesheet
-#: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_calendar_default_view__week
-msgid "Week"
-msgstr "Settimana"
 
 #. module: rocker_timesheet
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_hour_bank_report__unit_amount_per_day
@@ -1151,7 +1030,6 @@ msgstr ""
 
 #. module: rocker_timesheet
 #: model:ir.model.fields,field_description:rocker_timesheet.field_rocker_holidays_staging__holiday_year
-#: model:ir.model.fields.selection,name:rocker_timesheet.selection__rocker_user_defaults__rocker_calendar_default_view__year
 msgid "Year"
 msgstr "Anno"
 
