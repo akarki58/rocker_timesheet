@@ -19,7 +19,8 @@
 #############################################################################
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError, AccessError, Warning
+# from odoo.exceptions import UserError, AccessError, Warning
+from odoo.exceptions import UserError, AccessError
 from datetime import timedelta, datetime, date, time, timezone
 import pytz
 
@@ -161,7 +162,7 @@ class RockerUser(models.Model):
                                   default=lambda self: self.env['hr.employee'].search(
                                       [('user_id', '=', self.env.user.id),
                                        ('company_id', '=', self.env.company.id)]).id, store=True)
-    department_id = fields.Many2one('hr.department', "Resource Department", compute='_compute_department_id',
+    department_id = fields.Many2one('hr.department', String="Resource Department", compute='_compute_department_id',
                                     store=True, compute_sudo=True)
 
     rocker_default_start = fields.Float('Default Start Time [UTC]', default='9', required=True, store=True,
@@ -184,26 +185,16 @@ class RockerUser(models.Model):
         ], 'Round Amount To', required=True, default='0', store=True)
     rocker_default_rolling_work = fields.Float('Default Work amount if Rolling', store=True, readonly=False,
                                                default='1', help="Work does not contain breaks like lunch hour")
-    # rocker_calendar_mintime = fields.Float('Calendar First Hour', store=True, readonly=False, default='0',
-    #                                        help="First hours to show")
-    # rocker_calendar_maxtime = fields.Float('Calendar Last Hour', store=True, readonly=False, default='24',
-    #                                        help="Last hours to show")
-    # rocker_calendar_slot = fields.Selection([
-    #     ('15', '15 min'),
-    #     ('30', '30 min'),
-    #     ('60', '60 min')], 'Calendar slot duration', required=True, default='30', store=True,
-    #     help="Calendar min duration, calendar accuracy")
-    # rocker_calendar_default_view = fields.Selection([
-    #     ('day', 'Day'),
-    #     ('week', 'Week'),
-    #     ('month', 'Month'),
-    #     ('year', 'Year'),
-    #     ], 'Calendar default view', required=True, default='month', store=True,
-    #     help="Calendar default view to open")
+    hourbank_calculation_start = fields.Date(
+        String='Hourbank Calculation Start', required=False, readonly=False, store=True,
+        default=datetime.today(), help="Start datetime for hourbank calculation")
+    hourbank_initial_saldo = fields.Float(String='Hourbank initial saldo', store=True, readonly=False,
+                                               default='0', help="Initial saldo for calculation start date")
 
 
     @api.depends('employee_id')
     def _compute_department_id(self):
+        _logger.debug('compute_employee_id')
         self.ensure_one()
         self.department_id = self.employee_id.department_id
 
@@ -303,9 +294,5 @@ class RockerUser(models.Model):
         return [
             _user_defaults.user_id.id,
             _user_defaults.company_id.id,
-            # ToDo odoo 16 mintime maxtime slot
-            # _user_defaults.rocker_calendar_mintime,
-            # _user_defaults.rocker_calendar_maxtime,
-            # _user_defaults.rocker_calendar_slot,
             _user_defaults.rocker_calendar_default_view,
                 ]

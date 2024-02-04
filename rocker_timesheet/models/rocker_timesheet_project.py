@@ -19,7 +19,8 @@
 #############################################################################
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError, AccessError, Warning
+#from odoo.exceptions import UserError, AccessError, Warning
+from odoo.exceptions import UserError, AccessError
 from odoo import tools
 from datetime import timedelta, datetime, date, time, timezone
 import pytz
@@ -64,42 +65,7 @@ class RockerTask(models.Model):
     def init(self):
         _logger.debug('Init: create view')
         tools.drop_view_if_exists(self.env.cr, self._table)
-        # self._cr.execute("""DROP VIEW IF EXISTS ROCKER_TASK""")
-        # id when taken from project_id can not be the same number than task_id, convert project_id to negative
-        # odoo 14
-        # self.env.cr.execute("""
-        #             CREATE VIEW rocker_task AS
-        #             WITH RECURSIVE ctename AS (
-        #                 SELECT t1.id as id, t1.name as name, t1.company_id as company_id, t1.project_id as project_id,
-        #                          t1.id as task_id, -1 * project_id as parent_id, t1.user_id as user_id,
-        #                          1 as level
-        #                 FROM project_task t1
-		# 				WHERE parent_id is null and active = TRUE
-        #             UNION ALL
-        #                 SELECT t2.id, t2.name, t2.company_id as company_id, t2.project_id as project_id,
-        #                      t2.id as task_id, t2.parent_id as parent_id, t2.user_id as user_id,
-        #                      ctename.level + 1
-        #                 FROM project_task t2
-        #                  JOIN ctename ON t2.parent_id = ctename.id
-        #                  WHERE active = TRUE
-        #             )
-        #             SELECT ct.id, ct.name, ct.project_id, ct.task_id, ct.parent_id, ct.user_id,
-		# 			    p.company_id, p.privacy_visibility, p.allow_timesheets, ct.level
-        #             FROM ctename ct
-		# 			JOIN project_project p ON p.id = ct.project_id
-        #             WHERE p.allow_timesheets = TRUE
-        #             AND p.active = TRUE
-		# 			UNION ALL
-		# 			SELECT -1 * p1.id as id, p1.name as name, p1.id as project_id, null as task_id, null as parent_id, p1.user_id,
-		# 			    p1.company_id, p1.privacy_visibility, p1.allow_timesheets,
-        #                          0 AS level
-        #             FROM project_project p1
-        #             WHERE p1.allow_timesheets = TRUE
-        #             AND p1.active = TRUE
-        #             AND p1.id IN (SELECT project_id FROM project_task t3
-		# 						  WHERE t3.active = TRUE)
-        #             """)
-        # odoo 15
+
         self.env.cr.execute("""
                     CREATE VIEW rocker_task AS
                     WITH RECURSIVE ctename AS (

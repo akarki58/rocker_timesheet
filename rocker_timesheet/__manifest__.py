@@ -19,15 +19,15 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 #############################################################################
-#ToDo kalenterin start end slot
+#ToDo_
 
 {
     'name': 'Rocker Timesheet',
     'summary': 'hr_timesheet supercharged',
     'description': 'Probably most fastest way to report work done',
     'author': 'Antti Kärki',
-    'license': 'LGPL-3',
-    'version': '16.0.5.0',
+    'license': 'AGPL-3',
+    'version': '17.0.1.0',
     'category': 'Rocker/Timesheet',
     'sequence': 23,
     'website': '',
@@ -43,10 +43,11 @@
     ],
    'assets': {
         'web.assets_backend': [
-            'rocker_timesheet/static/src/views/**/*.js',
-            'rocker_timesheet/static/src/views/**/*.scss',
-            'rocker_timesheet/static/src/views/**/*.xml',
-       ]
+           'rocker_timesheet/static/src/views/calendar/*.xml',
+            'rocker_timesheet/static/src/views/calendar/*.js',
+            'rocker_timesheet/static/src/views/list/*.xml',
+            'rocker_timesheet/static/src/views/list/*.js',
+        ]
    },
     'installable': True,
     'application': True,

@@ -19,7 +19,8 @@
 #############################################################################
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError, AccessError, Warning
+#from odoo.exceptions import UserError, AccessError, Warning
+from odoo.exceptions import UserError, AccessError
 # from odoo import tools
 from datetime import timedelta, datetime, date, time, timezone
 import pytz
@@ -139,7 +140,7 @@ class RockerHolidays(models.Model):
         _region_code = None
         _country_name = None
 
-        context = self.env.context
+        context = dict(self.env.context)
         _logger.debug(context)
         _id = context.get('id')
         _year = context.get('holiday_year')
@@ -172,8 +173,6 @@ class RockerHolidays(models.Model):
         else:
             url = 'https://kayaposoft.com/enrico/json/v2.0/?action=getHolidaysForYear&year=' + _year + \
                   '&country=' + _country_code + '&holidayType=public_holiday'
-        # url = 'https://kayaposoft.com/enrico/json/v2.0/?action=getHolidaysForYear&year=2022&country=fin&holidayType=public_holiday'
-        # https://kayaposoft.com/enrico/json/v2.0/?action=getHolidaysForYear&year=2022&country=usa&region=al&holidayType=public_holiday
         try:
             with urllib.request.urlopen(url) as f:
                 # _logger.debug(f.read().decode('utf-8'))
@@ -231,6 +230,7 @@ class RockerHolidays(models.Model):
 
         rec_id = _id
         form_id = self.env.ref('rocker_timesheet.rocker_holidays_view_form')
+        context['form_view_initial_mode'] = 'edit'
         return {
             'name': 'Imported Public Holiday',
             'type': 'ir.actions.act_window',
@@ -239,7 +239,7 @@ class RockerHolidays(models.Model):
             'view_type': 'form',
             'view_mode': 'form',
             'view_id': form_id.id,
-            'context': {},
+            'context': context,
             'target': 'inline',
         }
 

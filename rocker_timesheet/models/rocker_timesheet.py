@@ -19,7 +19,8 @@
 #############################################################################
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError, AccessError, Warning
+#from odoo.exceptions import UserError, AccessError, Warning
+from odoo.exceptions import UserError, AccessError
 from odoo import tools
 from datetime import timedelta, datetime, date, time, timezone
 from dateutil.rrule import rrule, DAILY
@@ -57,20 +58,16 @@ class RockerTimesheet(models.Model):
 
     def _domain_project_id(self):
         domain = [('allow_timesheets', '=', True)]
-        # odoo 14
-        # return expression.AND([domain,
-        #                        ['|', ('privacy_visibility', '!=', 'followers'), ('allowed_internal_user_ids', 'in', self.env.user.ids)]
-        #                        ])
-        # odoo 15
         return expression.AND([domain,
                                ['|', ('privacy_visibility', '!=', 'followers'), ('message_partner_ids', 'in', [self.env.user.partner_id.id])]
                                ])
 
     def _domain_project_id_search(self):
-        domain = [('company_id', '=', self.env.company.id)]
+        domain = ['|',('company_id', '=', self.env.company.id),('company_id', '=', '')]
         return domain
 
     def _set_rolling(self, bset):
+        _logger.debug('Setting rolling true')
         _i = 0
         _bfound = False
         _i = int(self.env.user.id)
@@ -157,13 +154,10 @@ class RockerTimesheet(models.Model):
 
     def _domain_get_search_domain(self, filt):
         # default = all
-        _search_panel_domain = [('company_id', '=', self.env.company.id)]  # ok
+        _search_panel_domain = ['|',('company_id', '=', self.env.company.id),('company_id', '=', False)]  # ok
         if filt == 'all':
             _search_panel_domain = _search_panel_domain + []
         elif filt == 'member':
-            # odoo 14
-            # _search_panel_domain = _search_panel_domain + [('project_id', 'in', self.env['project.project'].search([('allowed_internal_user_ids', 'in', self.env.user.ids)]).ids)]
-            # odoo 15
             _search_panel_domain = _search_panel_domain + [('project_id', 'in', self.env['project.project'].search([('message_partner_ids', 'in', [self.env.user.partner_id.id])]).ids)]
         elif filt == 'internal':
             _search_panel_domain = _search_panel_domain + [
@@ -175,16 +169,6 @@ class RockerTimesheet(models.Model):
             _search_panel_domain = _search_panel_domain + [
                 ('project_id', 'in', self.env['project.project'].search([('rocker_type', '=', 'nonbillable')]).ids)]
         elif filt == 'mine':
-            # odoo 14
-            # _search_panel_domain = _search_panel_domain + \
-            #                        ['|',
-            #                         ('task_id', 'in',
-            #                          self.env['project.task'].search([('user_id', '=', self.env.user.id)]).ids),
-            #                         '&', ('task_id', '=', False),
-            #                         ('project_id', 'in', self.env['project.task'].search(
-            #                             [('user_id', '=', self.env.user.id)]).project_id.ids),
-            #                         ]
-            # odoo 15
             _search_panel_domain = _search_panel_domain + \
                                    ['|',
                                     ('task_id', 'in', self.env['rocker.task'].search([('user_id', '=', self.env.user.id)]).ids),
@@ -194,11 +178,6 @@ class RockerTimesheet(models.Model):
 
         else:
             self._domain_get_search_domain('all')
-        # odoo 14
-        # _search_panel_domain = expression.AND([_search_panel_domain,
-        # ['|', ('privacy_visibility', '!=', 'followers'), ('project_id.allowed_internal_user_ids', 'in', self.env.user.ids)]
-        # ])
-        # odoo 15
         _search_panel_domain = expression.AND([_search_panel_domain,
                                                ['|', ('privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [self.env.user.partner_id.id])]
                                                ])
@@ -314,17 +293,12 @@ class RockerTimesheet(models.Model):
     # existing fields
     company_id = fields.Many2one('res.company', "Company", default=lambda self: self.env.company, store=True,
                                  required=True)
-    # task_id = fields.Many2one(
-    #     'project.task', 'Task', compute='_compute_task_id', store=True, readonly=False, index=True,
-    #     domain="[('company_id', '=', company_id), ('project_id.allow_timesheets', '=', True), ('project_id', '=?', project_id)]")
     project_id = fields.Many2one(
         'project.project', 'Project', compute='_compute_project_id', store=True, readonly=False,
         domain=_domain_project_id)
     task_id = fields.Many2one(
         'project.task', 'Task', compute='_compute_task_id', store=True, readonly=False, index=True,
         domain="[('company_id', '=', company_id), ('project_id.allow_timesheets', '=', True), ('project_id', '=?', project_id)]")
-        # domain = "[('project_id', '=?', project_id)]")
-    # name = fields.Char('Comments', required=False, default=_default_name)
     name = fields.Char(required=False, default=_default_name)
 
     # new fields
@@ -346,12 +320,10 @@ class RockerTimesheet(models.Model):
     # required fields
     # changed to non required, we handle this in views, (otherwise old timesheet app does not work)
     start = fields.Datetime(
-        # 'Start', required=False, readonly=False, default=_default_start, store=True,
         'Start', required=False, readonly=False, default=_default_start, store=True,
         help="Start datetime of a task")
     stop = fields.Datetime(
         'Stop', required=False, readonly=False, default=_default_stop, store=True,
-        # 'Stop', required=False, readonly=False, store=True,
         help="Stop datetime of a task")
     allday = fields.Boolean('All Day', default=False, required=False)  # required in order calendar to work
     #
@@ -360,7 +332,6 @@ class RockerTimesheet(models.Model):
     duration = fields.Float('Duration', store=True, readonly=False, default=_default_duration, required=True, help="Work duration in hours")
 
     # existing fields
-    # date = fields.Date('Date', required=True, index=True, default=_default_date, store=True)
     date = fields.Date('Date', required=True, index=True, store=True)
     user_id = fields.Many2one('res.users', string='User', default=lambda self: self.env.user, required=True)
     employee_id = fields.Many2one('hr.employee', "Employee",
@@ -370,7 +341,6 @@ class RockerTimesheet(models.Model):
     department_id = fields.Many2one('hr.department', "Department", compute='_compute_department_id', store=True,
                                     compute_sudo=True)
     unit_amount = fields.Float('Actual Work', default=_default_work, required=True, help="Work amount in hours")
-    # 2022
 
     # def init(self):
     #     # when module is installed or upgraded
@@ -381,12 +351,12 @@ class RockerTimesheet(models.Model):
     #     _logger.debug('Rocker: __init__')
     #     return super().__init__(pool, cr)
 
-    # @api.depends('task_id', 'task_id.project_id')
     @api.depends('project_id')
     def _compute_project_id(self):
         _logger.debug('api depends project id')
         if not self.project_id and self._get_search_id() > 0:
             search_task = self.env['project.task'].search([('id', '=', self._get_search_id())], limit=1)
+            _logger.debug('search_task')
             _logger.debug(search_task)
             if not search_task.id:
                 _logger.debug('Project not found from project.task...')
@@ -395,7 +365,7 @@ class RockerTimesheet(models.Model):
             _logger.debug('search project id: ' + str(search_task.project_id.id))
             for line in self:
                 self.project_id = search_task.project_id.id
-                self.task_id = None
+                self.task_id = search_task.id
         elif self.task_id:
             self.project_id = self.task_id.project_id
 
@@ -403,9 +373,6 @@ class RockerTimesheet(models.Model):
     @api.depends('task_id')
     def _compute_task_id(self):
         _logger.debug('_compute task id')
-        # 2023
-        # for line in self.filtered(lambda line: not line.project_id):
-        #     line.task_id = False
         if not self.task_id and self._get_search_id() > 0:
             search_task = self.env['project.task'].search([('id', '=', self._get_search_id())], limit=1)
             _logger.debug(search_task)
@@ -418,7 +385,7 @@ class RockerTimesheet(models.Model):
 
     @api.depends('name','unit_amount')
     def _compute_display_name(self):
-        _logger.debug('api depends name')
+        _logger.debug('api depends name, unit_amount')
         for line in self:
             line.display_name = "%s %s %s %s %0.1f %s" % (line.task_id.name , ': ' , line.name, ' - ', line.unit_amount or 0, ' h')
 
@@ -447,6 +414,13 @@ class RockerTimesheet(models.Model):
 
     @api.model
     def create(self, vals):
+        global default_start_time
+        global default_end_time
+        global default_duration
+        global default_unit_amount
+        global default_rolling_amount
+        global default_time_roundup
+        self._get_defaults()
         # creation from hr_timesheet or time_off: set stop & duration
         if 'date' in vals and not 'start' in vals:
             _logger.debug('Creation comes somewhere else than Rocker')
@@ -500,7 +474,9 @@ class RockerTimesheet(models.Model):
         _logger.debug(vals)
         _brolling = self._get_rolling()
 
-        # date exist on view
+        #
+        if 'date' not in vals:
+            vals['date'] = fields.Datetime.from_string(vals['start']).date()
         # date field is invisible on Rocker timesheet tree view, it is not set
         if 'date' in vals and not vals.get('date'):
             vals['date'] = fields.Datetime.from_string(vals['start']).date()
@@ -532,7 +508,22 @@ class RockerTimesheet(models.Model):
             project = self.env['project.project'].search([('id', '=', task.project_id.id)], limit=1)
             _logger.debug('Added account_id: ' + str(project.analytic_account_id))
             vals['account_id'] = project.analytic_account_id.id
+
+        # CREATE first row
+        _logger.debug('Insert date ' + str(vals['date']))
+        _logger.debug('Insert start date: '    + str(vals['start']))
+        _logger.debug('Insert stop date: ' + str(vals['stop']))
+
+        # If stop date > start date --> change stop (we create one row per day)
+        if fields.Datetime.from_string(vals['stop']).date() > fields.Datetime.from_string(vals['start']).date():
+            _logger.debug('Changing stop date ')
+            _logger.debug('Stop time: ' + fields.Datetime.from_string(vals['stop']).time().strftime('%H:%M'))
+            vals['stop'] = (datetime.combine(fields.Datetime.from_string(vals['start']).date(),
+                            fields.Datetime.from_string(vals['stop']).time())).strftime('%Y-%m-%d %H:%M')
+            vals['duration'] = str(self._calculate_duration(fields.Datetime.from_string(vals['start']), fields.Datetime.from_string(vals['stop'])))
+
         record = super(RockerTimesheet, self).create(vals)
+        # row created, should we create more
         global daystocreate
         if daystocreate > 0:
             i = 0
@@ -541,26 +532,13 @@ class RockerTimesheet(models.Model):
                 vals['date'] = fields.Datetime.from_string(vals['date']) + timedelta(days=1)
                 vals['start'] = fields.Datetime.from_string(vals['start']) + timedelta(days=1)
                 vals['stop'] = fields.Datetime.from_string(vals['stop']) + timedelta(days=1)
+                _logger.debug('Inserting date ' + str(vals['date']))
+                _logger.debug('Inserting start ' + str(vals['start']))
+                _logger.debug('Inserting stop ' + str(vals['stop']))
                 record = super(RockerTimesheet, self).create(vals)
                 i += 1
         self._set_rolling(False)  # default is Create button with default starty & Stop, Rolling is set is Rolling button clicked
         return record
-
-    def read(self, values):
-        if 'start' in values: # rocker
-            _logger.debug('Rocker read used')
-            self._set_rolling(False)  # default is Create button with default start & Stop, Rolling is set when Rolling button clicked
-            _logger.debug('Values...' + str(values))
-        else:
-            _logger.debug('Rocker read NOT used')
-            self._set_search_id(0)
-
-        try:
-            records = super(RockerTimesheet, self).read(values)
-            return records
-        except Exception as e:
-            raise exceptions.ValidationError(str(e))
-            return False
 
     def write(self, vals):
         _logger.debug('Write')
@@ -593,24 +571,30 @@ class RockerTimesheet(models.Model):
     # ----------------------------------------------------------
 
     @api.model
-    def search(self, args, offset=0, limit=None, order=None, count=False):
-        _logger.debug('Search...')
-        args = args + self._domain_project_id_search()
+    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
+        _logger.debug('Search_read...')
+        _logger.debug('domain: ' + str(domain))
+        _logger.debug('fields: ' + str(fields))
+        # args = args + self._domain_project_id_search()
         clause = []
-        # selected_id = 0
+        # # selected_id = 0
         i = 0
-        for clause in args:
+        for clause in domain:
+            _logger.debug('clause: ' + str(clause))
             if clause[0] == 'task_search':
                 # selected_id = int(clause[2])
                 if int(clause[2]) > 0:  # id > 0 when task, project row has < 1
                     self._set_search_id(int(clause[2]))
+                    _logger.debug('Selected id set to: ' + str(self._get_search_id()))
                 else:
                     self._set_search_id(0)
                 clause[0] = 'task_search'
                 clause[1] = '<>'
                 clause[2] = ' '
             i += 1
-        records = super(RockerTimesheet, self).search(args, limit=limit)
+        _logger.debug('domain: ' + str(domain))
+        # domain = []  # return all rows to calendar
+        records = super(RockerTimesheet, self).search_read(domain, fields, offset, limit, order)
         return records
 
     @api.model
@@ -636,17 +620,6 @@ class RockerTimesheet(models.Model):
             return super(RockerTimesheet, self).search_panel_select_range(
                 field_name, comodel_domain=search_domain, **kwargs
             )
-            # odoo 13, does not work in odoo 14 (no hierarchy)
-            # field = self._fields[field_name]
-            # Comodel = self.env[field.comodel_name]
-            # fields = ['display_name']
-            # parent_name = Comodel._parent_name if Comodel._parent_name in Comodel._fields else False
-            # if parent_name:
-            #     fields.append(parent_name)
-            # return {
-            #     'parent_field': parent_name,
-            #     'values': Comodel.with_context(hierarchical_naming=False).search_read(search_domain, fields),
-            # }
 
         return super(RockerTimesheet, self).search_panel_select_range(field_name, **kwargs)
 
@@ -735,6 +708,7 @@ class RockerTimesheet(models.Model):
             _broll = None
             _broll = self._get_rolling()
             if _broll == True:  # set start date = max stop
+                _logger.debug('Rolling start...')
                 query = 'SELECT MAX(stop) as max_stop FROM account_analytic_line where user_id = ' + str(self.env.user.id) + \
                         ' and company_id = ' + str(self.env.company.id)
                 self.env.cr.execute(query)
@@ -742,6 +716,8 @@ class RockerTimesheet(models.Model):
                 max_stop = self.env.cr.fetchone()
                 if max_stop[0]:
                     self.start =  max_stop[0].strftime('%Y-%m-%d %H:%M')
+                else:
+                    return False
             else:
                 _now = fields.Date.today().strftime('%Y-%m-%d %H:%M')
                 self.start = (fields.Datetime.from_string(_now) + timedelta(hours=default_start_time)).strftime('%Y-%m-%d %H:%M')
@@ -750,21 +726,23 @@ class RockerTimesheet(models.Model):
         global daystocreate
         daystocreate = 0
         _delta = 0
+        _logger.debug('Start date: ' + str(self.start))
+        _logger.debug('Stop date: ' + str(self.stop))
         if self.stop and self.start:
             _delta = self.stop.date() - self.start.date()
             daystocreate = _delta.days
             _logger.debug('Needs to create ' + str(daystocreate) + ' extra timesheet rows')
 
-        # 2023
-        # self.date = self.start.date()
         self.date = self.start
+        _logger.debug('Date: ' + str(self.date))
+
         self.allday = False
 
         if not self.stop: # real stop setting later has to have something
             self.stop = self.start
         #
         fmt = "%Y-%m-%d %H:%M"
-        _logger.debug(fields.Datetime.from_string(self.start).time())
+        _logger.debug('Start date.time: ' + str(fields.Datetime.from_string(self.start).time()))
         _dt = fields.Datetime.from_string(self.start).time()
         if  (_dt.hour == 0 and _dt.minute == 0 and _dt.second == 0): # or self.stop.date() == self.start.date():
             self.daystocreateshow = daystocreate + 1
@@ -772,7 +750,8 @@ class RockerTimesheet(models.Model):
             _date = fields.Datetime.from_string(self.start)
             self.start = (fields.Datetime.from_string(self.start.date()) + timedelta(hours=default_start_time)).strftime('%Y-%m-%d %H:%M')
             # we change this to one day, in create we create the rest
-            self.stop = (fields.Datetime.from_string(self.start.date()) + timedelta(hours=default_end_time)).strftime('%Y-%m-%d %H:%M')
+            self.stop = (fields.Datetime.from_string(self.stop.date()) + timedelta(hours=default_end_time)).strftime('%Y-%m-%d %H:%M')
+            _logger.debug('Stop date.time: ' + str(fields.Datetime.from_string(self.stop).time()))
             self.duration = self._calculate_duration(self.start,self.stop)
             self.unit_amount = self._default_work()
         else:
@@ -824,17 +803,6 @@ class RockerTimesheet(models.Model):
             if fields.Datetime.from_string(self.stop) < fields.Datetime.from_string(self.start):
                 raise UserError(_('Stop before start!'))
             self.duration = self._calculate_duration(self.start,self.stop)
-
-    @api.onchange('project_id')
-    def _onchange_project_id(self):
-        _logger.debug('_onchange_project_id')
-        if self.task_id and self.project_id != self.task_id.project_id:
-            self.task_id = False
-
-    @api.onchange('task_id')
-    def _onchange_task_id(self):
-        _logger.debug('_onchange_task_id')
-        self.project_id = self.task_id.project_id
 
     def rocker_round_up(self, dt):
         global default_start_time

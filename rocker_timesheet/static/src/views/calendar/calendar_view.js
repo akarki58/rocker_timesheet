@@ -1,22 +1,17 @@
-/** @odoo-module */
+/** @odoo-module **/
 
-import { calendarView } from '@web/views/calendar/calendar_view';
+import { registry } from "@web/core/registry";
+import { calendarView } from "@web/views/calendar/calendar_view";
 import { RockerCalendarController } from './calendar_controller';
-import { RockerCalendarModel } from './calendar_model';
-import { RockerCalendarRenderer} from './calendar_renderer';
+//import { RockerCalendarModel } from './calendar_model';
+//import { RockerCalendarRenderer} from './calendar_renderer';
 
-import { registry } from '@web/core/registry';
-
-const RockerCalendarView = {
+export const RockerCalendarView = {
     ...calendarView,
-
     Controller: RockerCalendarController,
-    Renderer: RockerCalendarRenderer,
-    Model: RockerCalendarModel,
+//    Model: RockerCalendarModel,
+//    Renderer: RockerCalendarRenderer,
+};
 
-    buttonTemplate: "rocker_timesheet.CalendarController.controlButtons",
+registry.category("views").add("rocker_calendar", RockerCalendarView);
 
-
-}
-
-registry.category('views').add('rocker_calendar', RockerCalendarView);

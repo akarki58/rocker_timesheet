@@ -1,32 +1,26 @@
-/** @odoo-module */
+/** @odoo-module **/
 
-import { CalendarController } from '@web/views/calendar/calendar_controller';
-
+//import { _t } from "@web/core/l10n/translation";
+import { CalendarController } from "@web/views/calendar/calendar_controller";
 import { useService } from "@web/core/utils/hooks";
-
 export class RockerCalendarController extends CalendarController {
     setup() {
+        console.log('setup');
         super.setup();
         this.actionService = useService("action");
     }
-       all() {
-//            alert('test from my  module');
-            this.actionService.doAction("rocker_timesheet.action_searchpanel_all_tasks", {
-                additionalContext: {
-            //        default_project_id: this.projectId,
-            //        active_id: this.projectId,
-                },
-            });
-        }
-       member() {this.actionService.doAction("rocker_timesheet.action_searchpanel_member_tasks", {});}
-       billable() {this.actionService.doAction("rocker_timesheet.action_searchpanel_billable_tasks", {});}
-       nonbillable() {this.actionService.doAction("rocker_timesheet.action_searchpanel_nonbillable_tasks", {});}
-       internal() {this.actionService.doAction("rocker_timesheet.action_searchpanel_internal_tasks", {});}
-       mine() {this.actionService.doAction("rocker_timesheet.action_searchpanel_mine_tasks", {});}
-
+    async all() {await this.actionService.doAction("rocker_timesheet.action_searchpanel_all_tasks", {});}
+    async member() {await this.actionService.doAction("rocker_timesheet.action_searchpanel_member_tasks", {});}
+    async billable() {await this.actionService.doAction("rocker_timesheet.action_searchpanel_billable_tasks", {});}
+    async nonbillable() {await this.actionService.doAction("rocker_timesheet.action_searchpanel_nonbillable_tasks", {});}
+    async internal() {await this.actionService.doAction("rocker_timesheet.action_searchpanel_internal_tasks", {});}
+    async mine() {await this.actionService.doAction("rocker_timesheet.action_searchpanel_mine_tasks", {});}
+//        $(document).find('.o_list_button_add').click();
 }
-//RockerCalendarController.template = "rocker_timesheet.CalendarController";
+
+RockerCalendarController.template = "rocker_timesheet.RockerCalendarController";
 RockerCalendarController.components = {
     ...RockerCalendarController.components,
-//    FilterPanel: RockerCalendarFilterPanel,
+//    QuickCreateFormView: CalendarQuickCreate,
 }
+

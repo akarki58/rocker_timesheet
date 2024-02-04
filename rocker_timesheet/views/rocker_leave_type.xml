@@ -19,12 +19,6 @@
             <field name="type">form</field>
             <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
             <field name="arch" type="xml">
-<!-- odoo13               <xpath expr="//group[@name='timesheet']" position="inside">-->
-<!--                    <field name="unpaid"/>-->
-<!--                </xpath>-->
-<!--  odoo 14              <xpath expr="//group[@name='description']" position="inside">-->
-<!--                    <field name="unpaid"/>-->
-<!--                </xpath>-->
                 <xpath expr="//group[@name='leave_validation']" position="inside">
                     <field name="unpaid"/>
                 </xpath>

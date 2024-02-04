@@ -6,40 +6,40 @@
             <field name="name">Rocker Import Public Holidays</field>
             <field name="model">rocker.holidays</field>
             <field name="arch" type="xml">
-                <form string="Import Public Holidays" create="false" delete="false" edit="false">
+                <form string="Import Public Holidays" create="false" delete="false" edit="1">
                     <sheet>
                         <div>
-                        <group col="2"  style="width: 70%%" >
+                        <group col="2"  style="width: 100%%" >
                             <field name="id" readonly="1" invisible="1"/>
-                            <field name="holiday_year" style="width: 30%%" attrs="{'readonly':[('id', '&gt;', 0)]}"/>
-                            <field name="holiday_country" style="width: 30%%"  attrs="{'readonly':[('id', '&gt;', 0)]}"/>
+                            <field name="holiday_year" style="width: 30%%" readonly="id, '&gt;', 0"/>
+                            <field name="holiday_country" style="width: 30%%"  readonly="id, '&gt;', 0"/>
 
-                            <field name="date_executed" readonly="1" attrs="{'invisible':[('id', '&lt;', 1)]}" class="oe_inline"  />
+                            <field name="date_executed" readonly="1" class="oe_inline"  />
                             </group>
                     </div>
                         <button type="object" string=" Import Public Holidays" name="import_holidays" confirm="Import Public Holidays?"
-                                icon="fa-solid fa-gear" class="oe_highlight" attrs="{'invisible':[('id', '&gt;', 0)]}"
+                                icon="fa-solid fa-gear" class="oe_highlight" invisible="id, '=', True"
                                 context="{'id': id, 'holiday_country': holiday_country, 'holiday_year': holiday_year}" />
-                        <button type="object" string=" Write Public Holidays to Odoo Calendar" name="export_holidays" confirm="Write Public Holidays? (Update and/or Insert)"
-                                icon="fa-gear" class="btn-danger" attrs="{'invisible':[('id', '&lt;', 1)]}"
+                        &#x2063;<button type="object" string=" Write Public Holidays to Odoo Calendar" name="export_holidays" confirm="Write Public Holidays? (Update and/or Insert)"
+                                icon="fa-gear" class="btn-danger oe_edit_only"
                                 context="{'id': id, 'write_local': write_local, 'holiday_country': holiday_country, 'holiday_year': holiday_year}" />
                         &#x2063;<button type="object" string=" Clear Form" name="clear_form" confirm="Clear?"
-                                icon="fa-file-o" class="oe_highlight" attrs="{'invisible':[('id', '&lt;', 1)]}"
+                                icon="fa-file-o" class="oe_highlight"
                                 context="{'id': id, 'write_local': write_local, 'holiday_country': holiday_country, 'holiday_year': holiday_year}" />
                         <div/>
                         <group>
-                        <field name="write_local" readonly="0" style="width: 20%%" attrs="{'invisible':[('id', '&lt;', 1)]}" />
+                        <field name="write_local" readonly="0" style="width: 20%%" />
                              </group>
                         <notebook>
                         <page name="imported_holidays" string="Imported Holidays">
                             <field name="notebook_ids">
-                        <tree string="Import Public Holidays" edit="false" create="false" delete="true" >
-                            <field name="country_name" readonly="1" invisible="1"/>
-                            <field name="country_code" readonly="1" invisible="1"/>
-                            <field name="holiday_date" readonly="1"/>
-                            <field name="name_local" readonly="1"/>
-                            <field name="name_other" readonly="1"/>
-                            <field name="holiday_type" readonly="1" invisible="1"/>
+                        <tree string="Import Public Holidays" editable="bottom" create="0" >
+                            <field name="country_name" readonly="1" column_invisible="1"/>
+                            <field name="country_code" readonly="1" column_invisible="1"/>
+                            <field name="holiday_date" />
+                            <field name="name_local" />
+                            <field name="name_other" />
+                            <field name="holiday_type" readonly="1" column_invisible="1"/>
                         </tree>
                         </field>
                         </page>
@@ -49,32 +49,14 @@
             </field>
         </record>
 
-        <record id="rocker_holidays_staging_form" model="ir.ui.view">
-            <field name="name">Edit Rocker Holiday</field>
-            <field name="model">rocker.holidays.staging</field>
-            <field name="arch" type="xml">
-                <form string="Rocker Imported Holiday">
-                    <group col="2">
-                    <field name="country_name" readonly="1" invisible="0"/>
-                    <field name="country_code" readonly="1" invisible="1"/>
-                    <field name="holiday_date" readonly="0"/>
-                    <field name="name_local" readonly="0"/>
-                    <field name="name_other" readonly="0"/>
-                    <field name="holiday_type" readonly="1" invisible="1"/>
-                    </group>
-                </form>
-            </field>
-        </record>
-
         <record id="act_rocker_holidays_form" model="ir.actions.act_window">
             <field name="name">Rocker Holidays</field>
             <field name="res_model">rocker.holidays</field>
-            <!--            <field name="domain">[('user_id', '=', uid)]</field>-->
             <field name="view_mode">form</field>
             <field name="view_id" ref="rocker_holidays_view_form"/>
-            <!--            <field name="search_view_id" ref="rocker_timesheet_search"/>-->
             <field name="target">inline</field>
         </record>
+
 
         <menuitem id="rocker_holidays"
                   name="Public Holidays"
