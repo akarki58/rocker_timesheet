@@ -483,7 +483,7 @@ class RockerTimesheet(models.Model):
         _selected_id = -1
         if vals.get('task_id') == False:
             _logger.debug('Task selected from searchpanel')
-            _selected_id = _get_search_id()
+            _selected_id = self._get_search_id()
             if _selected_id > 0:
                 _logger.debug('Selected id set, search task...')
                 search_task = self.env['project.task'].search([('id', '=', _selected_id)], limit=1)
