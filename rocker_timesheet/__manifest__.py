@@ -28,7 +28,7 @@
     'author': 'Antti Kärki',
     'license': 'OPL-1',
     'price': 10.00,
-    'currency': 'EUR'
+    'currency': 'EUR',
     'version': '17.0.1.0',
 <z
 
