@@ -30,8 +30,6 @@
     'price': 10.00,
     'currency': 'EUR',
     'version': '17.0.1.0',
-<z
-
     'category': 'Rocker/Timesheet',
     'sequence': 23,
     'website': '',
