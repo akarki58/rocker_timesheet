@@ -412,8 +412,8 @@ class RockerTimesheet(models.Model):
     # read search create unlink
     #############################
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         global default_start_time
         global default_end_time
         global default_duration
@@ -421,128 +421,130 @@ class RockerTimesheet(models.Model):
         global default_rolling_amount
         global default_time_roundup
         self._get_defaults()
-        # creation from hr_timesheet or time_off: set stop & duration
-        if 'date' in vals and not 'start' in vals:
-            _logger.debug('Creation comes somewhere else than Rocker')
-            global default_start_time
-            global default_end_time
-            global default_duration
-            global default_unit_amount
-            global default_rolling_amount
-            global default_time_roundup
-            self._get_defaults()
-            _logger.debug(vals['date'])
-            if 'holiday_id' in vals and vals.get('holiday_id'):
-                _logger.debug('Creation comes from time_off')
-                _logger.debug('Holiday id: ' + str(vals['holiday_id']))
-                time_off = self.env['hr.leave'].search([('id', '=', vals['holiday_id'])])
-                _logger.debug('Hour from: ' + str(time_off.request_hour_from))
-                if time_off.request_hour_from != False:
-                    _logger.debug(time_off.date_from)
-                    vals['start'] = (time_off.date_from).strftime('%Y-%m-%d %H:%M')
-                    vals['stop'] = (time_off.date_to).strftime('%Y-%m-%d %H:%M')
-                    vals['duration'] = vals['unit_amount']
-                    vals['allday'] = False
-                else:
-                    _logger.debug(vals['date'])
+        for vals in vals_list:
+            # creation from hr_timesheet or time_off: set stop & duration
+            if 'date' in vals and not 'start' in vals:
+                _logger.debug('Creation comes somewhere else than Rocker')
+                global default_start_time
+                global default_end_time
+                global default_duration
+                global default_unit_amount
+                global default_rolling_amount
+                global default_time_roundup
+                self._get_defaults()
+                _logger.debug(vals['date'])
+                if 'holiday_id' in vals and vals.get('holiday_id'):
+                    _logger.debug('Creation comes from time_off')
+                    _logger.debug('Holiday id: ' + str(vals['holiday_id']))
+                    time_off = self.env['hr.leave'].search([('id', '=', vals['holiday_id'])])
+                    _logger.debug('Hour from: ' + str(time_off.request_hour_from))
+                    if time_off.request_hour_from != False:
+                        _logger.debug(time_off.date_from)
+                        vals['start'] = (time_off.date_from).strftime('%Y-%m-%d %H:%M')
+                        vals['stop'] = (time_off.date_to).strftime('%Y-%m-%d %H:%M')
+                        vals['duration'] = vals['unit_amount']
+                        vals['allday'] = False
+                    else:
+                        _logger.debug(vals['date'])
+                        vals['start'] = (fields.Datetime.from_string(vals['date']) + timedelta(hours=default_start_time)).strftime('%Y-%m-%d %H:%M')
+                        vals['stop'] = (fields.Datetime.from_string(vals['start']) + timedelta(hours=float(vals['unit_amount']))).strftime('%Y-%m-%d %H:%M')
+                        vals['duration'] = vals['unit_amount']
+                        if float(vals['unit_amount']) >= default_unit_amount:
+                            # I don't like this...better to show all in weekly calendar as timeslots
+                            # btw....remember to check odoo global defaults....working day is it 8 or 7.5 hours
+                            # vals['allday'] = True
+                            vals['allday'] = False
+                        else:
+                            vals['allday'] = False
+
+                else:   # can not tell if it comes from sales tiimesheet or just hr_timesheet but who cares
+                    _logger.debug('Creation comes from hr_timesheet')
                     vals['start'] = (fields.Datetime.from_string(vals['date']) + timedelta(hours=default_start_time)).strftime('%Y-%m-%d %H:%M')
                     vals['stop'] = (fields.Datetime.from_string(vals['start']) + timedelta(hours=float(vals['unit_amount']))).strftime('%Y-%m-%d %H:%M')
                     vals['duration'] = vals['unit_amount']
-                    if float(vals['unit_amount']) >= default_unit_amount:
-                        # I don't like this...better to show all in weekly calendar as timeslots
-                        # btw....remember to check odoo global defaults....working day is it 8 or 7.5 hours
-                        # vals['allday'] = True
-                        vals['allday'] = False
-                    else:
-                        vals['allday'] = False
+                    vals['allday'] = False
+                _logger.debug('Values:')
+                _logger.debug(vals)
 
-            else:   # can not tell if it comes from sales tiimesheet or just hr_timesheet but who cares
-                _logger.debug('Creation comes from hr_timesheet')
-                vals['start'] = (fields.Datetime.from_string(vals['date']) + timedelta(hours=default_start_time)).strftime('%Y-%m-%d %H:%M')
-                vals['stop'] = (fields.Datetime.from_string(vals['start']) + timedelta(hours=float(vals['unit_amount']))).strftime('%Y-%m-%d %H:%M')
-                vals['duration'] = vals['unit_amount']
-                vals['allday'] = False
+
+                record = super(RockerTimesheet, self).create(vals)
+                return record
+            # Rocker specific data
+            _logger.debug('Rocker create used')
             _logger.debug('Values:')
             _logger.debug(vals)
+            _brolling = self._get_rolling()
 
+            #
+            if 'date' not in vals:
+                vals['date'] = fields.Datetime.from_string(vals['start']).date()
+            # date field is invisible on Rocker timesheet tree view, it is not set
+            if 'date' in vals and not vals.get('date'):
+                vals['date'] = fields.Datetime.from_string(vals['start']).date()
+            _selected_id = -1
+            if vals.get('task_id') == False:
+                _logger.debug('Task selected from searchpanel')
+                _selected_id = self._get_search_id()
+                if _selected_id > 0:
+                    _logger.debug('Selected id set, search task...')
+                    search_task = self.env['project.task'].search([('id', '=', _selected_id)], limit=1)
+                    if not search_task.id:
+                        _logger.debug('Task not found from project.task...')
+                        return False
+                    vals['task_id'] = search_task.id
+                    vals['project_id'] = search_task.project_id.id
+                else:
+                    raise UserError(_('Select Project & Task from drop-down fields'))
+            if vals['name'] == False:
+                if vals.get('task_id'):
+                    _name = self.env['project.task'].browse(vals['task_id']).name
+                if _name:
+                    vals['name'] = _name
+
+            # project implies analytic account
+            if not vals.get('account_id'):
+                _logger.debug('Account_id missing...')
+                # if imported from Excel, then there is no project_id
+                task = self.env['project.task'].browse(vals.get('task_id'))
+                project = self.env['project.project'].search([('id', '=', task.project_id.id)], limit=1)
+                # 2025 analytic_account_id --> account_id
+                _logger.debug('Added account_id: ' + str(project.account_id))
+                vals['account_id'] = project.account_id
+
+            # CREATE first row
+            _logger.debug('Insert date ' + str(vals['date']))
+            _logger.debug('Insert start date: '    + str(vals['start']))
+            _logger.debug('Insert stop date: ' + str(vals['stop']))
+
+            # If stop date > start date --> change stop (we create one row per day)
+            if fields.Datetime.from_string(vals['stop']).date() > fields.Datetime.from_string(vals['start']).date():
+                _logger.debug('Changing stop date ')
+                _logger.debug('Stop time: ' + fields.Datetime.from_string(vals['stop']).time().strftime('%H:%M'))
+                vals['stop'] = (datetime.combine(fields.Datetime.from_string(vals['start']).date(),
+                                fields.Datetime.from_string(vals['stop']).time())).strftime('%Y-%m-%d %H:%M')
+                vals['duration'] = str(self._calculate_duration(fields.Datetime.from_string(vals['start']), fields.Datetime.from_string(vals['stop'])))
 
             record = super(RockerTimesheet, self).create(vals)
+            # row created, should we create more
+            global daystocreate
+            if daystocreate > 0:
+                i = 0
+                while i < daystocreate:
+                    _logger.debug('Create more ' + str(i))
+                    vals['date'] = fields.Datetime.from_string(vals['date']) + timedelta(days=1)
+                    vals['start'] = fields.Datetime.from_string(vals['start']) + timedelta(days=1)
+                    vals['stop'] = fields.Datetime.from_string(vals['stop']) + timedelta(days=1)
+                    _logger.debug('Inserting date ' + str(vals['date']))
+                    _logger.debug('Inserting start ' + str(vals['start']))
+                    _logger.debug('Inserting stop ' + str(vals['stop']))
+                    record = super(RockerTimesheet, self).create(vals)
+                    i += 1
+            self._set_rolling(False)  # default is Create button with default starty & Stop, Rolling is set is Rolling button clicked
             return record
-        # Rocker specific data
-        _logger.debug('Rocker create used')
-        _logger.debug('Values:')
-        _logger.debug(vals)
-        _brolling = self._get_rolling()
-
-        #
-        if 'date' not in vals:
-            vals['date'] = fields.Datetime.from_string(vals['start']).date()
-        # date field is invisible on Rocker timesheet tree view, it is not set
-        if 'date' in vals and not vals.get('date'):
-            vals['date'] = fields.Datetime.from_string(vals['start']).date()
-        _selected_id = -1
-        if vals.get('task_id') == False:
-            _logger.debug('Task selected from searchpanel')
-            _selected_id = self._get_search_id()
-            if _selected_id > 0:
-                _logger.debug('Selected id set, search task...')
-                search_task = self.env['project.task'].search([('id', '=', _selected_id)], limit=1)
-                if not search_task.id:
-                    _logger.debug('Task not found from project.task...')
-                    return False
-                vals['task_id'] = search_task.id
-                vals['project_id'] = search_task.project_id.id
-            else:
-                raise UserError(_('Select Project & Task from drop-down fields'))
-        if vals['name'] == False:
-            if vals.get('task_id'):
-                _name = self.env['project.task'].browse(vals['task_id']).name
-            if _name:
-                vals['name'] = _name
-
-        # project implies analytic account
-        if not vals.get('account_id'):
-            _logger.debug('Account_id missing...')
-            # if imported from Excel, then there is no project_id
-            task = self.env['project.task'].browse(vals.get('task_id'))
-            project = self.env['project.project'].search([('id', '=', task.project_id.id)], limit=1)
-            _logger.debug('Added account_id: ' + str(project.analytic_account_id))
-            vals['account_id'] = project.analytic_account_id.id
-
-        # CREATE first row
-        _logger.debug('Insert date ' + str(vals['date']))
-        _logger.debug('Insert start date: '    + str(vals['start']))
-        _logger.debug('Insert stop date: ' + str(vals['stop']))
-
-        # If stop date > start date --> change stop (we create one row per day)
-        if fields.Datetime.from_string(vals['stop']).date() > fields.Datetime.from_string(vals['start']).date():
-            _logger.debug('Changing stop date ')
-            _logger.debug('Stop time: ' + fields.Datetime.from_string(vals['stop']).time().strftime('%H:%M'))
-            vals['stop'] = (datetime.combine(fields.Datetime.from_string(vals['start']).date(),
-                            fields.Datetime.from_string(vals['stop']).time())).strftime('%Y-%m-%d %H:%M')
-            vals['duration'] = str(self._calculate_duration(fields.Datetime.from_string(vals['start']), fields.Datetime.from_string(vals['stop'])))
-
-        record = super(RockerTimesheet, self).create(vals)
-        # row created, should we create more
-        global daystocreate
-        if daystocreate > 0:
-            i = 0
-            while i < daystocreate:
-                _logger.debug('Create more ' + str(i))
-                vals['date'] = fields.Datetime.from_string(vals['date']) + timedelta(days=1)
-                vals['start'] = fields.Datetime.from_string(vals['start']) + timedelta(days=1)
-                vals['stop'] = fields.Datetime.from_string(vals['stop']) + timedelta(days=1)
-                _logger.debug('Inserting date ' + str(vals['date']))
-                _logger.debug('Inserting start ' + str(vals['start']))
-                _logger.debug('Inserting stop ' + str(vals['stop']))
-                record = super(RockerTimesheet, self).create(vals)
-                i += 1
-        self._set_rolling(False)  # default is Create button with default starty & Stop, Rolling is set is Rolling button clicked
-        return record
 
     def write(self, vals):
         _logger.debug('Write')
-        _logger.debug(self.holiday_id)
+        # 2025 _logger.debug(self.holiday_id)
         # calendar changes duration if moved/sized but not unit_amount/work
         if 'duration' in vals and not vals.get('unit_amount'):
             _logger.debug('changing unit_amount')

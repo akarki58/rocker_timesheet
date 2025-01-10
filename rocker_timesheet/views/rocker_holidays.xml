@@ -33,14 +33,14 @@
                         <notebook>
                         <page name="imported_holidays" string="Imported Holidays">
                             <field name="notebook_ids">
-                        <tree string="Import Public Holidays" editable="bottom" create="0" >
+                        <list string="Import Public Holidays" editable="bottom" create="0" >
                             <field name="country_name" readonly="1" column_invisible="1"/>
                             <field name="country_code" readonly="1" column_invisible="1"/>
                             <field name="holiday_date" />
                             <field name="name_local" />
                             <field name="name_other" />
                             <field name="holiday_type" readonly="1" column_invisible="1"/>
-                        </tree>
+                        </list>
                         </field>
                         </page>
                     </notebook>

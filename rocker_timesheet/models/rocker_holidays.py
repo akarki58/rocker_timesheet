@@ -69,7 +69,7 @@ class RockerHolidays(models.Model):
         ('other', 'Other Language'),
         ], string='Take', store=True, required=False, default='local')
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
         _logger.debug('Create')
         # vals = {}
