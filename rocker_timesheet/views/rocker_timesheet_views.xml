@@ -9,14 +9,16 @@
             <field name="model">account.analytic.line</field>
             <field name="arch" type="xml">
                 <search string="Timesheet">
-                    <field name="project_id"/>
-                    <field name="task_search"/>
-                    <field name="company_id"/>
-                    <separator/>
                     <searchpanel view_types="list,calendar">
                         <field name="task_search" expand="1" hierarchize="1" string="Projects/Tasks"
                                icon="fa-folder-open"/>
                     </searchpanel>
+                    <field name="project_id"/>
+                    <field name="task_search"/>
+                    <field name="company_id"/>
+                    <separator/>
+
+
                 </search>
             </field>
         </record>
@@ -153,8 +155,7 @@
             <field name="model">account.analytic.line</field>
             <field name="priority" eval="1"/>
             <field name="arch" type="xml">
-                <!--                <calendar string="Timesheets"-->
-                <calendar js_class="rocker_calendar" string="Timesheets"
+               <calendar js_class="rocker_calendar" string="Timesheets"
                           form_view_id="%(rocker_timesheet.rocker_timesheet_form)d"
                           event_limit="1"
                           date_start="start"
@@ -167,15 +168,15 @@
                           show_unusual_days="true"
                           quick_create="false"
                           hide_time="false">
-                    <!--                          quick_add="false">-->
-                    <field name="display_name" />
+
+                   <!--label for="display_name" string="asdfghjkl" class="o_light_label"/-->
+                    <field name="display_name"/>
                     <field name="project_id" required="1"/>
                     <field name="task_id" required="1"/>
                     <field name="unit_amount" required="1"/>
                     <field name="company_id" required="1" readonly="1"/>
 
                 </calendar>
-
             </field>
         </record>
 
@@ -284,7 +285,8 @@
             <field name="view_mode">list</field>
             <field name="view_id" ref="rocker_timesheet_tree"/>
             <field name="search_view_id" ref="rocker_timesheet_search"/>
-            <field name="target">main</field>
+            <!--<field name="target">main</field>-->
+            <field name="target">inline</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     No timesheets found. Let's start a new one!
@@ -336,9 +338,8 @@
             <field name="view_id" ref="rocker_timesheet_calendar"/>
             <field name="search_view_id" ref="rocker_timesheet_search"/>
             <field name="target">main</field>
-            <field name="domain">[('user_id', '=', uid)]</field>
-            <field name="context"></field>
-        </record>
+             <field name="domain">[('user_id', '=', uid)]</field>
+       </record>
 
         <record id="act_rocker_timesheet_company" model="ir.actions.server">
             <field name="name">Edit Company defaults</field>

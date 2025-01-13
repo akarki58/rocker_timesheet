@@ -47,6 +47,7 @@
         'web.assets_backend': [
            'rocker_timesheet/static/src/views/calendar/*.xml',
             'rocker_timesheet/static/src/views/calendar/*.js',
+            'rocker_timesheet/static/src/views/calendar/*.scss',
             'rocker_timesheet/static/src/views/list/*.xml',
             'rocker_timesheet/static/src/views/list/*.js',
         ]
