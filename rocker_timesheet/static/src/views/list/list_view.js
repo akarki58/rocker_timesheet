@@ -1,4 +1,7 @@
 /** @odoo-module **/
+//
+// 2025-01-25
+//
 
 import { registry } from "@web/core/registry";
 import { listView } from "@web/views/list/list_view";
