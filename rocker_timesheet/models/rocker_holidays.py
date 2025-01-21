@@ -16,6 +16,9 @@
 #    (AGPL v3) along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
+#
+# 21-01-2025
+#
 #############################################################################
 
 from odoo import api, fields, models, _
@@ -70,11 +73,12 @@ class RockerHolidays(models.Model):
         ], string='Take', store=True, required=False, default='local')
 
     @api.model_create_multi
-    def create(self, vals):
+    def create(self, vals_list):
         _logger.debug('Create')
         # vals = {}
-        return super(RockerHolidays, self.sudo()).create(vals)
-        # return vals
+        # for vals in vals_list:
+        return super(RockerHolidays, self.sudo()).create(vals_list)
+        # return vals_list
 
     def write(self, vals):
         _logger.debug('Write')
@@ -313,7 +317,7 @@ class RockerHolidays(models.Model):
         return {
             'name': 'Public Holidays',
             'type': 'ir.actions.act_window',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'res_model': 'resource.calendar.leaves',
             'context': {'no_breadcrumbs': True},
         }

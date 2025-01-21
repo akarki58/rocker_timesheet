@@ -16,6 +16,9 @@
 #    (AGPL v3) along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
+#
+# 21-01-2025
+#
 #############################################################################
 
 from odoo import api, fields, models, _
@@ -303,13 +306,14 @@ class RockerTimesheet(models.Model):
 
     # new fields
     display_name = fields.Char('Description', required=False, store=False, compute='_compute_display_name')
-    rocker_type = fields.Selection([
-        ('internal', 'Internal'),
-        ('billable', 'Billable'),
-        ('nonbillable', 'Non Billable'),
-        ('time_off', 'Time Off'),
-    ], 'Project Type', required=False, default='', store=False,
-        related='project_id.rocker_type', compute='_compute_rocker_type')
+    # rocker_type = fields.Selection([
+    #     ('internal', 'Internal'),
+    #     ('billable', 'Billable'),
+    #     ('nonbillable', 'Non Billable'),
+    #     ('time_off', 'Time Off'),
+    # ], 'Project Type', required=False, default='', store=False,
+    #     related='project_id.rocker_type', compute='_compute_rocker_type')
+    rocker_type = fields.Selection(related='project_id.rocker_type')
     task_search = fields.Many2one(
         'rocker.task', 'Project', store=True, readonly=False, required=False)
     rocker_search_type = fields.Selection([
@@ -507,9 +511,8 @@ class RockerTimesheet(models.Model):
                 # if imported from Excel, then there is no project_id
                 task = self.env['project.task'].browse(vals.get('task_id'))
                 project = self.env['project.project'].search([('id', '=', task.project_id.id)], limit=1)
-                # 2025 analytic_account_id --> account_id
                 _logger.debug('Added account_id: ' + str(project.account_id))
-                vals['account_id'] = project.account_id
+                vals['account_id'] = project.account_id.id
 
             # CREATE first row
             _logger.debug('Insert date ' + str(vals['date']))
@@ -544,7 +547,7 @@ class RockerTimesheet(models.Model):
 
     def write(self, vals):
         _logger.debug('Write')
-        # 2025 _logger.debug(self.holiday_id)
+        # _logger.debug(self.holiday_id) # 2025 odoo 18
         # calendar changes duration if moved/sized but not unit_amount/work
         if 'duration' in vals and not vals.get('unit_amount'):
             _logger.debug('changing unit_amount')
@@ -571,6 +574,33 @@ class RockerTimesheet(models.Model):
     # ----------------------------------------------------------
     # SearchPanel
     # ----------------------------------------------------------
+
+    @api.model
+    # web_search_read
+    def web_search_read(self, domain, specification, offset=0, limit=None, order=None, count_limit=None):
+        _logger.debug('Web Search_read...')
+        _logger.debug('domain: ' + str(domain))
+        _logger.debug('specification: ' + str(specification))
+        i = 0
+        for clause in domain:
+            _logger.debug('clause: ' + str(clause))
+            if clause[0] == 'task_search':
+                # selected_id = int(clause[2])
+                if int(clause[2]) > 0:  # id > 0 when task, project row has < 1
+                    self._set_search_id(int(clause[2]))
+                    _logger.debug('Selected id set to: ' + str(self._get_search_id()))
+                else:
+                    self._set_search_id(0)
+
+                clause[0] = 'task_search'
+                clause[1] = '<>'
+                clause[2] = ' '
+                _logger.debug('clause: ' + str(clause))
+            i += 1
+        _logger.debug('domain: ' + str(domain))
+        records = self.search_fetch(domain, specification.keys(), offset=offset, limit=limit, order=order)
+        values_records = records.web_read(specification)
+        return self._format_web_search_read_results(domain, values_records, offset, limit, count_limit)
 
     @api.model
     def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):

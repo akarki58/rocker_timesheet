@@ -16,6 +16,9 @@
 #    (AGPL v3) along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
+#
+# 21-01-2025
+#
 #############################################################################
 
 from odoo import api, fields, models, _
@@ -162,7 +165,7 @@ class RockerUser(models.Model):
                                   default=lambda self: self.env['hr.employee'].search(
                                       [('user_id', '=', self.env.user.id),
                                        ('company_id', '=', self.env.company.id)]).id, store=True)
-    department_id = fields.Many2one('hr.department', String="Resource Department", compute='_compute_department_id',
+    department_id = fields.Many2one('hr.department', "Resource Department", compute='_compute_department_id',
                                     store=True, compute_sudo=True)
 
     rocker_default_start = fields.Float('Default Start Time [UTC]', default='9', required=True, store=True,
@@ -186,9 +189,9 @@ class RockerUser(models.Model):
     rocker_default_rolling_work = fields.Float('Default Work amount if Rolling', store=True, readonly=False,
                                                default='1', help="Work does not contain breaks like lunch hour")
     hourbank_calculation_start = fields.Date(
-        String='Hourbank Calculation Start', required=False, readonly=False, store=True,
+        'Hourbank Calculation Start', required=False, readonly=False, store=True,
         default=datetime.today(), help="Start datetime for hourbank calculation")
-    hourbank_initial_saldo = fields.Float(String='Hourbank initial saldo', store=True, readonly=False,
+    hourbank_initial_saldo = fields.Float('Hourbank initial saldo', store=True, readonly=False,
                                                default='0', help="Initial saldo for calculation start date")
 
 

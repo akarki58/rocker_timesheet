@@ -16,6 +16,9 @@
 #    (AGPL v3) along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
+#
+# 21-01-2025
+#
 #############################################################################
 
 from odoo import api, fields, models, _

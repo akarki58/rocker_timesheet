@@ -18,6 +18,9 @@
 #    (AGPL v3) along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
+#
+# 21-01-2025
+#
 #############################################################################
 #ToDo_
 
@@ -26,9 +29,7 @@
     'summary': 'hr_timesheet supercharged',
     'description': 'Probably most fastest way to report work done',
     'author': 'Antti Kärki',
-    'license': 'OPL-1',
-    'price': 10.00,
-    'currency': 'EUR',
+    'license': 'AGPL-3',
     'version': '18.0.1.0',
     'category': 'Rocker/Timesheet',
     'sequence': 23,
@@ -47,9 +48,10 @@
         'web.assets_backend': [
            'rocker_timesheet/static/src/views/calendar/*.xml',
             'rocker_timesheet/static/src/views/calendar/*.js',
-            'rocker_timesheet/static/src/views/calendar/*.scss',
             'rocker_timesheet/static/src/views/list/*.xml',
             'rocker_timesheet/static/src/views/list/*.js',
+            'rocker_timesheet/static/src/views/calendar/*.scss',
+
         ]
    },
     'installable': True,
