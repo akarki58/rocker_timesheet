@@ -55,7 +55,7 @@
             <field name="res_model">rocker.holidays</field>
             <field name="view_mode">form</field>
             <field name="view_id" ref="rocker_holidays_view_form"/>
-            <field name="target">inline</field>
+            <field name="target">current</field>
         </record>
 
 

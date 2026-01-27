@@ -28,7 +28,7 @@
     'license': 'OPL-1',
     'price': 10.00,
     'currency': 'EUR',
-    'version': '18.0.1.0',
+    'version': '19.0.1.0',
     'category': 'Rocker/Timesheet',
     'sequence': 23,
     'website': '',

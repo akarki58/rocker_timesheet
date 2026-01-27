@@ -42,7 +42,7 @@ class RockerHourBankReport(models.Model):
                         ,he."id" as employee_id
                         ,he.company_id
                         ,he.resource_id
-                        ,he.resource_calendar_id
+                        ,r_r.calendar_id
                         ,rc."name" as calendar_name
                         ,ph.puclic_holiday_name
                         ,ph.is_public_holiday
@@ -52,7 +52,7 @@ class RockerHourBankReport(models.Model):
                         ,ph.time_to as holiday_time_to
         				,COALESCE((SELECT ROUND(CAST(SUM(hour_to - hour_from) as numeric),2)
                                 FROM public.resource_calendar_attendance rca
-                                   WHERE rca.calendar_id =  he.resource_calendar_id
+                                   WHERE rca.calendar_id =  r_r.calendar_id
                                    AND rca.dayofweek = cast((extract(isodow from calendar_dates.calendar_date) - 1) as varchar)
                                 GROUP BY calendar_id, dayofweek
                                    ), 0) as calendar_hours_per_day
@@ -77,8 +77,9 @@ class RockerHourBankReport(models.Model):
                                 where calendar_date >= minimi_date
                                 ) calendar_dates
 
-        				join public.hr_employee he on he.user_id = calendar_dates.user_id			 
-                        join public.resource_calendar rc on he.resource_calendar_id = rc.id
+        				join public.hr_employee he on he.user_id = calendar_dates.user_id
+						join public.resource_resource r_r on r_r.user_id = he.user_id 
+                        join public.resource_calendar rc on r_r.calendar_id = rc.id
                         left outer join (
                             select generate_series (
                                 (date(date_from)),
@@ -105,7 +106,7 @@ class RockerHourBankReport(models.Model):
                         ,rocker_hours.user_id
                         ,rocker_hours.company_id
                         ,rocker_hours.resource_id
-                        ,rocker_hours.resource_calendar_id
+                        ,rocker_hours.calendar_id
                         ,rocker_hours.calendar_name
                         ,rocker_hours.calendar_hours_per_day
                         ,rocker_hours.puclic_holiday_name
@@ -144,7 +145,7 @@ class RockerHourBankReport(models.Model):
                         ,roc_cal.user_id
                         ,roc_cal.company_id
                         ,roc_cal.resource_id
-                        ,roc_cal.resource_calendar_id
+                        ,roc_cal.calendar_id
                         ,roc_cal.calendar_name
                         ,roc_cal.calendar_hours_per_day
                         ,roc_cal.puclic_holiday_name
@@ -182,7 +183,7 @@ class RockerHourBankReport(models.Model):
                                 ,roc_cal.employee_id
                                 ,roc_cal.company_id
                                 ,roc_cal.resource_id
-                                ,roc_cal.resource_calendar_id
+                                ,roc_cal.calendar_id
                                 ,roc_cal.calendar_name
                                 ,roc_cal.calendar_hours_per_day
                                 ,roc_cal.puclic_holiday_name

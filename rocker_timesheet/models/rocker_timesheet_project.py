@@ -49,7 +49,7 @@ class RockerTask(models.Model):
                                    ])
         return domain
 
-    id = fields.Integer('id')
+    # id = fields.Integer('id')
     name = fields.Char('Name')
     display_name = fields.Char('Description', required=False, store=False, compute='_compute_display_name_language')
     company_id = fields.Many2one('res.company', string='Company', domain="[('company_id', '=', self.env.company.id)]")
