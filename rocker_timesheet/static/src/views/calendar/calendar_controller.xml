@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 2025-01-25 -->
+<!-- 2026-01-25 -->
 <templates>
     <t t-name="rocker_timesheet.RockerCalendarController" t-inherit="web.CalendarController" t-inherit-mode="primary">
         <xpath expr="//Layout" position="inside">
             <t t-set-slot="control-panel-selection-actions">
+                <div class="w-100"></div>
                 <div class="btn-group border" role="group" aria-label="Filter buttons">
                     <nobr>
                         <label style="margin-left:5px; margin-top:5px; ">Filter:</label>

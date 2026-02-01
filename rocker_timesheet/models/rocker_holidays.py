@@ -14,7 +14,7 @@
 #
 #
 #
-# 21-01-2025
+# 21-01-2026
 #
 #############################################################################
 
@@ -38,6 +38,7 @@ class RockerHolidaysStaging(models.Model):
     _description = 'Rocker Import Public Holidays'
     _order = 'holiday_date'
 
+    name = fields.Char(string="Name")
     holiday_year = fields.Char('Year', readonly=False)
     country_code = fields.Char('Country Code', readonly=False)
     country_name = fields.Char('Country Name', readonly=False)
@@ -52,8 +53,9 @@ class RockerHolidays(models.Model):
     _name = 'rocker.holidays'
     _description = 'Rocker Import Public Holidays'
     _order = 'date_executed'
+    name = fields.Char(string="Name", default='Rocker Holidays')
 
-    date_executed = fields.Datetime('Date Executed', readonly=False, default=lambda self: fields.datetime.now())
+    date_executed = fields.Datetime('Date Executed', readonly=False, default=lambda self: fields.Datetime.now())
     notebook_ids = fields.One2many('rocker.holidays.staging', 'main_class_id', string="Imported Public Holidays")
 
     holiday_year = fields.Selection(
@@ -82,6 +84,16 @@ class RockerHolidays(models.Model):
         # vals = {}
         return super(RockerHolidays, self.sudo()).write(vals)
         # return vals
+
+    @api.model
+    def default_get(self, fields):
+        # tää toimii, vaihtaa otsikon
+        _logger.debug('default_get')
+        res = super().default_get(fields)
+        res['name'] = "Import Public Holidays"
+        res['display_name'] = "Import Public Holidays"
+        # res['display_name'] = "Import Public Holidays"
+        return res
 
     @api.model
     def years_selection(self):
@@ -133,7 +145,14 @@ class RockerHolidays(models.Model):
         return country_list
 
     def import_holidays(self):
-        # _logger.debug('Import holidays...')
+        _logger.debug('Import holidays...')
+        _logger.info(
+            "ID=%s exists=%s context=%s",
+            self.id,
+            self.exists(),
+            self.env.context
+        )
+
         _id = None
         _year = None
         _holiday_country = None
@@ -223,26 +242,27 @@ class RockerHolidays(models.Model):
                 'name_local': _name_local,
                 'name_other': _name_other,
                 'holiday_type': _holiday_type,
-                'main_class_id': _id
+                'main_class_id': _id,
             }
             _hol_record = self.env['rocker.holidays.staging'].create(vals)
 
         self.env.cr.commit()
-
-        rec_id = _id
-        form_id = self.env.ref('rocker_timesheet.rocker_holidays_view_form')
-        context['form_view_initial_mode'] = 'edit'
-        return {
-            'name': 'Imported Public Holiday',
-            'type': 'ir.actions.act_window',
-            'res_model': 'rocker.holidays',
-            'res_id': rec_id,
-            'view_type': 'form',
+        # form_id = self.env.ref('rocker_timesheet.rocker_holidays_view_form').id
+        _logger.info("ID: %s", self.id)
+        _logger.info(
+            "ID=%s exists=%s context=%s",
+            self.id,
+            self.exists(),
+            self.env.context
+        )
+        action = self.env.ref('rocker_timesheet.act_rocker_holidays_form').read()[0]
+        action.update({
+            'res_id': self.id,
             'view_mode': 'form',
-            'view_id': form_id.id,
-            'context': context,
-            'target': 'inline',
-        }
+            'context': dict(self.env.context),
+        })
+        return action
+
 
     def export_holidays(self):
         _logger.debug('Export holidays...')
@@ -312,26 +332,21 @@ class RockerHolidays(models.Model):
         form_id = self.env.ref('resource.action_resource_calendar_leave_tree')
         # context = None
         return {
-            'name': 'Public Holidays',
             'type': 'ir.actions.act_window',
             'view_mode': 'list,form',
             'res_model': 'resource.calendar.leaves',
             'context': {'no_breadcrumbs': True},
+            "target": "current"
         }
+    # 'name': 'Public Holidays',
 
     def clear_form(self):
-        _logger.debug('Export holidays...')
-        context = self.env.context
-        rec_id = None
-        form_id = self.env.ref('rocker_timesheet.rocker_holidays_view_form')
-        return {
-            'name': 'Import Public Holidays',
-            'type': 'ir.actions.act_window',
-            'res_model': 'rocker.holidays',
-            'view_type': 'form',
+        _logger.debug('Clear form holidays...')
+        self.ensure_one()
+        action = self.env.ref('rocker_timesheet.act_rocker_holidays_form').read()[0]
+        action.update({
+            'res_id': None,
             'view_mode': 'form',
-            'res_id': rec_id,
-            'view_id': form_id.id,
-            'context': {},
-            'target': 'inline',
-        }
+            'context': dict(self.env.context),
+        })
+        return action

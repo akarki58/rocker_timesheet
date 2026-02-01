@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 2026-01-25 -->
+<odoo>
+    <data>
+        <!--
+           Menus
+       -->
+        <!--                <menuitem id="rocker_timesheet_menu_root"-->
+        <!--                  name="Rocker Timesheets"-->
+        <!--                  sequence="5"-->
+        <!--                  web_icon="rocker_timesheet,static/description/icon_timesheet.png"/>-->
+        <!--                  groups="group_rocker_timesheet_user"-->
+
+        <menuitem id="rocker_timesheet_menu_timesheet"
+                  name="Rocker"
+                  parent="hr_timesheet.timesheet_menu_root"
+                  sequence="1"
+                  groups="hr_timesheet.group_hr_timesheet_user"
+        />
+        <!--                  parent="rocker_timesheet_menu_root"-->
+
+        <menuitem id="timesheet_menu_calendar"
+                  name="Dashboard"
+                  parent="rocker_timesheet_menu_timesheet"
+                  action="act_rocker_timesheet_calendar"
+                  sequence="60"
+                  groups="hr_timesheet.group_hr_timesheet_user"
+        />
+        <menuitem id="rocker_timesheet_menu_settings"
+                  name="─ Settings ────────────"
+                  parent="rocker_timesheet_menu_timesheet"
+                  sequence="75"
+                  groups="hr_timesheet.group_hr_timesheet_user"/>
+
+        <menuitem id="timesheet_menu_company"
+                  name="Company defaults"
+                  parent="rocker_timesheet_menu_settings"
+                  action="act_rocker_timesheet_company"
+                  sequence="80"
+                  groups="hr_timesheet.group_timesheet_manager"/>
+
+        <menuitem id="timesheet_menu_user"
+                  name="User defaults"
+                  parent="rocker_timesheet_menu_settings"
+                  action="act_rocker_timesheet_user"
+                  sequence="85"
+                  groups="hr_timesheet.group_hr_timesheet_user"/>
+
+        <menuitem id="rocker_timesheet_menu_project_settings"
+                  name="Project settings"
+                  parent="rocker_timesheet_menu_settings"
+                  sequence="90"
+                  groups="hr_timesheet.group_timesheet_manager"/>
+
+        <menuitem id="rocker_timesheet_menu_projects"
+                  name="Edit Project types"
+                  parent="rocker_timesheet_menu_project_settings"
+                  action="act_rocker_project"
+                  sequence="95"
+                  groups="hr_timesheet.group_timesheet_manager"/>
+
+        <menuitem id="rocker_holidays"
+                  name="Public Holidays"
+                  parent="rocker_timesheet_menu_settings"
+                  sequence="100"
+                  groups="hr_timesheet.group_timesheet_manager"/>
+
+        <menuitem id="rocker_holidays_form"
+                  name="Import Public Holidays"
+                  parent="rocker_holidays"
+                  action="act_rocker_holidays_form"
+                  sequence="105"
+                  groups="hr_timesheet.group_timesheet_manager"/>
+
+        <menuitem id="rocker_timesheet_menu_time_off"
+                  name="Time-off settings"
+                  parent="rocker_timesheet_menu_settings"
+                  sequence="85"
+                  groups="hr_timesheet.group_timesheet_manager"/>
+
+        <menuitem id="rocker_timesheet_menu_leave_types"
+                  name="Edit Leave types"
+                  parent="rocker_timesheet_menu_time_off"
+                  action="rocker_open_view_holiday_status"
+                  sequence="1"
+                  groups="hr_timesheet.group_timesheet_manager"/>
+
+        <menuitem id="rocker_timesheet_menu_reports"
+                  name="─ Reports ────────────"
+                  parent="rocker_timesheet_menu_timesheet"
+                  sequence="80"
+                  groups="hr_timesheet.group_hr_timesheet_user"/>
+
+        <menuitem id="rocker_timesheet_menu_hour_bank"
+                  name="Hour Bank By Employee"
+                  parent="rocker_timesheet_menu_reports"
+                  action="act_rocker_hour_bank_report"
+                  sequence="1"
+                  groups="hr_timesheet.group_hr_timesheet_user"/>
+
+
+        <menuitem id="menu_rocker_timesheet_about"
+                  name="─ About ─────────────"
+                  parent="rocker_timesheet_menu_timesheet"
+                  sequence="120"
+                  groups="hr_timesheet.group_hr_timesheet_user"/>
+
+        <menuitem id="menu_rocker_timesheet_about_show"
+                  name="Rocker Timesheet..."
+                  action="action_rocker_about_timesheet"
+                  parent="menu_rocker_timesheet_about"
+                  sequence="125"
+                  groups="hr_timesheet.group_hr_timesheet_user"/>
+
+    </data>
+</odoo>

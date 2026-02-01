@@ -17,11 +17,11 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 #
-# 21-01-2025
+# 21-01-2026
 #
 #############################################################################
 
-from odoo import api, fields, models, _
+from odoo import models, api, fields, _
 # from odoo.exceptions import UserError, AccessError, Warning
 from odoo.exceptions import UserError, AccessError
 from datetime import timedelta, datetime, date, time, timezone
@@ -35,11 +35,9 @@ _logger = logging.getLogger(__name__)
 class RockerCompany(models.Model):
     _name = 'rocker.company.defaults'
     _description = 'Rocker Company Defaults'
-    _sql_constraints = [
-        ('unique_defaults', 'unique (company_id)', 'Only one defaults per company!'),
-        ('amount_positive', 'CHECK(rocker_default_work > 0)', 'Work must be positive'),
-        ('rolling_work_positive', 'CHECK(rocker_default_rolling_work > 0)', 'Rolling Work time must be positive'),
-    ]
+    _unique_company_defaults = models.Constraint('unique (company_id)', 'Only one defaults per company!')
+    _amount_positive = models.Constraint('CHECK(rocker_default_work > 0)', 'Work must be positive')
+    _rolling_work_positive = models.Constraint('CHECK(rocker_default_rolling_work > 0)', 'Rolling Work time must be positive')
 
     company_id = fields.Many2one('res.company', "Company_id", default=lambda self: self.env.company, store=True)
     company_name = fields.Char('CompanyName', store=False, required=False, related='company_id.name')
@@ -150,11 +148,9 @@ class RockerCompany(models.Model):
 class RockerUser(models.Model):
     _name = 'rocker.user.defaults'
     _description = 'Rocker User Defaults to Rocker Timesheet'
-    _sql_constraints = [
-        ('unique_defaults', 'unique (user_id,company_id)', 'Only one defaults per user per company!'),
-        ('amount_positive', 'CHECK(rocker_default_work > 0)', 'Work must be positive'),
-        ('rolling_work_positive', 'CHECK(rocker_default_rolling_work > 0)', 'Rolling Work time must be positive'),
-    ]
+    _unique_user_defaults = models.Constraint('unique (user_id,company_id)', 'Only one defaults per user per company!')
+    _rocker_default_work = models.Constraint('CHECK(rocker_default_work > 0)', 'Work must be positive')
+    _rolling_work_positive = models.Constraint('CHECK(rocker_default_rolling_work > 0)', 'Rolling Work time must be positive')
 
     user_id = fields.Many2one('res.users', required=True, string='User_id', index=True,
                               default=lambda self: self.env.user, store=True)

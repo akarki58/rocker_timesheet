@@ -17,7 +17,7 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 #
-# 21-01-2025
+# 21-01-2026
 #
 #############################################################################
 
@@ -27,7 +27,8 @@ from odoo.exceptions import UserError, AccessError
 from odoo import tools
 from datetime import timedelta, datetime, date, time, timezone
 from dateutil.rrule import rrule, DAILY
-from odoo.osv import expression
+# from odoo.osv import expression
+from odoo.fields import Domain
 import pytz
 
 import logging
@@ -61,7 +62,7 @@ class RockerTimesheet(models.Model):
 
     def _domain_project_id(self):
         domain = [('allow_timesheets', '=', True)]
-        return expression.AND([domain,
+        return Domain.AND([domain,
                                ['|', ('privacy_visibility', '!=', 'followers'), ('message_partner_ids', 'in', [self.env.user.partner_id.id])]
                                ])
 
@@ -181,7 +182,7 @@ class RockerTimesheet(models.Model):
 
         else:
             self._domain_get_search_domain('all')
-        _search_panel_domain = expression.AND([_search_panel_domain,
+        _search_panel_domain = Domain.AND([_search_panel_domain,
                                                ['|', ('privacy_visibility', '!=', 'followers'), ('project_id.message_partner_ids', 'in', [self.env.user.partner_id.id])]
                                                ])
         return _search_panel_domain

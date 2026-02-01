@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 #
-# 21-01-2025
+# 21-01-2026
 #
 
 from odoo import api, fields, models, tools, _
-from odoo.osv import expression
+# from odoo.osv import expression
+from odoo.fields import Domain
 
 
 class RockerHourBankReport(models.Model):

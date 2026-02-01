@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!--26-01-2026-->
 <odoo>
     <data>
         <record id="rocker_hour_bank_search" model="ir.ui.view">
@@ -89,19 +89,6 @@
             <field name="view_id" ref="rocker_timesheet.rocker_hour_bank_tree"/>
             <field name="act_window_id" ref="act_rocker_hour_bank_report"/>
         </record>
-
-        <menuitem id="rocker_timesheet_menu_reports"
-                  name="Reporting"
-                  parent="rocker_timesheet_menu_timesheet"
-                  sequence="80"
-                  groups="hr_timesheet.group_hr_timesheet_user"/>
-
-        <menuitem id="rocker_timesheet_menu_hour_bank"
-                  name="Hour Bank By Employee"
-                  parent="rocker_timesheet_menu_reports"
-                  action="act_rocker_hour_bank_report"
-                  sequence="1"
-                  groups="hr_timesheet.group_hr_timesheet_user"/>
 
 
     </data>

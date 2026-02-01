@@ -15,7 +15,7 @@
 #    GNU AFFERO GENERAL PUBLIC LICENSE (AGPL v3) for more details.
 #
 #
-# 21-01-2025
+# 21-01-2026
 #
 #############################################################################
 #ToDo_
@@ -41,6 +41,8 @@
         'views/rocker_holidays.xml',
         'views/rocker_leave_type.xml',
         'report/rocker_timesheet_report_view.xml',
+        'views/rocker_timesheet_menu.xml',
+
     ],
    'assets': {
         'web.assets_backend': [

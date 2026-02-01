@@ -17,11 +17,11 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 #
-# 21-01-2025
+# 21-01-2026
 #
 #############################################################################
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 #from odoo.exceptions import UserError, AccessError, Warning
 from odoo.exceptions import UserError, AccessError
 from odoo import tools
@@ -43,7 +43,7 @@ class RockerTask(models.Model):
     def _domain_project_id(self):
         domain = [('allow_timesheets', '=', True)]
         if not self.user_has_groups('hr_timesheet.group_timesheet_manager'):
-            return expression.AND([domain,
+            return Domain.AND([domain,
                                    ['|', ('project_id.privacy_visibility', '!=', 'followers'),
                                     ('project_id.allowed_internal_user_ids', 'in', self.env.user.ids)]
                                    ])

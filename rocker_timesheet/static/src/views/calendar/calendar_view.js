@@ -1,6 +1,6 @@
 /** @odoo-module **/
 //
-// 2025-01-25
+// 2026-01-25
 //
 
 import { registry } from "@web/core/registry";

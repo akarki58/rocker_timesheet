@@ -1,6 +1,6 @@
 /** @odoo-module */
 //
-// 2025-01-25
+// 2026-01-25
 //
 //import { registry } from '@web/core/registry';
 import { listView } from '@web/views/list/list_view';
@@ -13,6 +13,19 @@ export class RockerListController extends ListController {
         super.setup();
         this.actionService = useService("action");
       }
+
+//    get buttons() {
+//        return [
+//            ...super.buttons,
+//            {
+//                name: "roller",
+//                label: "New Rolling",
+//                class: "btn-primary",
+//                onClick: () => this.onRollerClick(),
+//            },
+//        ];
+//    }
+
     async OnRollerClick() {
         var self = this;
        await this.actionService.doAction("rocker_timesheet.action_create_rolling", {
