@@ -212,6 +212,7 @@ class RockerTimesheet(models.Model):
             default_time_roundup = int(_defaults.rocker_round_up) or int(_company_defaults.rocker_round_up) or 0
         else:
             _logger.debug('No defaults, creating company defaults')
+            # 2026
             _start = self.to_UTC(9)
             _end = self.to_UTC(17)
             self.env['rocker.company.defaults'].sudo().create({
