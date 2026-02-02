@@ -2,7 +2,18 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 #
 # 21-01-2026
+# You need to fix company working hours calendar. No breaks, only start & stop
 #
+# Monday  8:00 --> 15:30  7,5h
+# Tuesday  8:00 --> 15:30  7,5h
+# Wed  8:00 --> 15:30  7,5h
+# Thu  8:00 --> 15:30  7,5h
+# Fri  8:00 --> 15:30  7,5h
+#
+#week total 37.5h
+#
+#
+
 
 from odoo import api, fields, models, tools, _
 # from odoo.osv import expression
@@ -33,6 +44,7 @@ class RockerHourBankReport(models.Model):
         # tools.drop_view_if_exists(self._cr, 'rocker_hour_bank_report')
         tools.drop_view_if_exists(self.env.cr, self._table)
 
+        # 2026 fixed resource calendar. Now takes calendar from res_company table
         # self._cr.execute("""
         self.env.cr.execute("""
         	CREATE or REPLACE view rocker_hour_bank_report as (
@@ -43,7 +55,7 @@ class RockerHourBankReport(models.Model):
                         ,he."id" as employee_id
                         ,he.company_id
                         ,he.resource_id
-                        ,r_r.calendar_id
+                        ,r_r.resource_calendar_id as calendar_id
                         ,rc."name" as calendar_name
                         ,ph.puclic_holiday_name
                         ,ph.is_public_holiday
@@ -53,7 +65,7 @@ class RockerHourBankReport(models.Model):
                         ,ph.time_to as holiday_time_to
         				,COALESCE((SELECT ROUND(CAST(SUM(hour_to - hour_from) as numeric),2)
                                 FROM public.resource_calendar_attendance rca
-                                   WHERE rca.calendar_id =  r_r.calendar_id
+                                   WHERE rca.calendar_id =  r_r.resource_calendar_id
                                    AND rca.dayofweek = cast((extract(isodow from calendar_dates.calendar_date) - 1) as varchar)
                                 GROUP BY calendar_id, dayofweek
                                    ), 0) as calendar_hours_per_day
@@ -78,9 +90,9 @@ class RockerHourBankReport(models.Model):
                                 where calendar_date >= minimi_date
                                 ) calendar_dates
 
-        				join public.hr_employee he on he.user_id = calendar_dates.user_id
-						join public.resource_resource r_r on r_r.user_id = he.user_id 
-                        join public.resource_calendar rc on r_r.calendar_id = rc.id
+                         JOIN hr_employee he ON he.user_id = calendar_dates.user_id
+                         JOIN res_company r_r ON r_r.id = he.company_id
+                         JOIN resource_calendar rc ON r_r.resource_calendar_id = rc.id
                         left outer join (
                             select generate_series (
                                 (date(date_from)),
@@ -208,7 +220,7 @@ class RockerHourBankReport(models.Model):
             'name': 'Edit Time Off Type',
             'type': 'ir.actions.act_window',
             'res_model': 'hr.leave.type',
-            'res_id':  rec_id,
+            'res_id': rec_id,
             'view_type': 'form',
             'view_mode': 'form',
             'view_id': form_id.id,
