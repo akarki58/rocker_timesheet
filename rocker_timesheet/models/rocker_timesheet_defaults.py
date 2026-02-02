@@ -64,6 +64,7 @@ class RockerCompany(models.Model):
 
     @api.onchange('rocker_default_startToShow')
     def _onchange_rocker_default_startToShow(self):
+        _logger.debug('_onchange_rocker_default_startToShow')
         self.ensure_one()
         if self.rocker_default_startToShow < 0:
             self.rocker_default_startToShow = False
@@ -71,14 +72,35 @@ class RockerCompany(models.Model):
             raise UserError(_('Start time negative'))
         self.rocker_default_start = self.to_UTC(self.rocker_default_startToShow)
 
+    @api.onchange('rocker_default_start')
+    def _onchange_rocker_default_start(self):
+        _logger.debug('_onchange_rocker_default_start')
+        self.ensure_one()
+        if self.rocker_default_start < 0:
+            self.rocker_default_start = False
+            self.rocker_default_start = False
+            raise UserError(_('Start time negative'))
+        self.rocker_default_startToShow = self.to_LOCAL(self.rocker_default_start)
+
     @api.onchange('rocker_default_stopToShow')
     def _onchange_rocker_default_stopToShow(self):
+        _logger.debug('_onchange_rocker_default_stopToShow')
         self.ensure_one()
         if self.rocker_default_stopToShow < 0:
             self.rocker_default_stopToShow = False
             self.rocker_default_stop = False
             raise UserError(_('Stop time must be positive'))
         self.rocker_default_stop = self.to_UTC(self.rocker_default_stopToShow)
+
+    @api.onchange('rocker_default_stop')
+    def _onchange_rocker_default_stop(self):
+        _logger.debug('_onchange_rocker_default_stop')
+        self.ensure_one()
+        if self.rocker_default_stop < 0:
+            self.rocker_default_stop = False
+            self.rocker_default_stopToShow = False
+            raise UserError(_('Stop time must be positive'))
+        self.rocker_default_stopToShow = self.to_LOCAL(self.rocker_default_stop)
 
     @api.depends('rocker_default_startToShow')
     def _compute_show_start(self):
@@ -186,7 +208,7 @@ class RockerUser(models.Model):
                                                default='1', help="Work does not contain breaks like lunch hour")
     hourbank_calculation_start = fields.Date(
         'Hourbank Calculation Start', required=False, readonly=False, store=True,
-        default=datetime.today(), help="Start datetime for hourbank calculation")
+        default=datetime.now().replace(month=1, day=1, hour=0, minute=0, second=0, microsecond=0), help="Start datetime for hourbank calculation")
     hourbank_initial_saldo = fields.Float('Hourbank initial saldo', store=True, readonly=False,
                                                default='0', help="Initial saldo for calculation start date")
 
@@ -206,6 +228,16 @@ class RockerUser(models.Model):
             raise UserError(_('Start time negative'))
         self.rocker_default_start = self.to_UTC(self.rocker_default_startToShow)
 
+    @api.onchange('rocker_default_start')
+    def _onchange_rocker_default_start(self):
+        _logger.debug('_onchange_rocker_default_start')
+        self.ensure_one()
+        if self.rocker_default_start < 0:
+            self.rocker_default_start = False
+            self.rocker_default_start = False
+            raise UserError(_('Start time negative'))
+        self.rocker_default_startToShow = self.to_LOCAL(self.rocker_default_start)
+
     @api.onchange('rocker_default_stopToShow')
     def _onchange_rocker_default_stopToShow(self):
         self.ensure_one()
@@ -214,6 +246,16 @@ class RockerUser(models.Model):
             self.rocker_default_stop = False
             raise UserError(_('Stop time must be positive'))
         self.rocker_default_stop = self.to_UTC(self.rocker_default_stopToShow)
+
+    @api.onchange('rocker_default_stop')
+    def _onchange_rocker_default_stop(self):
+        _logger.debug('_onchange_rocker_default_stop')
+        self.ensure_one()
+        if self.rocker_default_stop < 0:
+            self.rocker_default_stop = False
+            self.rocker_default_stopToShow = False
+            raise UserError(_('Stop time must be positive'))
+        self.rocker_default_stopToShow = self.to_LOCAL(self.rocker_default_stop)
 
     @api.depends('rocker_default_startToShow')
     def _compute_show_start(self):
