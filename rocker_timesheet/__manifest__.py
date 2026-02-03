@@ -51,6 +51,7 @@
             'rocker_timesheet/static/src/views/list/*.xml',
             'rocker_timesheet/static/src/views/list/*.js',
             'rocker_timesheet/static/src/views/calendar/*.scss',
+            'rocker_timesheet/static/src/css/*.scss',
 
         ]
    },

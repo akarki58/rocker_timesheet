@@ -393,7 +393,7 @@ class RockerTimesheet(models.Model):
     def _compute_display_name(self):
         _logger.debug('api depends name, unit_amount')
         for line in self:
-            line.display_name = "%s %s %s %s %0.1f %s" % (line.task_id.name , ': ' , line.name, ' - ', line.unit_amount or 0, ' h')
+            line.display_name = "%s %s %s %s %0.1f %s" % (line.task_id.name , ' ' , line.name, ' ', line.unit_amount or 0, ' h')
 
     @api.depends('user_id')
     def _compute_employee_id(self):

@@ -2,15 +2,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 #
 # 21-01-2026
-# You need to fix company working hours calendar. No breaks, only start & stop
-#
-# Monday  8:00 --> 15:30  7,5h
-# Tuesday  8:00 --> 15:30  7,5h
-# Wed  8:00 --> 15:30  7,5h
-# Thu  8:00 --> 15:30  7,5h
-# Fri  8:00 --> 15:30  7,5h
-#
-#week total 37.5h
+# You need to fix company working hours calendar.
+# Calculation does not take breaks
+# hours are now taken from duration_hours column
+#     in public.resource_calendar_attendance table
 #
 #
 
@@ -63,7 +58,7 @@ class RockerHourBankReport(models.Model):
                         ,ph.date_to as holiday_date_to
                         ,ph.time_from as holiday_time_from
                         ,ph.time_to as holiday_time_to
-        				,COALESCE((SELECT ROUND(CAST(SUM(hour_to - hour_from) as numeric),2)
+        				,COALESCE(( SELECT round(sum(rca.duration_hours)::numeric, 2) AS round
                                 FROM public.resource_calendar_attendance rca
                                    WHERE rca.calendar_id =  r_r.resource_calendar_id
                                    AND rca.dayofweek = cast((extract(isodow from calendar_dates.calendar_date) - 1) as varchar)

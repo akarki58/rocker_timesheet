@@ -26,7 +26,7 @@
             <field name="name">rocker_timesheet_tree</field>
             <field name="model">account.analytic.line</field>
             <field name="arch" type="xml">
-<!--                <list string="Timesheets" editable="top" create="true" delete="true" edit="true">-->
+                <!--                <list string="Timesheets" editable="top" create="true" delete="true" edit="true">-->
                 <list js_class="rocker_list" string="Timesheets" editable="top" create="true" delete="true" edit="true">
                     <field name="project_id" required="1" options="{'no_create_edit': True}"/>
                     <field name="task_id" required="1"/>
@@ -133,14 +133,25 @@
                                                domain="[('company_id', '=', company_id)]"/>
                                         <field name="task_id" required="1"
                                                domain="[('project_id', '=', project_id)]"/>
-                                        <label for="unit_amount" string="Actual Work" invisible="0"/>
-                                        <div>
-                                            <field name="unit_amount" required="1" widget="float_time" class="oe_inline"
+                                        <div class="o_box" colspan="2">
+                                            <label for="unit_amount" string="Actual Work"
+                                                   invisible="0"
+                                                   class="big_label"/>
+                                            <field name="unit_amount" required="1" widget="float_time"
+                                                   class="big_font_field"
                                                    readonly="0"/>
-                                            <span>hours per day</span>
+                                            <span class="oe_inline">hours per day</span>
                                         </div>
                                         <field name="date" invisible="1" required="1"/>
                                     </group>
+                                    <div class="row" colspan="2">
+                                        <div class="text-muted col-md-12">
+                                            <span>
+                                                Changing Start &amp; Stop times does not change Actual Work because
+                                                of possible breaks. Change Actual Work manually
+                                            </span>
+                                        </div>
+                                    </div>
                                 </group>
                             </page>
                         </notebook>
